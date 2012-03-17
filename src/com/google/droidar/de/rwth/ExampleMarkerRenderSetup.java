@@ -32,7 +32,7 @@ public class ExampleMarkerRenderSetup extends MarkerDetectionSetup {
 	private World world;
 
 	@Override
-	public UnrecognizedMarkerListener _a2_getUnrecognizedMarkerListener() {
+	public UnrecognizedMarkerListener getUnrecognizedMarkerListener() {
 		return null;
 	}
 

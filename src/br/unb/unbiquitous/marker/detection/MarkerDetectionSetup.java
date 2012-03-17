@@ -45,6 +45,7 @@ public abstract class MarkerDetectionSetup extends Setup {
 	private LayoutParams optimalLayoutParams;
 	
 	private QRCodeDecoder qrCodeDecoder;
+	public  Activity activity;
 	
 	
 //	private AutoFocusCallback autoFocusCallback;
@@ -83,7 +84,7 @@ public abstract class MarkerDetectionSetup extends Setup {
 		nativeLib.initThread(constants, calib.cameraMatrix,
 				calib.distortionMatrix);
 
-		myThread = new DetectionThread(nativeLib, myGLSurfaceView,markerObjectMap, _a2_getUnrecognizedMarkerListener(), this.qrCodeDecoder);
+		myThread = new DetectionThread(nativeLib, myGLSurfaceView,markerObjectMap, getUnrecognizedMarkerListener(), this.qrCodeDecoder);
 		if (apiLevel <= 5) {
 			cameraPreview = new PreviewPre2_0(myTargetActivity, myThread,
 					cameraSize);
@@ -192,7 +193,7 @@ public abstract class MarkerDetectionSetup extends Setup {
 	//
 	// }
 
-	public abstract UnrecognizedMarkerListener _a2_getUnrecognizedMarkerListener();
+	public abstract UnrecognizedMarkerListener getUnrecognizedMarkerListener();
 
 	public abstract void _a3_registerMarkerObjects(
 			MarkerObjectMap markerObjectMap);
@@ -223,5 +224,14 @@ public abstract class MarkerDetectionSetup extends Setup {
 	public void setQrCodeDecoder(QRCodeDecoder qrCodeDecoder) {
 		this.qrCodeDecoder = qrCodeDecoder;
 	}
+
+	public Activity getActivity() {
+		return activity;
+	}
+
+	public void setActivity(Activity activity) {
+		this.activity = activity;
+	}
+	
 	
 }
