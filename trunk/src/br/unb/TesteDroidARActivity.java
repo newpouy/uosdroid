@@ -36,7 +36,7 @@ public class TesteDroidARActivity extends Activity {
 		});
 		
 		markerSetup.setQrCodeDecoder(qrCodeDecoder);
-		
+		markerSetup.setActivity(this);
 		setContentView(b);
 		
     }

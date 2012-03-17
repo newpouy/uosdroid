@@ -146,12 +146,11 @@ public class DetectionThread extends Thread {
 					// -------------------------------------------------------------
 					
 					
-					/*
-					String textoDecodificado = "TesteApp";
+//					String textoDecodificado = "TesteApp";
+//					
+//					mapa.get(textoDecodificado);
 					
-					mapa.get(textoDecodificado);
-					
-					MarkerObject markerObj = markerObjectMap.get((int) mat[idMarcador]);
+					MarkerObject markerObj = markerObjectMap.get(5);
 
 					Log.i("PosicaoMarcador", "Posicao inicial = "+ posicaoInicialMarcador + ", final = "+ posicaoFinalMarcador);
 					
@@ -174,7 +173,6 @@ public class DetectionThread extends Thread {
 						}
 					}
 					
-					*/
 					 
 				}
 				
