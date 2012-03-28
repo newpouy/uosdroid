@@ -1,10 +1,11 @@
 package br.unb.unbiquitous.marker.detection;
 
+import java.io.InputStream;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
 import nativeLib.NativeLib;
-
 import android.opengl.GLSurfaceView;
 import android.os.SystemClock;
 import android.util.Log;
@@ -13,6 +14,10 @@ import br.unb.QRCodeDecoder;
 
 import com.google.droidar.gl.MarkerObject;
 import com.google.droidar.preview.Preview;
+import com.google.zxing.Result;
+import com.jwetherell.motion_detection.detection.IMotionDetection;
+import com.jwetherell.motion_detection.detection.RgbMotionDetection;
+import com.jwetherell.motion_detection.image.ImageProcessing;
 
 public class DetectionThread extends Thread {
 	private int frameWidth;
@@ -34,8 +39,16 @@ public class DetectionThread extends Thread {
 	
 	private Map<String, ApplicationsFake> mapa;
 	
-	
+	private byte[] frameAnterior;
 	private QRCodeDecoder qrCodeDecoder;
+	private IMotionDetection iMotionDetection;
+	private boolean flagControleMovimento = false;
+	private String lastAppName;
+	int tentativas = 0;
+	
+	private static final int MAX_TENTATIVAS = 5;
+	
+	private int[] rgb;
 
 	public DetectionThread(NativeLib nativeLib, GLSurfaceView openglView,
 			HashMap<Integer, MarkerObject> markerObjectMap,
@@ -45,13 +58,14 @@ public class DetectionThread extends Thread {
 		this.markerObjectMap = markerObjectMap;
 		this.nativelib = nativeLib;
 		this.unrecognizedMarkerListener = unrecognizedMarkerListener;
-		
-		
 		this.qrCodeDecoder = qrCodeDecoder;
 
 		// TODO make size dynamically after the init function.
 		mat = new float[1 + 18 * 5];
-
+		
+		this.iMotionDetection = new RgbMotionDetection();
+		
+		
 		// application will exit even if this thread remains active.
 		setDaemon(true);
 		
@@ -95,20 +109,56 @@ public class DetectionThread extends Thread {
 						fcount = 0;
 					}
 				}
-				// Pass the frame to the native code and find the
-				// marker information.
-				// The false at the end is a remainder of the calibration.
-				nativelib.detectMarkers(frame, mat, frameHeight, frameWidth,
-						false);
+				
+				// TODO [Ricardo] arrumar o esquema da porcentagem para calibrar.
+				
+				// Se entrar aqui é porque um marcador foi encontrado.
+				if (flagControleMovimento && isMotionDetected()){
+					
+					
+					// Ate no máximo o número de tentativas
+					if (tentativas > MAX_TENTATIVAS){
+						tentativas = 0;
+						flagControleMovimento = false;
+					}else{
+					
+						// Achou um marcador, mas não conseguiu decoficar.
+						if(lastAppName == null){
+							
+							// Tenta decodificar o qrcode
+							if(isQRCodeFound()){
+								this.lastAppName = qrCodeDecoder.getTextDecoded();
+								controlarRecursosRealidadeAumentada();
+							}
+						}else{
+						
+							// Achou um marcador e tem conseguiu decodificar o qrcode.
+							// Agora precisa achar as posicoes do marcador para realinhar
+							// o objeto virtual.
+							if(isMarkerFound()){
+								controlarRecursosRealidadeAumentada();
+							}
+						}
+					}
+					
+				}else{
+					
+					tentativas++;
+					this.lastAppName = null;
+					
+					// primeiro caso
+					if (isMarkerFound()){
+						// Tenta decodificar o qrcode
+						if(isQRCodeFound()){
+							this.lastAppName = qrCodeDecoder.getTextDecoded();
+							controlarRecursosRealidadeAumentada();
+						}
 
-				// Needs to be reworked to. Either just deleted, or changed into
-				// some timer delay
-				openglView.requestRender();
-
-				// Write all current information of the detected markers into
-				// the marker hashmap and notify markers they are recognized.
-				int posicaoInicialMarcador, posicaoFinalMarcador, rotacaoMarcador, idMarcador = 0;
-
+						flagControleMovimento = true;
+					
+					}
+				}
+				
 				
 				/* ******************************************************** 
 				 * A partir daqui o c�digo original foi comentado 
@@ -117,8 +167,13 @@ public class DetectionThread extends Thread {
 				// Verifica se achou algum marcador 
 				// estou considerando que s� ter� um marcador por frame
 				// TODO [Ricardo] Arrumar isso para v�rios marcadores
-				if((int) mat[0] > 0){
-					posicaoInicialMarcador = (1);
+				if((int) mat[0] == 9999){ // > 0
+					
+					// Write all current information of the detected markers into
+					// the marker hashmap and notify markers they are recognized.
+					int posicaoInicialMarcador, posicaoFinalMarcador, rotacaoMarcador, idMarcador = 0;
+
+					posicaoInicialMarcador = 1;
 					posicaoFinalMarcador = posicaoInicialMarcador + 15;
 					rotacaoMarcador = posicaoFinalMarcador + 1;
 					idMarcador = rotacaoMarcador + 1;
@@ -129,18 +184,7 @@ public class DetectionThread extends Thread {
 					// buscar esse nome em um mapa contendo o nome de todas aplica��es que est�o
 					// presentes no ambiente.
 					
-					//TODO implementar
-					// Decodificando o QRCode
 					
-					// -------------------------------------------------------------
-
-//					qrCodeDecoder.decode(frame, frameWidth, frameHeight);
-					
-//					if(qrCodeDecoder.getTextDecoded() != null){
-//						Log.i("DetectionThread", "Código decodificado = "+ qrCodeDecoder.getTextDecoded());
-//					}else{
-//						Log.i("DetectionThread", "Não foi possível decodificar o marcador.");
-//					}
 					
 					
 					// -------------------------------------------------------------
@@ -150,28 +194,29 @@ public class DetectionThread extends Thread {
 //					
 //					mapa.get(textoDecodificado);
 					
-					MarkerObject markerObj = markerObjectMap.get(5);
-
-					Log.i("PosicaoMarcador", "Posicao inicial = "+ posicaoInicialMarcador + ", final = "+ posicaoFinalMarcador);
 					
-					if (markerObj != null) {
-						// Marcador n�o foi encontrado
-						markerObj.OnMarkerPositionRecognized(mat, posicaoInicialMarcador,posicaoFinalMarcador);
-					} else {
-						
-						// Marcador foi detectado
-						if (unrecognizedMarkerListener != null) {
-							
-							
-							unrecognizedMarkerListener.onUnrecognizedMarkerDetected(
-																						(int) mat[idMarcador], 
-																						mat, 
-																						posicaoInicialMarcador,
-																						posicaoFinalMarcador, 
-																						(int) mat[rotacaoMarcador]
-															          				);
-						}
-					}
+//					MarkerObject markerObj = markerObjectMap.get(5);
+//
+//					Log.i("PosicaoMarcador", "Posicao inicial = "+ posicaoInicialMarcador + ", final = "+ posicaoFinalMarcador);
+//					
+//					if (markerObj != null) {
+//						// Marcador não foi encontrado
+//						markerObj.OnMarkerPositionRecognized(mat, posicaoInicialMarcador,posicaoFinalMarcador);
+//					} else {
+//						
+//						// Marcador foi detectado
+//						if (unrecognizedMarkerListener != null) {
+//							
+//							
+//							unrecognizedMarkerListener.onUnrecognizedMarkerDetected(
+//																						(int) mat[idMarcador], 
+//																						mat, 
+//																						posicaoInicialMarcador,
+//																						posicaoFinalMarcador, 
+//																						(int) mat[rotacaoMarcador]
+//															          				);
+//						}
+//					}
 					
 					 
 				}
@@ -203,6 +248,7 @@ public class DetectionThread extends Thread {
 				*/
 				
 				
+				frameAnterior = frame;
 				
 				
 				busy = false;
@@ -212,6 +258,62 @@ public class DetectionThread extends Thread {
 			yield();
 		}
 
+	}
+	
+	private boolean isMarkerFound(){
+		
+		// Pass the frame to the native code and find the
+		// marker information.
+		// The false at the end is a remainder of the calibration.
+		nativelib.detectMarkers(frame, mat, frameHeight, frameWidth,false);
+		
+			
+		// Needs to be reworked to. Either just deleted, or changed into
+		// some timer delay
+		openglView.requestRender();
+		
+		return (int) mat[0] > 0;
+		
+	}
+	
+	private boolean isMotionDetected(){
+		
+		//TODO [Ricardo] implementar o esquema de similaridade dos frames
+		
+		rgb = ImageProcessing.decodeYUV420SPtoRGB(frame, frameWidth, frameHeight);
+		
+		return this.iMotionDetection.detect(rgb, frameWidth, frameHeight);
+	}
+	
+	private boolean isQRCodeFound(){
+		//TODO implementar
+		// Decodificando o QRCode
+		
+		Calendar inicio = Calendar.getInstance();
+		
+		// -------------------------------------------------------------
+		// TODO tirar os readers, isso pode estar fazendo a decodificacao demorar
+		Result result = qrCodeDecoder.decode(frame, frameWidth, frameHeight);
+		
+		Calendar fim = Calendar.getInstance();
+		
+		
+		long tempoTotalDecodificacao = fim.getTimeInMillis() - inicio.getTimeInMillis();
+		
+		Log.i("DetectionThread", "Tempo de decodificação: " + tempoTotalDecodificacao);
+		
+		if(qrCodeDecoder.getTextDecoded() != null){
+			Log.i("DetectionThread", "Código decodificado = "+ qrCodeDecoder.getTextDecoded());
+		}else{
+			Log.i("DetectionThread", "Não foi possível decodificar o marcador.");
+		}
+		
+		
+		return qrCodeDecoder.getTextDecoded() != null;
+	}
+	
+	private void controlarRecursosRealidadeAumentada(){
+		
 	}
 
 	public synchronized void nextFrame(byte[] data) {
@@ -263,4 +365,5 @@ public class DetectionThread extends Thread {
 			HashMap<Integer, MarkerObject> markerObjectMap) {
 		this.markerObjectMap = markerObjectMap;
 	}
+
 }
