@@ -33,7 +33,7 @@ public class QRCodeDecoder {
 	 * @param height
 	 *            The height of the preview frame.
 	 */
-	public void decode(byte[] data, int width, int height) {
+	public Result decode(byte[] data, int width, int height) {
 		Result rawResult = null;
 		PlanarYUVLuminanceSource source = cameraManager.buildLuminanceSource(
 				data, width, height);
@@ -42,12 +42,14 @@ public class QRCodeDecoder {
 			try {
 				rawResult = multiFormatReader.decode(bitmap);
 				textDecoded = rawResult.getText();
+				return rawResult;
 			} catch (ReaderException re) {
 				// continue
 			} finally {
 				multiFormatReader.reset();
 			}
 		}
+		return null;
 	}
 
 	public String getTextDecoded() {
