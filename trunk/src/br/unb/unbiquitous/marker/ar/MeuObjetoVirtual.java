@@ -9,20 +9,19 @@ import com.google.droidar.util.Vec;
 import com.google.droidar.worldData.Obj;
 import com.google.droidar.worldData.World;
 
+
+
 public class MeuObjetoVirtual extends BasicMarker {
 
 	private Obj objetoTexto;
 	private World world;
 	private Activity activity;
 	private GLCamera glCamera;
-	private int id;
+	private String id;
 	
 	boolean firstTime = true;
 	
-
-	
-	
-	public MeuObjetoVirtual(int id, GLCamera camera, World world,
+	public MeuObjetoVirtual(String id, GLCamera camera, World world,
 			Activity activity) {
 		super(id, camera);
 		this.world = world;
@@ -31,7 +30,7 @@ public class MeuObjetoVirtual extends BasicMarker {
 		this.id = id;
 	}
 
-	public MeuObjetoVirtual(int id, GLCamera camera) {
+	public MeuObjetoVirtual(String id, GLCamera camera) {
 		super(id, camera);
 	}
 
@@ -43,7 +42,7 @@ public class MeuObjetoVirtual extends BasicMarker {
 		 */
 		if (firstTime) {
 			firstTime = false;
-			objetoTexto =  GLFactory.getInstance().newTextObject("texto", positionVec, activity, glCamera);
+			objetoTexto =  GLFactory.getInstance().newTextObject(this.id, positionVec, activity, glCamera);
 			world.add(objetoTexto);
 		}
 		objetoTexto.setPosition(positionVec);
@@ -85,11 +84,11 @@ public class MeuObjetoVirtual extends BasicMarker {
 		this.glCamera = glCamera;
 	}
 
-	public int getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 	

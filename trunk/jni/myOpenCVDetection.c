@@ -714,6 +714,9 @@ JNIEXPORT jint JNICALL Java_nativeLib_NativeLib_detectMarkers(
 
 						orientationChange=0;
 
+						sprintf(tmp, "escrevendo a saída");
+						LOGD(tmp);
+
 						//write the rotation matrix into the right part of the list.
 						returnVals[returnValPnt++] = rotMat[0];
 						returnVals[returnValPnt++] = rotMat[3];

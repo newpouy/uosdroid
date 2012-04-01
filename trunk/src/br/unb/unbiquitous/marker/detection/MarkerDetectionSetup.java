@@ -12,7 +12,7 @@ import android.hardware.Camera.Size;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.ViewGroup.LayoutParams;
-import br.unb.DecoderObject;
+import br.unb.unbiquitous.marker.decoder.DecoderObject;
 
 import com.google.droidar.preview.Preview;
 import com.google.droidar.preview.PreviewPost2_0;
@@ -83,7 +83,7 @@ public abstract class MarkerDetectionSetup extends Setup {
 		nativeLib.initThread(constants, calib.cameraMatrix,
 				calib.distortionMatrix);
 
-		myThread = new DetectionThread(nativeLib, myGLSurfaceView,markerObjectMap, getUnrecognizedMarkerListener(), this.decoderObject);
+		myThread = new DetectionThread(this, nativeLib, myGLSurfaceView,markerObjectMap, getUnrecognizedMarkerListener(), this.decoderObject);
 		if (apiLevel <= 5) {
 			cameraPreview = new PreviewPre2_0(myTargetActivity, myThread,
 					cameraSize);
@@ -94,6 +94,8 @@ public abstract class MarkerDetectionSetup extends Setup {
 			Log.d("AR", "API Level: " + apiLevel + " Created Preview Post2.1");
 		}
 
+		
+		// TODO [ Ricardo ] Isso aqui poderá sair pois o controle para visualizacao sera feito no detection thread.
 		_a3_registerMarkerObjects(markerObjectMap);
 
 	}
@@ -231,6 +233,40 @@ public abstract class MarkerDetectionSetup extends Setup {
 	public void setActivity(Activity activity) {
 		this.activity = activity;
 	}
+
+	public Preview getCameraPreview() {
+		return cameraPreview;
+	}
+
+	public void setCameraPreview(Preview cameraPreview) {
+		this.cameraPreview = cameraPreview;
+	}
+
+	public NativeLib getNativeLib() {
+		return nativeLib;
+	}
+
+	public void setNativeLib(NativeLib nativeLib) {
+		this.nativeLib = nativeLib;
+	}
+
+	public Camera.Size getCameraSize() {
+		return cameraSize;
+	}
+
+	public void setCameraSize(Camera.Size cameraSize) {
+		this.cameraSize = cameraSize;
+	}
+
+	public LayoutParams getOptimalLayoutParams() {
+		return optimalLayoutParams;
+	}
+
+	public void setOptimalLayoutParams(LayoutParams optimalLayoutParams) {
+		this.optimalLayoutParams = optimalLayoutParams;
+	}
+	
+	
 	
 	
 }

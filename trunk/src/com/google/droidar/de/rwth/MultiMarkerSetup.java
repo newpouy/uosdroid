@@ -1,6 +1,7 @@
 package com.google.droidar.de.rwth;
 
 import android.app.Activity;
+import android.util.Log;
 import br.unb.unbiquitous.marker.ar.MeuObjetoVirtual;
 import br.unb.unbiquitous.marker.detection.MarkerDetectionSetup;
 import br.unb.unbiquitous.marker.detection.MarkerObjectMap;
@@ -16,6 +17,7 @@ import com.google.droidar.gl.CustomGLSurfaceView;
 import com.google.droidar.gl.GLCamera;
 import com.google.droidar.gl.GLFactory;
 import com.google.droidar.gl.GLRenderer;
+import com.google.droidar.gl.MarkerObject;
 import com.google.droidar.gl.scenegraph.MeshComponent;
 import com.google.droidar.gl.scenegraph.Shape;
 import com.google.droidar.gui.GuiSetup;
@@ -33,6 +35,7 @@ public class MultiMarkerSetup extends MarkerDetectionSetup {
 	private MeshComponent mesh1;
 	private MeshComponent mesh2;
 	private MeuObjetoVirtual meuObjetoVirtual;
+	private MarkerObjectMap markerObjectMap;
 	
 	@Override
 	public void _a_initFieldsIfNecessary() {
@@ -47,11 +50,10 @@ public class MultiMarkerSetup extends MarkerDetectionSetup {
 
 		mesh2 = new Shape();
 		mesh2.addChild(GLFactory.getInstance().newCoordinateSystem());
-		mesh2.addChild(GLFactory.getInstance().newCircle(
-				new Color(0, 0, 1, 0.6f)));
+		mesh2.addChild(GLFactory.getInstance().newCircle(new Color(0, 0, 1, 0.6f)));
 		// mesh1.add(GLFactory.getInstance().newCube());
 		
-		meuObjetoVirtual = new MeuObjetoVirtual(5, camera, world, this.activity);
+		meuObjetoVirtual = new MeuObjetoVirtual("5", camera, world, this.activity);
 
 	}
 
@@ -61,48 +63,29 @@ public class MultiMarkerSetup extends MarkerDetectionSetup {
 
 			public void onUnrecognizedMarkerDetected(int markerCode,
 					float[] mat, int startIdx, int endIdx, int rotationValue) {
-				System.out.println("unrecognized markerCode=" + markerCode);
+				Log.i("Retirando marcador", "unrecognized markerCode=" + markerCode);
 			}
 		};
 
 	}
+	
+	public void addMarkerObject(MarkerObject markerObject){
+		markerObjectMap.put(markerObject);
+	}
 
+	public void addMarkerObject(String appName){
+		meuObjetoVirtual = new MeuObjetoVirtual(appName, camera, world, this.activity);
+		markerObjectMap.put(meuObjetoVirtual);
+	}
+	
 	@Override
 	public void _a3_registerMarkerObjects(MarkerObjectMap markerObjectMap) {
-		markerObjectMap.put(new SimpleMeshPlacer(0, mesh1, camera));
-		markerObjectMap.put(new SimpleMeshPlacer(1, mesh2, camera));
+		this.markerObjectMap = markerObjectMap;
+		markerObjectMap.put(new SimpleMeshPlacer("0", mesh1, camera));
+		markerObjectMap.put(new SimpleMeshPlacer("1", mesh2, camera));
 		
 		markerObjectMap.put(meuObjetoVirtual);
 
-//		/*
-//		 * example for more complex behavior:
-//		 */
-//		markerObjectMap.put(new BasicMarker(2, camera) {
-//
-//			MeshComponent targetMesh;
-//			boolean firstTime = true;
-//
-//			@Override
-//			public void setObjectPos(Vec positionVec) {
-//				/*
-//				 * the first time this method is called an object could be
-//				 * created and added to the world
-//				 */
-//				if (firstTime) {
-//					firstTime = false;
-//					Obj aNewObject =  GLFactory.getInstance().newTextObject("texto", positionVec, this.get, glCamera)
-//					aNewObject.setComp(targetMesh);
-//					world.add(aNewObject);
-//				}
-//				targetMesh.setPosition(positionVec);
-//			}
-//
-//			@Override
-//			public void setObjRotation(float[] rotMatrix) {
-//				if (targetMesh != null)
-//					targetMesh.setRotationMatrix(rotMatrix);
-//			}
-//		});
 	}
 
 	@Override

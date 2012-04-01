@@ -1,4 +1,4 @@
-package br.unb;
+package br.unb.unbiquitous.marker.decoder;
 
 import com.google.zxing.BinaryBitmap;
 import com.google.zxing.MultiFormatReader;

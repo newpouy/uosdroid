@@ -38,7 +38,7 @@ public class ExampleMarkerRenderSetup extends MarkerDetectionSetup {
 
 	@Override
 	public void _a3_registerMarkerObjects(MarkerObjectMap markerObjectMap) {
-		markerObjectMap.put(new CameraMarker(0, camera));
+		markerObjectMap.put(new CameraMarker("0", camera));
 	}
 
 	@Override

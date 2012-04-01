@@ -1,10 +1,10 @@
 package com.google.droidar.de.rwth;
 
+import android.opengl.Matrix;
+
 import com.google.droidar.gl.GLCamera;
 import com.google.droidar.gl.MarkerObject;
 import com.google.droidar.util.Vec;
-
-import android.opengl.Matrix;
 
 public abstract class BasicMarker implements MarkerObject {
 
@@ -13,14 +13,14 @@ public abstract class BasicMarker implements MarkerObject {
 	private float[] antiCameraMarkerRotMatrix = new float[16];
 
 	protected GLCamera myCamera;
-	protected int myId;
+	protected String myId;
 
-	public BasicMarker(int id, GLCamera camera) {
+	public BasicMarker(String id, GLCamera camera) {
 		myCamera = camera;
 		myId = id;
 	}
-
-	public int getMyId() {
+	
+	public String getMyId() {
 		return myId;
 	}
 
