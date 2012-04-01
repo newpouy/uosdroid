@@ -12,7 +12,7 @@ import com.google.droidar.gl.MarkerObject;
  */
 public class CameraMarker implements MarkerObject {
 
-	private int myId;
+	private String myId;
 	private GLCamera myCamera;
 
 	/**
@@ -22,12 +22,12 @@ public class CameraMarker implements MarkerObject {
 	 * @param id
 	 * @param camera
 	 */
-	public CameraMarker(int id, GLCamera camera) {
+	public CameraMarker(String id, GLCamera camera) {
 		myId = id;
 		myCamera = camera;
 	}
 
-	public int getMyId() {
+	public String getMyId() {
 		return myId;
 	}
 

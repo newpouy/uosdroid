@@ -2,20 +2,18 @@ package br.unb.unbiquitous.marker.detection;
 
 import java.util.Calendar;
 import java.util.HashMap;
-import java.util.Map;
 
 import nativeLib.NativeLib;
 import android.opengl.GLSurfaceView;
 import android.os.SystemClock;
 import android.util.Log;
-import br.unb.ApplicationsFake;
-import br.unb.DecoderObject;
+import br.unb.unbiquitous.marker.decoder.DecoderObject;
 
+import com.google.droidar.de.rwth.MultiMarkerSetup;
 import com.google.droidar.gl.MarkerObject;
 import com.google.droidar.preview.Preview;
 import com.google.zxing.Result;
 import com.jwetherell.motion_detection.detection.IMotionDetection;
-import com.jwetherell.motion_detection.detection.RgbMotionDetection;
 import com.jwetherell.motion_detection.image.ImageProcessing;
 
 public class DetectionThread extends Thread {
@@ -33,7 +31,7 @@ public class DetectionThread extends Thread {
 	private int fcount = 0;
 	private double fps = 0;
 	private boolean calcFps = false;
-	private HashMap<Integer, MarkerObject> markerObjectMap;
+	private HashMap<String, MarkerObject> markerObjectMap;
 	private UnrecognizedMarkerListener unrecognizedMarkerListener;
 	
 	private DecoderObject decoderObject;
@@ -41,16 +39,19 @@ public class DetectionThread extends Thread {
 	private boolean flagControleMovimento = false;
 	private String lastAppName;
 	int tentativas = 0;
+	private MarkerDetectionSetup setup;
 	
 	
-	private static final int MAX_TENTATIVAS = 50;
+	private static final int MAX_TENTATIVAS = 100;
 	
 	private int[] rgb;
 
-	public DetectionThread(NativeLib nativeLib, GLSurfaceView openglView,
-			HashMap<Integer, MarkerObject> markerObjectMap,
+	public DetectionThread( MarkerDetectionSetup setup, NativeLib nativeLib, GLSurfaceView openglView,
+			HashMap<String, MarkerObject> markerObjectMap,
 			UnrecognizedMarkerListener unrecognizedMarkerListener,
 			DecoderObject decoderObject) {
+		
+		this.setup = setup;
 		this.openglView = openglView;
 		this.markerObjectMap = markerObjectMap;
 		this.nativelib = nativeLib;
@@ -96,73 +97,78 @@ public class DetectionThread extends Thread {
 				}
 				
 				
-				isMarkerFound();
-				
 				// TODO [Ricardo] arrumar o esquema da porcentagem para calibrar.
 				
 				// Se entrar aqui é porque um marcador foi encontrado.
-//				if (flagControleMovimento ){// && isMotionDetected()){
-//					
-//					Log.i("DetectionThread", "Um marcador foi encontrado e houve uma deteccao de movimento.");
-//					
-//					// Ate no máximo o número de tentativas
-//					if (tentativas > MAX_TENTATIVAS){
-//						
-//						Log.i("DetectionThread", "Atingido as tentativas máximas");
-//						tentativas = 0;
-//						flagControleMovimento = false;
-//					}else{
-//
-//						tentativas++;
-//					
-//						// Achou um marcador, mas não conseguiu decoficar.
-//						if(lastAppName == null){
-//							
-//							Log.i("DetectionThread", "Achou um marcador, mas nao conseguiu decodificar.");
-//							
-//							// Tenta decodificar o qrcode
-//							if(isQRCodeFound()){
-//								
-//								Log.i("DetectionThread", "conseguiu decodificar o marcador.");
-//								this.lastAppName = decoderObject.getQrCodeDecoder().getTextDecoded();
-//								controlarRecursosRealidadeAumentada();
-//							}
-//						}else{
-//						
-//							
-//							// Achou um marcador e conseguiu decodificar o qrcode.
-//							// Agora precisa achar as posicoes do marcador para realinhar
-//							// o objeto virtual.
-//							if(isMarkerFound()){
-//								
-//								Log.i("DetectionThread", "Achou um marcador.");
-//								
-//								controlarRecursosRealidadeAumentada();
-//							}
-//						}
-//					}
-//					
-//				}else{
-//					
-//					Log.i("DetectionThread", "Não foi detectado movimento.");
-//					
-//					tentativas++;
-//					this.lastAppName = null;
-//					
-//					// primeiro caso
-//					if (isMarkerFound()){
-//						Log.i("DetectionThread","Marcador encontrado.");
-//						// Tenta decodificar o qrcode
-//						if(isQRCodeFound()){
-//							Log.i("DetectionThread","Marcador decodificado com sucesso.");
-//							this.lastAppName = decoderObject.getQrCodeDecoder().getTextDecoded();
-//							controlarRecursosRealidadeAumentada();
-//						}
-//
-//						flagControleMovimento = true;
-//					
-//					}
-//				}
+				if (flagControleMovimento ){// && isMotionDetected()){
+					
+					Log.i("DetectionThread", "Um marcador foi encontrado e houve uma deteccao de movimento.");
+					
+					// Ate no máximo o número de tentativas
+					if (tentativas > MAX_TENTATIVAS){
+						
+						Log.i("DetectionThread", "Atingido as tentativas máximas");
+						tentativas = 0;
+						flagControleMovimento = false;
+						this.lastAppName = null;
+					}else{
+
+						tentativas++;
+					
+						// Achou um marcador, mas não conseguiu decoficar.
+						if(lastAppName == null){
+							
+							Log.i("DetectionThread", "Achou um marcador, mas nao conseguiu decodificar.");
+							
+							// Tenta decodificar o qrcode
+							if(isQRCodeFound()){
+								
+								Log.i("DetectionThread", "conseguiu decodificar o marcador.");
+								this.lastAppName = decoderObject.getQrCodeDecoder().getTextDecoded();
+								controlarRecursosRealidadeAumentada(this.lastAppName);
+							}else{
+								
+								// Limpando o texto da tela
+								
+								retirar();
+								
+							}
+						}else{
+						
+							
+							// Achou um marcador e conseguiu decodificar o qrcode.
+							// Agora precisa achar as posicoes do marcador para realinhar
+							// o objeto virtual.
+							if(isMarkerFound()){
+								
+								Log.i("DetectionThread", "Achou um marcador.");
+								
+								controlarRecursosRealidadeAumentada(this.lastAppName);
+							}
+						}
+					}
+					
+				}else{
+					
+					Log.i("DetectionThread", "Não foi detectado movimento.");
+					
+					tentativas++;
+					this.lastAppName = null;
+					
+					// primeiro caso
+					if (isMarkerFound()){
+						Log.i("DetectionThread","Marcador encontrado.");
+						// Tenta decodificar o qrcode
+						if(isQRCodeFound()){
+							Log.i("DetectionThread","Marcador decodificado com sucesso.");
+							this.lastAppName = decoderObject.getQrCodeDecoder().getTextDecoded();
+							controlarRecursosRealidadeAumentada(this.lastAppName);
+						}
+
+						flagControleMovimento = true;
+					
+					}
+				}
 				
 				
 				/* ******************************************************** 
@@ -310,33 +316,47 @@ public class DetectionThread extends Thread {
 		return decoderObject.getQrCodeDecoder().getTextDecoded() != null;
 	}
 	
-	private void controlarRecursosRealidadeAumentada(){
+	private void controlarRecursosRealidadeAumentada(String appName){
 		
-		MarkerObject markerObj = markerObjectMap.get(5);
-
-		Log.i("PosicaoMarcador", "Posicao inicial = "+ 1 + ", final = "+ 16);
+		boolean isAppNameValid = true;
 		
-		if (markerObj != null) {
-			// Marcador não foi encontrado
-			markerObj.OnMarkerPositionRecognized(mat, 1,16);
-		} else {
+		
+		if ( isAppNameValid ){
 			
-			// Marcador foi detectado
-			if (unrecognizedMarkerListener != null) {
+		
+			Log.i("appname", "App name = " + appName);
+			// TODO [Ricardo] Fake
+			MarkerObject markerObj = markerObjectMap.get(appName);
+	
+			// TODO Fazer a validacao na hydra
+			
+	//		Log.i("PosicaoMarcador", "Posicao inicial = "+ 1 + ", final = "+ 16);
+			
+			if (markerObj != null) {
+				// Marcador foi encontrado
+				// TODO [Ricardo] verificar se há a necessidade de vários marcadores por vez
+				markerObj.OnMarkerPositionRecognized(mat, 1,16);
+			}else{
 				
-				
-				unrecognizedMarkerListener.onUnrecognizedMarkerDetected(
-																			(int) mat[5], 
-																			mat, 
-																			1,
-																			16, 
-																			(int) mat[17]
-												          				);
+				// Foi validado na hydra, mas o objeto ainda nao foi criado.
+				criarObjetoVirtual(appName);
 			}
 		}
-		
-		 
-		
+	}
+	
+	public void criarObjetoVirtual(String appName){
+		((MultiMarkerSetup) setup).addMarkerObject(appName);
+	}
+	
+	
+	private void retirar(){
+		unrecognizedMarkerListener.onUnrecognizedMarkerDetected(
+				5, 
+				mat, 
+				1,
+				16, 
+				0 // ver
+				);
 	}
 
 	public synchronized void nextFrame(byte[] data) {
@@ -385,7 +405,7 @@ public class DetectionThread extends Thread {
 	}
 
 	public void setMarkerObjectMap(
-			HashMap<Integer, MarkerObject> markerObjectMap) {
+			HashMap<String, MarkerObject> markerObjectMap) {
 		this.markerObjectMap = markerObjectMap;
 	}
 

@@ -20,7 +20,7 @@ package com.google.droidar.gl;
  */
 public interface MarkerObject {
 
-	public int getMyId();
+	public String getMyId();
 
 	/**
 	 * This methode is called by the framework when a marker was detected

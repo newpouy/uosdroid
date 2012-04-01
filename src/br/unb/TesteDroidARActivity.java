@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import br.unb.unbiquitous.marker.decoder.DecoderObject;
 
 import com.google.droidar.de.rwth.MultiMarkerSetup;
 import com.google.droidar.system.ArActivity;

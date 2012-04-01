@@ -1,4 +1,4 @@
-package br.unb;
+package br.unb.unbiquitous.marker.decoder;
 
 import android.app.Activity;
 

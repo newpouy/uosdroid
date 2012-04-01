@@ -11,7 +11,7 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
-import br.unb.DecoderObject;
+import br.unb.unbiquitous.marker.decoder.DecoderObject;
 import br.unb.unbiquitous.marker.detection.MarkerDetectionSetup;
 
 import com.google.droidar.util.Log;
@@ -158,7 +158,7 @@ public class ArActivity extends Activity implements SensorEventListener{
          
 //         Log.e("direction", "orientation = "+orientation);
          decoderObject.setOrientation(Integer.valueOf(orientation));
-         Log.e("orientation", " orientation z = " + z);
+//         Log.e("orientation", " orientation z = " + z);
 	}
 
 	@Override
