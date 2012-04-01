@@ -1,16 +1,14 @@
-package com.google.droidar.de.rwth;
+package br.unb.unbiquitous.marker.detection;
 
 import android.app.Activity;
 import android.util.Log;
-import br.unb.unbiquitous.marker.ar.MeuObjetoVirtual;
-import br.unb.unbiquitous.marker.detection.MarkerDetectionSetup;
-import br.unb.unbiquitous.marker.detection.MarkerObjectMap;
-import br.unb.unbiquitous.marker.detection.UnrecognizedMarkerListener;
+import br.unb.unbiquitous.marker.virtual.object.MeuObjetoVirtual;
 
 import com.google.droidar.actions.Action;
 import com.google.droidar.actions.ActionMoveCameraBuffered;
 import com.google.droidar.actions.ActionRotateCameraBuffered;
 import com.google.droidar.commands.Command;
+import com.google.droidar.de.rwth.SimpleMeshPlacer;
 import com.google.droidar.geo.GeoObj;
 import com.google.droidar.gl.Color;
 import com.google.droidar.gl.CustomGLSurfaceView;
@@ -47,7 +45,7 @@ public class MultiMarkerSetup extends MarkerDetectionSetup {
 		// mesh.add(GLFactory.getInstance().newCircle(new Color(0, 0, 1,
 		// 0.6f)));
 		mesh1.addChild(GLFactory.getInstance().newCube());
-
+		
 		mesh2 = new Shape();
 		mesh2.addChild(GLFactory.getInstance().newCoordinateSystem());
 		mesh2.addChild(GLFactory.getInstance().newCircle(new Color(0, 0, 1, 0.6f)));
@@ -122,6 +120,10 @@ public class MultiMarkerSetup extends MarkerDetectionSetup {
 
 	}
 
+	
+	/**
+	 * Adiciona os botões na tela.
+	 */
 	@Override
 	public void _e2_addElementsToGuiSetup(GuiSetup guiSetup, Activity activity) {
 		guiSetup.addButtonToBottomView(new Command() {

@@ -6,8 +6,8 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import br.unb.unbiquitous.marker.decoder.DecoderObject;
+import br.unb.unbiquitous.marker.detection.MultiMarkerSetup;
 
-import com.google.droidar.de.rwth.MultiMarkerSetup;
 import com.google.droidar.system.ArActivity;
 
 public class TesteDroidARActivity extends Activity  {

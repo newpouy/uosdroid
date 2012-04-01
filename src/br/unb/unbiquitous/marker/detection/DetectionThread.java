@@ -9,7 +9,6 @@ import android.os.SystemClock;
 import android.util.Log;
 import br.unb.unbiquitous.marker.decoder.DecoderObject;
 
-import com.google.droidar.de.rwth.MultiMarkerSetup;
 import com.google.droidar.gl.MarkerObject;
 import com.google.droidar.preview.Preview;
 import com.google.zxing.Result;
@@ -326,7 +325,7 @@ public class DetectionThread extends Thread {
 		
 			Log.i("appname", "App name = " + appName);
 			// TODO [Ricardo] Fake
-			MarkerObject markerObj = markerObjectMap.get(appName);
+			MarkerObject markerObj = markerObjectMap.get("0");
 	
 			// TODO Fazer a validacao na hydra
 			
