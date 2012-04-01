@@ -65,15 +65,17 @@ public abstract class MarkerDetectionSetup extends Setup {
 		cameraSize = parameters.getPreviewSize(); 
 		
 		
+		
 		//TODO [Ricardo] Aqui eu acho que dá para inserir o auto focus
 
 		// Check the OS version to determine what kind of preview to use.
-		if (apiLevel < 5) {
-			weight = preSdkV5(height);
-		} else {
-			weight = postSdkV5(parameters, weight, height);
-		}
-		optimalLayoutParams = new LayoutParams(weight, height);
+//		if (apiLevel < 5) {
+//			weight = preSdkV5(height);
+//		} else {
+//			weight = postSdkV5(parameters, weight, height);
+//		}
+//		optimalLayoutParams = new LayoutParams(weight, height);
+		optimalLayoutParams = new LayoutParams(cameraSize.width, cameraSize.height);
 
 		mCamera.release();
 		tryToLoadCameraSettings();
@@ -89,8 +91,7 @@ public abstract class MarkerDetectionSetup extends Setup {
 					cameraSize);
 			Log.d("AR", "API Level: " + apiLevel + " Created Preview Pre2.1");
 		} else {
-			cameraPreview = new PreviewPost2_0(myTargetActivity, myThread,
-					cameraSize);
+			cameraPreview = new PreviewPost2_0(myTargetActivity, myThread,cameraSize);
 			Log.d("AR", "API Level: " + apiLevel + " Created Preview Post2.1");
 		}
 

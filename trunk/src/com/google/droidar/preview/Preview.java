@@ -2,6 +2,7 @@ package com.google.droidar.preview;
 
 import java.io.IOException;
 
+import br.unb.MyAutoFocus;
 import br.unb.unbiquitous.marker.detection.DetectionThread;
 
 
@@ -35,6 +36,7 @@ public abstract class Preview extends SurfaceView implements
 		mHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
 		myThread = (DetectionThread) thread;
 		myThread.setPreview(this);
+		
 	}
 
 	public Preview(Context context) {
@@ -53,6 +55,7 @@ public abstract class Preview extends SurfaceView implements
 		mCamera = Camera.open();
 		try {
 			mCamera.setPreviewDisplay(holder);
+//			mCamera.autoFocus(new MyAutoFocus());
 		} catch (IOException exception) {
 			mCamera.release();
 			mCamera = null;

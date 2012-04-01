@@ -1,5 +1,11 @@
 package com.google.droidar.gl;
 
+import android.content.Context;
+import android.opengl.GLSurfaceView;
+import android.util.AttributeSet;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
+
 import com.google.droidar.actions.Action;
 import com.google.droidar.commands.Command;
 import com.google.droidar.gui.CustomGestureListener;
@@ -7,12 +13,6 @@ import com.google.droidar.listeners.EventListener;
 import com.google.droidar.system.EventManager;
 import com.google.droidar.system.TouchEventInterface;
 import com.google.droidar.util.Log;
-
-import android.content.Context;
-import android.opengl.GLSurfaceView;
-import android.util.AttributeSet;
-import android.view.GestureDetector;
-import android.view.MotionEvent;
 
 
 /**
@@ -83,6 +83,7 @@ public class CustomGLSurfaceView extends GLSurfaceView implements
 				onTouchMoveAction.onReleaseTouchMove();
 			}
 		}
+		Log.i("TouchEvent","x = " + event.getX() + " y = " + event.getY());
 		return true;
 	}
 

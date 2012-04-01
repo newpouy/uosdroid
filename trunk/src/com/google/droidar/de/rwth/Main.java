@@ -1,5 +1,7 @@
 package com.google.droidar.de.rwth;
 
+import br.unb.unbiquitous.marker.detection.MultiMarkerSetup;
+
 import com.google.droidar.system.ArActivity;
 import com.google.droidar.system.Setup;
 
