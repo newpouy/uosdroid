@@ -12,7 +12,7 @@ import android.hardware.Camera.Size;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.ViewGroup.LayoutParams;
-import br.unb.QRCodeDecoder;
+import br.unb.DecoderObject;
 
 import com.google.droidar.preview.Preview;
 import com.google.droidar.preview.PreviewPost2_0;
@@ -44,9 +44,8 @@ public abstract class MarkerDetectionSetup extends Setup {
 	private Camera.Size cameraSize;
 	private LayoutParams optimalLayoutParams;
 	
-	private QRCodeDecoder qrCodeDecoder;
 	public  Activity activity;
-	
+	private DecoderObject decoderObject;
 	
 //	private AutoFocusCallback autoFocusCallback;
 	
@@ -84,7 +83,7 @@ public abstract class MarkerDetectionSetup extends Setup {
 		nativeLib.initThread(constants, calib.cameraMatrix,
 				calib.distortionMatrix);
 
-		myThread = new DetectionThread(nativeLib, myGLSurfaceView,markerObjectMap, getUnrecognizedMarkerListener(), this.qrCodeDecoder);
+		myThread = new DetectionThread(nativeLib, myGLSurfaceView,markerObjectMap, getUnrecognizedMarkerListener(), this.decoderObject);
 		if (apiLevel <= 5) {
 			cameraPreview = new PreviewPre2_0(myTargetActivity, myThread,
 					cameraSize);
@@ -108,6 +107,7 @@ public abstract class MarkerDetectionSetup extends Setup {
 	public void addGLSurfaceOverlay() {
 		myTargetActivity.addContentView(myGLSurfaceView, optimalLayoutParams);
 	}
+	
 
 	private int preSdkV5(int h) {
 		int w;
@@ -216,13 +216,12 @@ public abstract class MarkerDetectionSetup extends Setup {
 	}
 
 	
-	
-	public QRCodeDecoder getQrCodeDecoder() {
-		return qrCodeDecoder;
+	public DecoderObject getDecoderObject() {
+		return decoderObject;
 	}
 
-	public void setQrCodeDecoder(QRCodeDecoder qrCodeDecoder) {
-		this.qrCodeDecoder = qrCodeDecoder;
+	public void setDecoderObject(DecoderObject decoderObject) {
+		this.decoderObject = decoderObject;
 	}
 
 	public Activity getActivity() {

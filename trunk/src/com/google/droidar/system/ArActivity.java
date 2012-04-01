@@ -1,22 +1,32 @@
 package com.google.droidar.system;
 
-import com.google.droidar.util.Log;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import br.unb.DecoderObject;
+import br.unb.unbiquitous.marker.detection.MarkerDetectionSetup;
 
-public class ArActivity extends Activity {
+import com.google.droidar.util.Log;
+
+public class ArActivity extends Activity implements SensorEventListener{
 
 	private static final String LOG_TAG = "ArActivity";
 
 	private static Setup staticSetupHolder;
 
 	private Setup mySetupToUse;
+	private SensorManager sensorManager;
+
+	private Sensor orientationSensor;
+	private DecoderObject decoderObject;
 
 	/**
 	 * Called when the activity is first created.
@@ -30,6 +40,9 @@ public class ArActivity extends Activity {
 			mySetupToUse = staticSetupHolder;
 			staticSetupHolder = null;
 			runSetup();
+			sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
+			orientationSensor = sensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION);
+			decoderObject = ((MarkerDetectionSetup) mySetupToUse).getDecoderObject();
 		} else {
 			Log.e(LOG_TAG, "There was no Setup specified to use. "
 					+ "Please use ArActivity.show(..) when you "
@@ -40,8 +53,7 @@ public class ArActivity extends Activity {
 
 	public static void startWithSetup(Activity currentActivity, Setup setupToUse) {
 		ArActivity.staticSetupHolder = setupToUse;
-		currentActivity.startActivity(new Intent(currentActivity,
-				ArActivity.class));
+		currentActivity.startActivity(new Intent(currentActivity,ArActivity.class));
 	}
 
 	private void runSetup() {
@@ -59,6 +71,9 @@ public class ArActivity extends Activity {
 	protected void onResume() {
 		if (mySetupToUse != null)
 			mySetupToUse.onResume(this);
+		
+		sensorManager.registerListener(this, orientationSensor,	SensorManager.SENSOR_DELAY_NORMAL);
+		
 		super.onResume();
 	}
 
@@ -87,6 +102,8 @@ public class ArActivity extends Activity {
 	protected void onPause() {
 		if (mySetupToUse != null)
 			mySetupToUse.onPause(this);
+		
+		sensorManager.unregisterListener(this);
 		super.onPause();
 	}
 
@@ -121,5 +138,30 @@ public class ArActivity extends Activity {
 			Log.d(LOG_TAG, "orientation changed to portrait");
 		super.onConfigurationChanged(newConfig);
 	}
+	
+	@Override
+	public void onSensorChanged(SensorEvent event) {
+		float[] values = event.values.clone();
+         float z = (float) Math.toDegrees(values[0]);
+         
+         int orientation = 99;
+         
+         if ( (z > 16000 && z < 21000) || (z > 0 && z< 1000)){
+        	 orientation = 1;
+         }else if (z >= 1000 && z < 7000){
+        	 orientation = 0;
+         }else if(z >= 7000 && z < 11000){
+        	 orientation = 3;
+         }else{
+        	 orientation = 2;
+         }
+         
+//         Log.e("direction", "orientation = "+orientation);
+         decoderObject.setOrientation(Integer.valueOf(orientation));
+         Log.e("orientation", " orientation z = " + z);
+	}
+
+	@Override
+	public void onAccuracyChanged(Sensor sensor, int accuracy) {}
 
 }

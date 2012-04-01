@@ -10,6 +10,7 @@
         android:icon="@drawable/uos_logo"
         android:label="@string/app_name" >
         <activity
+            android:screenOrientation="unspecified"  android:configChanges="orientation|keyboardHidden"
             android:name=".TesteDroidARActivity"
             android:label="@string/app_name" >
             <intent-filter>
@@ -23,7 +24,7 @@
 		
 
 		<activity android:label="@string/app_name"
-			android:screenOrientation="landscape" android:configChanges="keyboardHidden|orientation"
+			android:screenOrientation="landscape" android:configChanges="keyboardHidden"
 			android:name="com.google.droidar.system.ArActivity">
 		</activity>
 
