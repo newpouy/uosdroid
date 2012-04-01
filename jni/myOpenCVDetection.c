@@ -120,8 +120,7 @@ void loadPixels(char* pixels, IplImage* tgray, int width, int height) {
 
 JNIEXPORT jint JNICALL Java_nativeLib_NativeLib_detectMarkers(
 		JNIEnv * env, jobject obj, jbyteArray frame, jfloatArray returnInfo,
-		jint height, jint width, jboolean calibrateNext) {
-
+		jint height, jint width, jboolean calibrateNext, jint screenOrientation) {
 
 
 	//New cameraparameters are set, use these for the next frame.
@@ -148,9 +147,6 @@ JNIEXPORT jint JNICALL Java_nativeLib_NativeLib_detectMarkers(
 	int x, y = 0;
 	int i, N = 9;
 	float min, max, r, s, t;
-
-	sprintf(tmp,"entrou na funcao de detecção.");
-	LOGD(tmp);
 
 	/*Will store all the rotation matrices and the number of them
 	 *in the following order:
@@ -491,8 +487,6 @@ JNIEXPORT jint JNICALL Java_nativeLib_NativeLib_detectMarkers(
 
 				if (borderCorrect) {
 
-					sprintf(tmp, "borderCorret == true");
-					LOGI(tmp);
 
 					float orientationTestPntsX[4] = { -0.5, 0.5, 0.5, -0.5 };
 					float orientationTestPntsY[4] = { 0.5, 0.5, -0.5, -0.5 };
@@ -501,56 +495,50 @@ JNIEXPORT jint JNICALL Java_nativeLib_NativeLib_detectMarkers(
 					//The marker code.
 					int code = -1;
 
-//					for (a = 0; a < 4; a++) {
-//						ipx = rotMat[0] * orientationTestPntsX[a] + rotMat[1]
-//								* orientationTestPntsY[a]
-//						/*+ rotMat[2] * 0.0 */+ tv[0];
-//						ipy = rotMat[3] * orientationTestPntsX[a] + rotMat[4]
-//								* orientationTestPntsY[a]
-//						/*+ rotMat[5] * 0.0 */+ tv[1];
-//						ipz = rotMat[6] * orientationTestPntsX[a] + rotMat[7]
-//								* orientationTestPntsY[a]
-//						/*+ rotMat[8] * 0.0 */+ tv[2];
-//
-//						imageX = ((kMat[0] * ipx) / ipz) + kMat[2];
-//						imageY = ((kMat[4] * ipy) / ipz) + kMat[5];
-//						pointer = imageX + imageY * w;
-//						currentSample = 0;
-//						currentSample += imageData[pointer];
-//						currentSample += imageData[1 + pointer];
-//						currentSample += imageData[w + pointer];
-//						currentSample += imageData[w + 1 + pointer];
-//
-//						sprintf(tmp, "currentSample = %d, thresholdd = %d, thresholdd * 4 = %d ", currentSample, thresholdd, (thresholdd * 4));
-//						LOGI(tmp);
-//
-//						if (currentSample < thresholdd * 4) {
-//							currentMarkerThresholdBlack += currentSample;
-//							blackCounter += 4;
-//
-//							sprintf(tmp, "Entrou no if [a = %d, currentSample = %d, thresholdd = %d ", a, currentSample, thresholdd);
-//							LOGI(tmp);
-//
-//							if (orientation == -1) {
-//								orientation = a;
-//							} else {
-//								//orientation pixels detected wrong.
-//								//marker is not correct.
-//								orientation = -2;
-//								a = 4;
-//
-//							}
-//						} else {
-//							currentMarkerThresholdWhite += currentSample;
-//							whiteCounter += 4;
-//						}
-//					}
+					for (a = 0; a < 4; a++) {
+						ipx = rotMat[0] * orientationTestPntsX[a] + rotMat[1]
+								* orientationTestPntsY[a]
+						/*+ rotMat[2] * 0.0 */+ tv[0];
+						ipy = rotMat[3] * orientationTestPntsX[a] + rotMat[4]
+								* orientationTestPntsY[a]
+						/*+ rotMat[5] * 0.0 */+ tv[1];
+						ipz = rotMat[6] * orientationTestPntsX[a] + rotMat[7]
+								* orientationTestPntsY[a]
+						/*+ rotMat[8] * 0.0 */+ tv[2];
+
+						imageX = ((kMat[0] * ipx) / ipz) + kMat[2];
+						imageY = ((kMat[4] * ipy) / ipz) + kMat[5];
+						pointer = imageX + imageY * w;
+						currentSample = 0;
+						currentSample += imageData[pointer];
+						currentSample += imageData[1 + pointer];
+						currentSample += imageData[w + pointer];
+						currentSample += imageData[w + 1 + pointer];
+
+						if (currentSample < thresholdd * 4) {
+							currentMarkerThresholdBlack += currentSample;
+							blackCounter += 4;
+							if (orientation == -1) {
+								orientation = a;
+							} else {
+								//orientation pixels detected wrong.
+								//marker is not correct.
+								orientation = -2;
+								a = 4;
+							}
+						} else {
+							currentMarkerThresholdWhite += currentSample;
+							whiteCounter += 4;
+						}
+					}
 
 					// TODO [Ricardo] gambira
-					orientation = 2;
-
-					sprintf(tmp, "orientation = %d ", orientation);
+					orientation = screenOrientation;
+					sprintf(tmp, "borderCorret and orientation = %d", screenOrientation);
 					LOGI(tmp);
+
+//					sprintf(tmp, "orientation = %d, screen = %d", orientation, screenOrientation);
+//					LOGI(tmp);
 
 					if (orientation >= 0) {
 
@@ -628,9 +616,9 @@ JNIEXPORT jint JNICALL Java_nativeLib_NativeLib_detectMarkers(
 							}
 						} */
 //#ifdef LOG_OUTPUT_ON
-						sprintf(tmp, "Detected marker, id: %d", code);
-						printf("Detected marker, id: %d", code);
-						LOGI(tmp);
+//						sprintf(tmp, "Detected marker, id: %d", code);
+//						printf("Detected marker, id: %d", code);
+//						LOGI(tmp);
 //#endif
 						//Only now a marker has been detected and the info can be
 						//added to the return list.
@@ -691,9 +679,6 @@ JNIEXPORT jint JNICALL Java_nativeLib_NativeLib_detectMarkers(
 							frameCounter--;
 						}
 
-						sprintf(tmp, "calculate the rotation matrix. Invert some values since");
-						LOGI(tmp);
-
 						//calculate the rotation matrix. Invert some values since
 						//it is needed for OpenGL.
 						rv[1] = -1.0f * rv[1];
@@ -729,9 +714,6 @@ JNIEXPORT jint JNICALL Java_nativeLib_NativeLib_detectMarkers(
 
 						orientationChange=0;
 
-						sprintf(tmp, "Escrevendo a saida...");
-						LOGI(tmp);
-
 						//write the rotation matrix into the right part of the list.
 						returnVals[returnValPnt++] = rotMat[0];
 						returnVals[returnValPnt++] = rotMat[3];
@@ -755,12 +737,6 @@ JNIEXPORT jint JNICALL Java_nativeLib_NativeLib_detectMarkers(
 
 						//write the marker number.
 						returnVals[returnValPnt++] = code;
-
-
-						sprintf(tmp,"returnVals[0] = %f, "
-									"returnVals[18] = %f ",	returnVals[0],
-															returnVals[18]);
-						LOGI(tmp);
 
 					} else {
 						// failed.
@@ -786,8 +762,7 @@ JNIEXPORT jint JNICALL Java_nativeLib_NativeLib_detectMarkers(
 	//If one or more markers were detected use the marker threshold.
 	if (counter) {
 
-		sprintf(tmp, "encontrou %d marcadores", counter);
-		LOGI(tmp);
+		// Verificar se encontrou mais de um marcador
 
 		useMarkerthreshold = 0;
 

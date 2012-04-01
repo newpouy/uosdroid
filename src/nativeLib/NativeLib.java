@@ -13,7 +13,7 @@ public class NativeLib {
 	 * @return The number of calibration frames left until the calibration can be started.
 	 */
 	public native int detectMarkers(byte[] frame, float[] mat, int height,
-			int width, boolean calibrateNext);
+			int width, boolean calibrateNext, int screenOrientation);
 
 	/**
 	 * Start the calibration.

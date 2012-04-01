@@ -16,7 +16,7 @@ public class RgbMotionDetection implements IMotionDetection {
 	private static final int mPixelThreshold = 50; //Difference in pixel (RGB)
 	private static final int mThreshold = 10000; //Number of different pixels (RGB)
 	
-	private static final int MAX_PERCENT_DIFFERENCE = 15;
+	private static final int MAX_PERCENT_DIFFERENCE = 30;
 
 	private static int[] mPrevious = null;
 	private static int mPreviousWidth = 0;
@@ -69,7 +69,7 @@ public class RgbMotionDetection implements IMotionDetection {
 			Log.d(TAG, output);
 		}
 
-		return different && (percent > MAX_PERCENT_DIFFERENCE);
+		return different && (percent < MAX_PERCENT_DIFFERENCE);
 	}
 
 	/**

@@ -1,6 +1,5 @@
 package br.unb.unbiquitous.marker.detection;
 
-import java.io.InputStream;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
@@ -10,7 +9,7 @@ import android.opengl.GLSurfaceView;
 import android.os.SystemClock;
 import android.util.Log;
 import br.unb.ApplicationsFake;
-import br.unb.QRCodeDecoder;
+import br.unb.DecoderObject;
 
 import com.google.droidar.gl.MarkerObject;
 import com.google.droidar.preview.Preview;
@@ -37,49 +36,35 @@ public class DetectionThread extends Thread {
 	private HashMap<Integer, MarkerObject> markerObjectMap;
 	private UnrecognizedMarkerListener unrecognizedMarkerListener;
 	
-	private Map<String, ApplicationsFake> mapa;
-	
-	private byte[] frameAnterior;
-	private QRCodeDecoder qrCodeDecoder;
+	private DecoderObject decoderObject;
 	private IMotionDetection iMotionDetection;
 	private boolean flagControleMovimento = false;
 	private String lastAppName;
 	int tentativas = 0;
 	
-	private static final int MAX_TENTATIVAS = 5;
+	
+	private static final int MAX_TENTATIVAS = 50;
 	
 	private int[] rgb;
 
 	public DetectionThread(NativeLib nativeLib, GLSurfaceView openglView,
 			HashMap<Integer, MarkerObject> markerObjectMap,
 			UnrecognizedMarkerListener unrecognizedMarkerListener,
-			QRCodeDecoder qrCodeDecoder) {
+			DecoderObject decoderObject) {
 		this.openglView = openglView;
 		this.markerObjectMap = markerObjectMap;
 		this.nativelib = nativeLib;
 		this.unrecognizedMarkerListener = unrecognizedMarkerListener;
-		this.qrCodeDecoder = qrCodeDecoder;
+		
+		this.decoderObject = decoderObject;
 
 		// TODO make size dynamically after the init function.
 		mat = new float[1 + 18 * 5];
 		
-		this.iMotionDetection = new RgbMotionDetection();
-		
-		
+//		this.iMotionDetection = new RgbMotionDetection();
 		// application will exit even if this thread remains active.
 		setDaemon(true);
-		
-		
 		// TODO [Ricardo] arrumar isso aqui
-		
-		ApplicationsFake applicationsFake = new ApplicationsFake();
-		applicationsFake.setId(0);
-		applicationsFake.setNome("TesteApp");
-
-		mapa = new HashMap<String, ApplicationsFake>();
-		mapa.put(applicationsFake.getNome(), applicationsFake);
-		
-		
 	}
 
 	@Override
@@ -110,54 +95,74 @@ public class DetectionThread extends Thread {
 					}
 				}
 				
+				
+				isMarkerFound();
+				
 				// TODO [Ricardo] arrumar o esquema da porcentagem para calibrar.
 				
 				// Se entrar aqui é porque um marcador foi encontrado.
-				if (flagControleMovimento && isMotionDetected()){
-					
-					
-					// Ate no máximo o número de tentativas
-					if (tentativas > MAX_TENTATIVAS){
-						tentativas = 0;
-						flagControleMovimento = false;
-					}else{
-					
-						// Achou um marcador, mas não conseguiu decoficar.
-						if(lastAppName == null){
-							
-							// Tenta decodificar o qrcode
-							if(isQRCodeFound()){
-								this.lastAppName = qrCodeDecoder.getTextDecoded();
-								controlarRecursosRealidadeAumentada();
-							}
-						}else{
-						
-							// Achou um marcador e tem conseguiu decodificar o qrcode.
-							// Agora precisa achar as posicoes do marcador para realinhar
-							// o objeto virtual.
-							if(isMarkerFound()){
-								controlarRecursosRealidadeAumentada();
-							}
-						}
-					}
-					
-				}else{
-					
-					tentativas++;
-					this.lastAppName = null;
-					
-					// primeiro caso
-					if (isMarkerFound()){
-						// Tenta decodificar o qrcode
-						if(isQRCodeFound()){
-							this.lastAppName = qrCodeDecoder.getTextDecoded();
-							controlarRecursosRealidadeAumentada();
-						}
-
-						flagControleMovimento = true;
-					
-					}
-				}
+//				if (flagControleMovimento ){// && isMotionDetected()){
+//					
+//					Log.i("DetectionThread", "Um marcador foi encontrado e houve uma deteccao de movimento.");
+//					
+//					// Ate no máximo o número de tentativas
+//					if (tentativas > MAX_TENTATIVAS){
+//						
+//						Log.i("DetectionThread", "Atingido as tentativas máximas");
+//						tentativas = 0;
+//						flagControleMovimento = false;
+//					}else{
+//
+//						tentativas++;
+//					
+//						// Achou um marcador, mas não conseguiu decoficar.
+//						if(lastAppName == null){
+//							
+//							Log.i("DetectionThread", "Achou um marcador, mas nao conseguiu decodificar.");
+//							
+//							// Tenta decodificar o qrcode
+//							if(isQRCodeFound()){
+//								
+//								Log.i("DetectionThread", "conseguiu decodificar o marcador.");
+//								this.lastAppName = decoderObject.getQrCodeDecoder().getTextDecoded();
+//								controlarRecursosRealidadeAumentada();
+//							}
+//						}else{
+//						
+//							
+//							// Achou um marcador e conseguiu decodificar o qrcode.
+//							// Agora precisa achar as posicoes do marcador para realinhar
+//							// o objeto virtual.
+//							if(isMarkerFound()){
+//								
+//								Log.i("DetectionThread", "Achou um marcador.");
+//								
+//								controlarRecursosRealidadeAumentada();
+//							}
+//						}
+//					}
+//					
+//				}else{
+//					
+//					Log.i("DetectionThread", "Não foi detectado movimento.");
+//					
+//					tentativas++;
+//					this.lastAppName = null;
+//					
+//					// primeiro caso
+//					if (isMarkerFound()){
+//						Log.i("DetectionThread","Marcador encontrado.");
+//						// Tenta decodificar o qrcode
+//						if(isQRCodeFound()){
+//							Log.i("DetectionThread","Marcador decodificado com sucesso.");
+//							this.lastAppName = decoderObject.getQrCodeDecoder().getTextDecoded();
+//							controlarRecursosRealidadeAumentada();
+//						}
+//
+//						flagControleMovimento = true;
+//					
+//					}
+//				}
 				
 				
 				/* ******************************************************** 
@@ -248,9 +253,6 @@ public class DetectionThread extends Thread {
 				*/
 				
 				
-				frameAnterior = frame;
-				
-				
 				busy = false;
 				preview.reAddCallbackBuffer(frame);
 			}
@@ -265,7 +267,7 @@ public class DetectionThread extends Thread {
 		// Pass the frame to the native code and find the
 		// marker information.
 		// The false at the end is a remainder of the calibration.
-		nativelib.detectMarkers(frame, mat, frameHeight, frameWidth,false);
+		nativelib.detectMarkers(frame, mat, frameHeight, frameWidth,false, decoderObject.getOrientation());
 		
 			
 		// Needs to be reworked to. Either just deleted, or changed into
@@ -286,33 +288,54 @@ public class DetectionThread extends Thread {
 	}
 	
 	private boolean isQRCodeFound(){
-		//TODO implementar
+
 		// Decodificando o QRCode
-		
+
 		Calendar inicio = Calendar.getInstance();
 		
-		// -------------------------------------------------------------
-		// TODO tirar os readers, isso pode estar fazendo a decodificacao demorar
-		Result result = qrCodeDecoder.decode(frame, frameWidth, frameHeight);
+		Result result = decoderObject.getQrCodeDecoder().decode(frame, frameWidth, frameHeight);
 		
 		Calendar fim = Calendar.getInstance();
-		
 		
 		long tempoTotalDecodificacao = fim.getTimeInMillis() - inicio.getTimeInMillis();
 		
 		Log.i("DetectionThread", "Tempo de decodificação: " + tempoTotalDecodificacao);
 		
-		if(qrCodeDecoder.getTextDecoded() != null){
-			Log.i("DetectionThread", "Código decodificado = "+ qrCodeDecoder.getTextDecoded());
+		if(decoderObject.getQrCodeDecoder().getTextDecoded() != null){
+			Log.i("DetectionThread", "Código decodificado = "+ decoderObject.getQrCodeDecoder().getTextDecoded());
 		}else{
 			Log.i("DetectionThread", "Não foi possível decodificar o marcador.");
 		}
 		
-		
-		return qrCodeDecoder.getTextDecoded() != null;
+		return decoderObject.getQrCodeDecoder().getTextDecoded() != null;
 	}
 	
 	private void controlarRecursosRealidadeAumentada(){
+		
+		MarkerObject markerObj = markerObjectMap.get(5);
+
+		Log.i("PosicaoMarcador", "Posicao inicial = "+ 1 + ", final = "+ 16);
+		
+		if (markerObj != null) {
+			// Marcador não foi encontrado
+			markerObj.OnMarkerPositionRecognized(mat, 1,16);
+		} else {
+			
+			// Marcador foi detectado
+			if (unrecognizedMarkerListener != null) {
+				
+				
+				unrecognizedMarkerListener.onUnrecognizedMarkerDetected(
+																			(int) mat[5], 
+																			mat, 
+																			1,
+																			16, 
+																			(int) mat[17]
+												          				);
+			}
+		}
+		
+		 
 		
 	}
 

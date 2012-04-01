@@ -13,7 +13,7 @@ extern "C" {
  * Signature: ([B[FIIZ)I
  */
 JNIEXPORT jint JNICALL Java_nativeLib_NativeLib_detectMarkers
-  (JNIEnv *, jobject, jbyteArray, jfloatArray, jint, jint, jboolean);
+  (JNIEnv *, jobject, jbyteArray, jfloatArray, jint, jint, jboolean, jint);
 
 /*
  * Class:     nativeLib_NativeLib
