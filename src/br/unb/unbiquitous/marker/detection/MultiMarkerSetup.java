@@ -33,7 +33,6 @@ public class MultiMarkerSetup extends MarkerDetectionSetup {
 	private MeshComponent mesh1;
 	private MeshComponent mesh2;
 	private MeuObjetoVirtual meuObjetoVirtual;
-	private MarkerObjectMap markerObjectMap;
 	
 	@Override
 	public void _a_initFieldsIfNecessary() {
@@ -73,7 +72,7 @@ public class MultiMarkerSetup extends MarkerDetectionSetup {
 
 	public void addMarkerObject(String appName){
 		meuObjetoVirtual = new MeuObjetoVirtual(appName, camera, world, this.activity);
-		markerObjectMap.put(meuObjetoVirtual);
+		this.markerObjectMap.put(meuObjetoVirtual);
 	}
 	
 	@Override

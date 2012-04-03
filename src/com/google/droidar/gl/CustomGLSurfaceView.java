@@ -83,7 +83,7 @@ public class CustomGLSurfaceView extends GLSurfaceView implements
 				onTouchMoveAction.onReleaseTouchMove();
 			}
 		}
-		Log.i("TouchEvent","x = " + event.getX() + " y = " + event.getY());
+//		Log.i("TouchEvent","x = " + event.getX() + " y = " + event.getY());
 		return true;
 	}
 

@@ -138,7 +138,7 @@ public class DetectionThread extends Thread {
 							// Achou um marcador e conseguiu decodificar o qrcode.
 							// Agora precisa achar as posicoes do marcador para realinhar
 							// o objeto virtual.
-							if(isMarkerFound()){
+							if(decoderObject.getOrientation() != 0 && isMarkerFound()){
 								
 								Log.i("DetectionThread", "Achou um marcador.");
 								
@@ -325,7 +325,7 @@ public class DetectionThread extends Thread {
 		
 			Log.i("appname", "App name = " + appName);
 			// TODO [Ricardo] Fake
-			MarkerObject markerObj = markerObjectMap.get("0");
+			MarkerObject markerObj = markerObjectMap.get(appName);
 	
 			// TODO Fazer a validacao na hydra
 			
