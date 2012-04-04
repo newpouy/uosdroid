@@ -7,11 +7,14 @@ import android.widget.TextView;
 import br.unb.unbiquitous.marker.command.VirtualObjectCommand;
 
 import com.google.droidar.de.rwth.BasicMarker;
+import com.google.droidar.gl.Color;
 import com.google.droidar.gl.GLCamera;
 import com.google.droidar.gl.GLFactory;
 import com.google.droidar.gl.animations.AnimationFaceToCamera;
 import com.google.droidar.gl.scenegraph.MeshComponent;
+import com.google.droidar.gl.scenegraph.Shape;
 import com.google.droidar.util.IO;
+import com.google.droidar.util.Log;
 import com.google.droidar.util.Vec;
 import com.google.droidar.worldData.Obj;
 import com.google.droidar.worldData.World;
@@ -23,10 +26,11 @@ public class MeuObjetoVirtual extends BasicMarker {
 	private Activity activity;
 	private GLCamera glCamera;
 	private String id;
-	private MeshComponent meshComponent;
-	private Vec positionVec;
+	private MeshComponent textMeshComponent;
+	private MeshComponent shapeMeshComponent;
 	private VirtualObjectCommand virtualObjectCommand;
-
+	private AnimationFaceToCamera animationFaceToCamera;
+	private MeshComponent coordinateSystem;
 	boolean firstTime = true;
 
 	public MeuObjetoVirtual(String id, GLCamera camera, World world,
@@ -38,6 +42,8 @@ public class MeuObjetoVirtual extends BasicMarker {
 		this.id = id;
 		
 		virtualObjectCommand = new VirtualObjectCommand();
+		animationFaceToCamera = new AnimationFaceToCamera(glCamera);
+		coordinateSystem = GLFactory.getInstance().newCoordinateSystem();
 		
 	}
 
@@ -50,48 +56,68 @@ public class MeuObjetoVirtual extends BasicMarker {
 		
 		if(firstTime){
 			
-//			meshComponent.addChild(GLFactory.getInstance().newCoordinateSystem());
-//			meshComponent.addChild(GLFactory.getInstance().newCube());
+			// Criando o objeto virtual
+			criar();
 
-//			objetoTexto = GLFactory.getInstance().newTextObject(this.id,positionVec, activity, glCamera);
-			objetoTexto = this.desenhar(this.id,positionVec, activity, glCamera);
-//			meshComponent.addChild(objetoTexto);
+			objetoTexto = this.desenharTexto(this.id,positionVec, activity, glCamera);
 			
+			world.add(shapeMeshComponent);
 			world.add(objetoTexto);
 			
-			// Criando o objeto virtual
-
 			// Setando os comandos quando o objeto virtual for clicado.
-			meshComponent.setOnClickCommand(virtualObjectCommand);
-			
+			textMeshComponent.setOnClickCommand(virtualObjectCommand);
+			shapeMeshComponent.setOnClickCommand(virtualObjectCommand);
 			firstTime = false;
 		}
 		
-		this.positionVec = positionVec;
-		meshComponent.setPosition(positionVec);
-//		objetoTexto.setPosition(positionVec);
+		Vec vec = positionVec.copy();
+//		vec.y = vec.y - 3;
+		
+		shapeMeshComponent.setPosition(vec);
+		textMeshComponent.setPosition(positionVec);
 	}
 
 	@Override
-	public void setObjRotation(float[] rotMatrix) {
-		meshComponent.setRotationMatrix(rotMatrix);
-	}
+	public void setObjRotation(float[] rotMatrix) {	}
 	
-	private Obj desenhar(String textToDisplay, Vec textPosition, Context context, GLCamera glCamera){
-		float textSize = 10;
+	private Obj desenharTexto(String textToDisplay, Vec textPosition, Context context, GLCamera glCamera){
+		float textSize = 1;
 
 		TextView v = new TextView(context);
 		v.setTypeface(null, Typeface.BOLD);
-		// Set textcolor to black:
-		// v.setTextColor(new Color(0, 0, 0, 1).toIntARGB());
+		v.setTextColor(Color.white().toIntRGB());
 		v.setText(textToDisplay);
-
+		
 		Obj o = new Obj();
-		this.meshComponent = GLFactory.getInstance().newTexturedSquare("textBitmap"	+ textToDisplay, IO.loadBitmapFromView(v), textSize);
-		this.meshComponent.setPosition(textPosition);
-//		this.meshComponent.addAnimation(new AnimationFaceToCamera(glCamera));
-		o.setComp(this.meshComponent);
+	    textMeshComponent = GLFactory.getInstance().newTexturedSquare("textBitmap"	+ textToDisplay, IO.loadBitmapFromView(v), textSize);
+		textMeshComponent.setPosition(textPosition);
+		textMeshComponent.addAnimation(animationFaceToCamera);
+		shapeMeshComponent.addChild(coordinateSystem);
+		o.setComp(this.textMeshComponent);
 		return o;
+	}
+	
+	public void criar(){
+		shapeMeshComponent = new Shape();
+		shapeMeshComponent.addChild(coordinateSystem);
+		shapeMeshComponent.addChild(this.desenharQuadrado(Color.blackTransparent()));
+		shapeMeshComponent.addAnimation(animationFaceToCamera);
+	}
+	
+	public Shape desenharQuadrado(Color canBeNull) {
+		Shape shape = new Shape(canBeNull);
+		shape.add(new Vec(-2.25f, 1.75f, 0));
+		shape.add(new Vec(-2.25f, -1.75f, 0));
+		shape.add(new Vec(2.25f, -1.75f, 0));
+
+		shape.add(new Vec(2.25f, -1.75f, 0));
+		shape.add(new Vec(2.25f, 1.75f, 0));
+		shape.add(new Vec(-2.25f, 1.75f, 0));
+		
+		shape.setPosition(new Vec(0, -1f, -0.5f));
+		shape.setRotation(new Vec(90, 0, 0));
+
+		return shape;
 	}
 
 	public Obj getObjetoTexto() {

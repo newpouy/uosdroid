@@ -41,7 +41,7 @@ public class DetectionThread extends Thread {
 	private MarkerDetectionSetup setup;
 	
 	
-	private static final int MAX_TENTATIVAS = 100;
+	private static final int MAX_TENTATIVAS = 10000;
 	
 	private int[] rgb;
 
@@ -187,77 +187,7 @@ public class DetectionThread extends Thread {
 					posicaoFinalMarcador = posicaoInicialMarcador + 15;
 					rotacaoMarcador = posicaoFinalMarcador + 1;
 					idMarcador = rotacaoMarcador + 1;
-					
-					// FIXME Importante
-					// Por enquanto o idMarcador = 0, definido no myOpenDVDetection.c
-					// A ideia aqui � decodificar o QRCode atribuir a uma string, posteriormente
-					// buscar esse nome em um mapa contendo o nome de todas aplica��es que est�o
-					// presentes no ambiente.
-					
-					
-					
-					
-					// -------------------------------------------------------------
-					
-					
-//					String textoDecodificado = "TesteApp";
-//					
-//					mapa.get(textoDecodificado);
-					
-					
-//					MarkerObject markerObj = markerObjectMap.get(5);
-//
-//					Log.i("PosicaoMarcador", "Posicao inicial = "+ posicaoInicialMarcador + ", final = "+ posicaoFinalMarcador);
-//					
-//					if (markerObj != null) {
-//						// Marcador não foi encontrado
-//						markerObj.OnMarkerPositionRecognized(mat, posicaoInicialMarcador,posicaoFinalMarcador);
-//					} else {
-//						
-//						// Marcador foi detectado
-//						if (unrecognizedMarkerListener != null) {
-//							
-//							
-//							unrecognizedMarkerListener.onUnrecognizedMarkerDetected(
-//																						(int) mat[idMarcador], 
-//																						mat, 
-//																						posicaoInicialMarcador,
-//																						posicaoFinalMarcador, 
-//																						(int) mat[rotacaoMarcador]
-//															          				);
-//						}
-//					}
-					
-					 
-				}
-				
-				/*
-				for (int i = 0; i < (int) mat[0]; i++) {
-					startIdx = (1 + i * 18);
-					endIdx = startIdx + 15;
-					rotIdx = endIdx + 1;
-					idIdx = rotIdx + 1;
-					
-					// Log.d(LOG_TAG, "StartIdx");
-
-					MarkerObject markerObj = markerObjectMap
-							.get((int) mat[idIdx]);
-
-					if (markerObj != null) {
-						markerObj.OnMarkerPositionRecognized(mat, startIdx,
-								endIdx);
-					} else {
-						if (unrecognizedMarkerListener != null) {
-							unrecognizedMarkerListener
-									.onUnrecognizedMarkerDetected(
-											(int) mat[idIdx], mat, startIdx,
-											endIdx, (int) mat[rotIdx]);
-						}
-					}
-				}
-				*/
-				
-				
+				}	
 				busy = false;
 				preview.reAddCallbackBuffer(frame);
 			}
@@ -322,7 +252,8 @@ public class DetectionThread extends Thread {
 		
 		if ( isAppNameValid ){
 			
-		
+		    appName = "hydraapp";
+		    
 			Log.i("appname", "App name = " + appName);
 			// TODO [Ricardo] Fake
 			MarkerObject markerObj = markerObjectMap.get(appName);

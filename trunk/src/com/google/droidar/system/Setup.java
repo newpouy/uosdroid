@@ -269,13 +269,15 @@ public abstract class Setup {
 		 * this should be done last because the gui might need a initialized
 		 * renderer object or worldUpdater etc
 		 */
-		_e1_addElementsToOverlay(myOverlayView, myTargetActivity);
+		
+		//_e1_addElementsToOverlay(myOverlayView, myTargetActivity);
+		
 		// myTargetActivity.addContentView(myOverlayView, new LayoutParams(
 		// LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
 
 		addOverlaysAndShowInfoScreen();
 
-		debugLogDoSetupStep(STEP_DONE);
+		//debugLogDoSetupStep(STEP_DONE);
 	}
 
 	/**

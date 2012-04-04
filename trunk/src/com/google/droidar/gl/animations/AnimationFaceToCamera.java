@@ -50,6 +50,7 @@ public class AnimationFaceToCamera extends GLAnimation {
 
 	public AnimationFaceToCamera(GLCamera targetCamera) {
 		this(targetCamera, 0.5f, true);
+//		this(targetCamera, 10.5f, true);
 	}
 
 	/**

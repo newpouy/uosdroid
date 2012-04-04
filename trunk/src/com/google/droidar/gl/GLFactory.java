@@ -146,6 +146,8 @@ public class GLFactory {
 		float w2 = -x / 2;
 		float h2 = -size / 2;
 
+		
+		
 		Log.d(LOG_TAG, "Creating textured mesh for " + bitmapName);
 		Log.v(LOG_TAG, "   > bitmap.getHeight()=" + bitmap.getHeight());
 		Log.v(LOG_TAG, "   > bitmap.getWidth()=" + bitmap.getWidth());
