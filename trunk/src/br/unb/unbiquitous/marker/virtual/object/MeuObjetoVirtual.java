@@ -1,5 +1,7 @@
 package br.unb.unbiquitous.marker.virtual.object;
 
+import javax.security.auth.callback.TextOutputCallback;
+
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Typeface;
@@ -66,7 +68,9 @@ public class MeuObjetoVirtual extends BasicMarker {
 			
 			// Setando os comandos quando o objeto virtual for clicado.
 			textMeshComponent.setOnClickCommand(virtualObjectCommand);
+			textMeshComponent.setOnLongClickCommand(virtualObjectCommand);
 			shapeMeshComponent.setOnClickCommand(virtualObjectCommand);
+			shapeMeshComponent.setOnLongClickCommand(virtualObjectCommand);
 			firstTime = false;
 		}
 		
@@ -81,8 +85,11 @@ public class MeuObjetoVirtual extends BasicMarker {
 	public void setObjRotation(float[] rotMatrix) {	}
 	
 	private Obj desenharTexto(String textToDisplay, Vec textPosition, Context context, GLCamera glCamera){
-		float textSize = 1;
+		float textSize = 2.5f;
 
+		// acima de 4 drivers o tem que ser textSize = 2.
+		textToDisplay = textToDisplay + "\n \n - teclado" + "\n - mouse" + "\n - câmera" + "\n - tela" + "\n ...";
+		
 		TextView v = new TextView(context);
 		v.setTypeface(null, Typeface.BOLD);
 		v.setTextColor(Color.white().toIntRGB());
@@ -92,27 +99,27 @@ public class MeuObjetoVirtual extends BasicMarker {
 	    textMeshComponent = GLFactory.getInstance().newTexturedSquare("textBitmap"	+ textToDisplay, IO.loadBitmapFromView(v), textSize);
 		textMeshComponent.setPosition(textPosition);
 		textMeshComponent.addAnimation(animationFaceToCamera);
-		shapeMeshComponent.addChild(coordinateSystem);
+//		shapeMeshComponent.addChild(coordinateSystem);
 		o.setComp(this.textMeshComponent);
 		return o;
 	}
 	
 	public void criar(){
 		shapeMeshComponent = new Shape();
-		shapeMeshComponent.addChild(coordinateSystem);
+//		shapeMeshComponent.addChild(coordinateSystem);
 		shapeMeshComponent.addChild(this.desenharQuadrado(Color.blackTransparent()));
 		shapeMeshComponent.addAnimation(animationFaceToCamera);
 	}
 	
 	public Shape desenharQuadrado(Color canBeNull) {
 		Shape shape = new Shape(canBeNull);
-		shape.add(new Vec(-2.25f, 1.75f, 0));
-		shape.add(new Vec(-2.25f, -1.75f, 0));
-		shape.add(new Vec(2.25f, -1.75f, 0));
+		shape.add(new Vec(-1.5f, 1.75f, 0));
+		shape.add(new Vec(-1.5f, -1.75f, 0));
+		shape.add(new Vec(1.5f, -1.75f, 0));
 
-		shape.add(new Vec(2.25f, -1.75f, 0));
-		shape.add(new Vec(2.25f, 1.75f, 0));
-		shape.add(new Vec(-2.25f, 1.75f, 0));
+		shape.add(new Vec(1.5f, -1.75f, 0));
+		shape.add(new Vec(1.5f, 1.75f, 0));
+		shape.add(new Vec(-1.5f, 1.75f, 0));
 		
 		shape.setPosition(new Vec(0, -1f, -0.5f));
 		shape.setRotation(new Vec(90, 0, 0));
