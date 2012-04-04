@@ -38,17 +38,17 @@ public class MultiMarkerSetup extends MarkerDetectionSetup {
 	public void _a_initFieldsIfNecessary() {
 		camera = new GLCamera(new Vec(0, 0, 10));
 		world = new World(camera);
-		mesh1 = new Shape();
-
-		mesh1.addChild(GLFactory.getInstance().newCoordinateSystem());
-		// mesh.add(GLFactory.getInstance().newCircle(new Color(0, 0, 1,
-		// 0.6f)));
-		mesh1.addChild(GLFactory.getInstance().newCube());
-		
-		mesh2 = new Shape();
-		mesh2.addChild(GLFactory.getInstance().newCoordinateSystem());
-		mesh2.addChild(GLFactory.getInstance().newCircle(new Color(0, 0, 1, 0.6f)));
-		// mesh1.add(GLFactory.getInstance().newCube());
+//		mesh1 = new Shape();
+//
+//		mesh1.addChild(GLFactory.getInstance().newCoordinateSystem());
+//		// mesh.add(GLFactory.getInstance().newCircle(new Color(0, 0, 1,
+//		// 0.6f)));
+//		mesh1.addChild(GLFactory.getInstance().newCube());
+//		
+//		mesh2 = new Shape();
+//		mesh2.addChild(GLFactory.getInstance().newCoordinateSystem());
+//		mesh2.addChild(GLFactory.getInstance().newCircle(new Color(0, 0, 1, 0.6f)));
+//		// mesh1.add(GLFactory.getInstance().newCube());
 		
 		meuObjetoVirtual = new MeuObjetoVirtual("5", camera, world, this.activity);
 
@@ -89,15 +89,15 @@ public class MultiMarkerSetup extends MarkerDetectionSetup {
 	public void _b_addWorldsToRenderer(GLRenderer renderer,
 			GLFactory objectFactory, GeoObj currentPosition) {
 		renderer.addRenderElement(world);
-		Obj o = new Obj();
-		o.setComp(mesh1);
-		world.add(o);
-
-		Obj o2 = new Obj();
-		o2.setComp(mesh2);
-		world.add(o2);
-
-		world.add(objectFactory.newHexGroupTest(new Vec()));
+//		Obj o = new Obj();
+//		o.setComp(mesh1);
+//		world.add(o);
+//
+//		Obj o2 = new Obj();
+//		o2.setComp(mesh2);
+//		world.add(o2);
+//
+//		world.add(objectFactory.newHexGroupTest(new Vec()));
 
 	}
 
@@ -121,7 +121,7 @@ public class MultiMarkerSetup extends MarkerDetectionSetup {
 
 	
 	/**
-	 * Adiciona os botões na tela.
+	 * Adiciona os botões na tela. Chamados no Setup.
 	 */
 	@Override
 	public void _e2_addElementsToGuiSetup(GuiSetup guiSetup, Activity activity) {

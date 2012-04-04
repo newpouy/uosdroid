@@ -585,7 +585,7 @@ JNIEXPORT jint JNICALL Java_nativeLib_NativeLib_detectMarkers(
 
 						}
 
-						/*
+
 						for (a = 0; a < 12; a++) {
 							ipx = rotMat[0] * testPntsX[order[a]] + rotMat[1]
 									* testPntsY[order[a]] + rotMat[2] * 0.0
@@ -614,132 +614,136 @@ JNIEXPORT jint JNICALL Java_nativeLib_NativeLib_detectMarkers(
 								currentMarkerThresholdWhite += currentSample;
 								whiteCounter += 4;
 							}
-						} */
-//#ifdef LOG_OUTPUT_ON
-//						sprintf(tmp, "Detected marker, id: %d", code);
-//						printf("Detected marker, id: %d", code);
-//						LOGI(tmp);
-//#endif
-						//Only now a marker has been detected and the info can be
-						//added to the return list.
-
-						counter++;
-						//If calibration needs to be done, use these points
-						//by storing them in the appropriate arrays.
-						if (calibrateNext && frameCounter >= 0) {
-
-
-
-#ifdef LOG_OUTPUT_ON
-							LOGD("Adding points to list");
-#endif
-
-							CvPoint3D32f *opCalib =
-									(CvPoint3D32f *) OPCalib->data.fl;
-							CvPoint2D32f *ipCalib =
-									(CvPoint2D32f *) IPCalib->data.fl;
-							int *pointCnt = PointCnt->data.i;
-
-							opCalib[frameCounter * 4].x = -1.0;
-							opCalib[frameCounter * 4].y = 1.0;
-							opCalib[frameCounter * 4].z = 0.0;
-
-							opCalib[frameCounter * 4 + 1].x = 1.0;
-							opCalib[frameCounter * 4 + 1].y = 1.0;
-							opCalib[frameCounter * 4 + 1].z = 0.0;
-
-							opCalib[frameCounter * 4 + 2].x = 1.0;
-							opCalib[frameCounter * 4 + 2].y = -1.0;
-							opCalib[frameCounter * 4 + 2].z = 0.0;
-
-							opCalib[frameCounter * 4 + 3].x = -1.0;
-							opCalib[frameCounter * 4 + 3].y = -1.0;
-							opCalib[frameCounter * 4 + 3].z = 0.0;
-
-							ipCalib[frameCounter * 4].x = pt0->x;
-							ipCalib[frameCounter * 4].y = pt0->y;
-
-							ipCalib[frameCounter * 4 + 1].x = pt1->x;
-							ipCalib[frameCounter * 4 + 1].y = pt1->y;
-
-							ipCalib[frameCounter * 4 + 2].x = pt2->x;
-							ipCalib[frameCounter * 4 + 2].y = pt2->y;
-
-							ipCalib[frameCounter * 4 + 3].x = pt3->x;
-							ipCalib[frameCounter * 4 + 3].y = pt3->y;
-
-							pointCnt[frameCounter] = 4;
-#ifdef LOG_OUTPUT_ON
-							int itr;
-							for(itr=0;itr<60;itr++) {
-								sprintf(tmp, "nr %d :OP= %3.2f, %3.2f IP =%3.2f, %3.2f", itr, opCalib[itr].x, opCalib[itr].y, ipCalib[itr].x, ipCalib[itr].y);
-								LOGD(tmp);
-							}
-#endif
-							frameCounter--;
 						}
+//#ifdef LOG_OUTPUT_ON
+						sprintf(tmp, "Detected marker, id: %d", code);
+						printf("Detected marker, id: %d", code);
+						LOGI(tmp);
+//#endif
 
-						//calculate the rotation matrix. Invert some values since
-						//it is needed for OpenGL.
-						rv[1] = -1.0f * rv[1];
-						rv[2] = -1.0f * rv[2];
-						cvRodrigues2(&RV, &R, 0);
+						if(code > 1000 && code < 2000){
 
-						//Increase the detected marker count
-						returnVals[0]++;
+							//Only now a marker has been detected and the info can be
+							//added to the return list.
 
-						orientationChange = (orientationChange*M_PI)/180.0f;
+							counter++;
+							//If calibration needs to be done, use these points
+							//by storing them in the appropriate arrays.
+							if (calibrateNext && frameCounter >= 0) {
 
 
-						float temp0;
-						float temp3;
-						float temp6;
 
-						temp0= cos(orientationChange)*rotMat[0] + sin(orientationChange)*rotMat[1];
-						temp3= cos(orientationChange)*rotMat[3] + sin(orientationChange)*rotMat[4];
-						temp6= cos(orientationChange)*rotMat[6] + sin(orientationChange)*rotMat[7];
-						rotMat[1]= -sin(orientationChange)*rotMat[0] + cos(orientationChange)*rotMat[1];
-						rotMat[4]= -sin(orientationChange)*rotMat[3] + cos(orientationChange)*rotMat[4];
-						rotMat[7]= -sin(orientationChange)*rotMat[6] + cos(orientationChange)*rotMat[7];
+	#ifdef LOG_OUTPUT_ON
+								LOGD("Adding points to list");
+	#endif
 
-						rotMat[0]= temp0;
-						rotMat[1]= -rotMat[1];
-						rotMat[2]= -rotMat[2];
-						rotMat[3]= temp3;
-						rotMat[4]= -rotMat[4];
-						rotMat[5]= -rotMat[5];
-						rotMat[6]= temp6;
-						rotMat[7]= -rotMat[7];
-						rotMat[8]= -rotMat[8];
+								CvPoint3D32f *opCalib =
+										(CvPoint3D32f *) OPCalib->data.fl;
+								CvPoint2D32f *ipCalib =
+										(CvPoint2D32f *) IPCalib->data.fl;
+								int *pointCnt = PointCnt->data.i;
 
-						orientationChange=0;
+								opCalib[frameCounter * 4].x = -1.0;
+								opCalib[frameCounter * 4].y = 1.0;
+								opCalib[frameCounter * 4].z = 0.0;
 
-						sprintf(tmp, "escrevendo a saída");
-						LOGD(tmp);
+								opCalib[frameCounter * 4 + 1].x = 1.0;
+								opCalib[frameCounter * 4 + 1].y = 1.0;
+								opCalib[frameCounter * 4 + 1].z = 0.0;
 
-						//write the rotation matrix into the right part of the list.
-						returnVals[returnValPnt++] = rotMat[0];
-						returnVals[returnValPnt++] = rotMat[3];
-						returnVals[returnValPnt++] = rotMat[6];
-						returnVals[returnValPnt++] = 0;
-						returnVals[returnValPnt++] = rotMat[1];
-						returnVals[returnValPnt++] = rotMat[4];
-						returnVals[returnValPnt++] = rotMat[7];
-						returnVals[returnValPnt++] = 0;
-						returnVals[returnValPnt++] = rotMat[2];
-						returnVals[returnValPnt++] = rotMat[5];
-						returnVals[returnValPnt++] = rotMat[8];
-						returnVals[returnValPnt++] = 0;
-						returnVals[returnValPnt++] = tv[0];
-						returnVals[returnValPnt++] = -tv[1];
-						returnVals[returnValPnt++] = -tv[2];
-						returnVals[returnValPnt++] = 1.0f;
+								opCalib[frameCounter * 4 + 2].x = 1.0;
+								opCalib[frameCounter * 4 + 2].y = -1.0;
+								opCalib[frameCounter * 4 + 2].z = 0.0;
 
-						//write the orientation change caused by random detection.
-						returnVals[returnValPnt++] = orientationChange;
+								opCalib[frameCounter * 4 + 3].x = -1.0;
+								opCalib[frameCounter * 4 + 3].y = -1.0;
+								opCalib[frameCounter * 4 + 3].z = 0.0;
 
-						//write the marker number.
-						returnVals[returnValPnt++] = code;
+								ipCalib[frameCounter * 4].x = pt0->x;
+								ipCalib[frameCounter * 4].y = pt0->y;
+
+								ipCalib[frameCounter * 4 + 1].x = pt1->x;
+								ipCalib[frameCounter * 4 + 1].y = pt1->y;
+
+								ipCalib[frameCounter * 4 + 2].x = pt2->x;
+								ipCalib[frameCounter * 4 + 2].y = pt2->y;
+
+								ipCalib[frameCounter * 4 + 3].x = pt3->x;
+								ipCalib[frameCounter * 4 + 3].y = pt3->y;
+
+								pointCnt[frameCounter] = 4;
+	#ifdef LOG_OUTPUT_ON
+								int itr;
+								for(itr=0;itr<60;itr++) {
+									sprintf(tmp, "nr %d :OP= %3.2f, %3.2f IP =%3.2f, %3.2f", itr, opCalib[itr].x, opCalib[itr].y, ipCalib[itr].x, ipCalib[itr].y);
+									LOGD(tmp);
+								}
+	#endif
+								frameCounter--;
+							}
+
+							//calculate the rotation matrix. Invert some values since
+							//it is needed for OpenGL.
+							rv[1] = -1.0f * rv[1];
+							rv[2] = -1.0f * rv[2];
+							cvRodrigues2(&RV, &R, 0);
+
+							//Increase the detected marker count
+							returnVals[0]++;
+
+							orientationChange = (orientationChange*M_PI)/180.0f;
+
+
+							float temp0;
+							float temp3;
+							float temp6;
+
+							temp0= cos(orientationChange)*rotMat[0] + sin(orientationChange)*rotMat[1];
+							temp3= cos(orientationChange)*rotMat[3] + sin(orientationChange)*rotMat[4];
+							temp6= cos(orientationChange)*rotMat[6] + sin(orientationChange)*rotMat[7];
+							rotMat[1]= -sin(orientationChange)*rotMat[0] + cos(orientationChange)*rotMat[1];
+							rotMat[4]= -sin(orientationChange)*rotMat[3] + cos(orientationChange)*rotMat[4];
+							rotMat[7]= -sin(orientationChange)*rotMat[6] + cos(orientationChange)*rotMat[7];
+
+							rotMat[0]= temp0;
+							rotMat[1]= -rotMat[1];
+							rotMat[2]= -rotMat[2];
+							rotMat[3]= temp3;
+							rotMat[4]= -rotMat[4];
+							rotMat[5]= -rotMat[5];
+							rotMat[6]= temp6;
+							rotMat[7]= -rotMat[7];
+							rotMat[8]= -rotMat[8];
+
+							orientationChange=0;
+
+							sprintf(tmp, "escrevendo a saída, achou %d marcadores", counter);
+							LOGD(tmp);
+
+							//write the rotation matrix into the right part of the list.
+							returnVals[returnValPnt++] = rotMat[0];
+							returnVals[returnValPnt++] = rotMat[3];
+							returnVals[returnValPnt++] = rotMat[6];
+							returnVals[returnValPnt++] = 0;
+							returnVals[returnValPnt++] = rotMat[1];
+							returnVals[returnValPnt++] = rotMat[4];
+							returnVals[returnValPnt++] = rotMat[7];
+							returnVals[returnValPnt++] = 0;
+							returnVals[returnValPnt++] = rotMat[2];
+							returnVals[returnValPnt++] = rotMat[5];
+							returnVals[returnValPnt++] = rotMat[8];
+							returnVals[returnValPnt++] = 0;
+							returnVals[returnValPnt++] = tv[0];
+							returnVals[returnValPnt++] = -tv[1];
+							returnVals[returnValPnt++] = -tv[2];
+							returnVals[returnValPnt++] = 1.0f;
+
+							//write the orientation change caused by random detection.
+							returnVals[returnValPnt++] = orientationChange;
+
+							//write the marker number.
+							returnVals[returnValPnt++] = code;
+						}
 
 					} else {
 						// failed.
