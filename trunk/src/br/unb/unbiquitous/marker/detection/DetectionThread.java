@@ -252,7 +252,7 @@ public class DetectionThread extends Thread {
 		
 		if ( isAppNameValid ){
 			
-		    appName = "hydraapp";
+		    appName = "HydraApp";
 		    
 			Log.i("appname", "App name = " + appName);
 			// TODO [Ricardo] Fake
