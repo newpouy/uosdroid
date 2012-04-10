@@ -8,7 +8,7 @@ public class DecoderObject {
 
 	private CameraManager cameraManager;
 	private QRCodeDecoder qrCodeDecoder;
-	private Integer orientation ;
+	private Integer orientation;
 
 	public DecoderObject(Activity activity) {
 		cameraManager = new CameraManager(activity.getApplication());

@@ -29,6 +29,8 @@ import com.google.droidar.worldData.World;
  * @author ricardoandrade
  *
  */
+
+// TODO Tem que melhorar a usabilidade ainda, exemplo: quando o marcador ficar longo do celular tem que recalcular o tamanho do objeto virtual e da fonte.
 public class MeuObjetoVirtual extends BasicMarker {
 
 	/************************************************
@@ -53,8 +55,10 @@ public class MeuObjetoVirtual extends BasicMarker {
 	 * CONSTRUCTORS
 	 ************************************************/
 	
-	public MeuObjetoVirtual(String appName, GLCamera camera, World world,
-			Activity activity) {
+	/**
+	 * 
+	 */
+	public MeuObjetoVirtual(String appName, GLCamera camera, World world, Activity activity) {
 		super(appName, camera);
 		this.world = world;
 		this.activity = activity;
@@ -66,6 +70,11 @@ public class MeuObjetoVirtual extends BasicMarker {
 		
 	}
 
+	/**
+	 * 
+	 * @param id
+	 * @param camera
+	 */
 	public MeuObjetoVirtual(String id, GLCamera camera) {
 		super(id, camera);
 	}
