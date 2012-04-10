@@ -24,7 +24,7 @@ public abstract class BasicMarker implements MarkerObject {
 		return myId;
 	}
 
-	public void OnMarkerPositionRecognized(float[] markerRotMatrix,
+	public synchronized void OnMarkerPositionRecognized(float[] markerRotMatrix,
 			int startOffset, int end) {
 
 		Matrix.invertM(invertedCameraMatrix, 0, myCamera.getRotationMatrix(), 0);

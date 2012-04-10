@@ -621,7 +621,7 @@ JNIEXPORT jint JNICALL Java_nativeLib_NativeLib_detectMarkers(
 						LOGI(tmp);
 //#endif
 
-						if(code > 1000 && code < 2000){
+						if((code > 1000 && code < 2000) || ( code > 4000 && code < 4500)){
 
 							//Only now a marker has been detected and the info can be
 							//added to the return list.
@@ -717,8 +717,8 @@ JNIEXPORT jint JNICALL Java_nativeLib_NativeLib_detectMarkers(
 
 							orientationChange=0;
 
-							sprintf(tmp, "escrevendo a saída, achou %d marcadores", counter);
-							LOGD(tmp);
+//							sprintf(tmp, "escrevendo a saída, achou %d marcadores", counter);
+//							LOGD(tmp);
 
 							//write the rotation matrix into the right part of the list.
 							returnVals[returnValPnt++] = rotMat[0];
