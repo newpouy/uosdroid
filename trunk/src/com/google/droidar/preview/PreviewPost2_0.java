@@ -2,6 +2,7 @@ package com.google.droidar.preview;
 
 import java.lang.reflect.Method;
 
+import br.unb.R;
 import br.unb.unbiquitous.thread.DetectionThread;
 
 
@@ -10,6 +11,7 @@ import android.content.Context;
 import android.graphics.PixelFormat;
 import android.hardware.Camera;
 import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.SurfaceHolder;
 
@@ -37,8 +39,13 @@ public class PreviewPost2_0 extends Preview{
         int bufSize = ((h*w)*p.bitsPerPixel)/8;
         Log.d("AR","Camera parameters: Size: "+bufSize+", Height: "+h+", Width: "+w+", pixelformat: "+p.toString());
         if(first){
-        	myThread.setImageSizeAndRun(h,w);
-            first=false;
+
+        	// TODO [Ricardo] ver se isso aqui é chamado alguma hora.
+//        	myThread.setImageSizeAndRun(h,w);
+        	
+        	myThread.run();
+        	
+        	first=false;
         }
         //Add a buffer for the detection. This will be added to the queue again once it is free to use
         //otherwise the frames will be discarded.
@@ -116,7 +123,14 @@ public class PreviewPost2_0 extends Preview{
 	 */
 	public void onPreviewFrame(byte[] data, Camera camera) {
 		if (myThread.busy == false) {
-			myThread.nextFrame(data);
+			
+//			myThread.nextFrame(data);
+			
+			if(myThread.getHandler() == null) return;
+			
+			Message message = Message.obtain(myThread.getHandler(),R.id.frame_received, data);
+			myThread.getHandler().sendMessage(message);
+			
 		} else if(!paused){
 			//Add the buffer back into the queue.
 			addCallbackBuffer(data);
