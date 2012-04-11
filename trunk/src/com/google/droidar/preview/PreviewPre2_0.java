@@ -1,6 +1,6 @@
 package com.google.droidar.preview;
 
-import br.unb.unbiquitous.marker.detection.DetectionThread;
+import br.unb.unbiquitous.thread.DetectionThread;
 import android.content.Context;
 import android.graphics.PixelFormat;
 import android.hardware.Camera;

@@ -1,4 +1,4 @@
-package br.unb.unbiquitous.marker.detection;
+package br.unb.unbiquitous.thread;
 
 import java.util.HashMap;
 
@@ -6,10 +6,11 @@ import nativeLib.NativeLib;
 import android.opengl.GLSurfaceView;
 import android.os.SystemClock;
 import android.util.Log;
-import br.unb.manager.ar.ARManager;
-import br.unb.manager.decode.DecodeManager;
+import br.unb.unbiquitous.manager.ARManager;
+import br.unb.unbiquitous.manager.DecodeManager;
 import br.unb.unbiquitous.marker.decoder.DecoderObject;
-import br.unb.unbiquitous.marker.decoder.RepositionThread;
+import br.unb.unbiquitous.marker.detection.MarkerDetectionSetup;
+import br.unb.unbiquitous.marker.detection.UnrecognizedMarkerListener;
 
 import com.google.droidar.gl.MarkerObject;
 import com.google.droidar.preview.Preview;
@@ -40,37 +41,19 @@ public class DetectionThread extends Thread {
 	private UnrecognizedMarkerListener unrecognizedMarkerListener;
 	
 	/************************************************
-	 * VARIABLES - DETECTING
-	 ************************************************/
-//	private IMotionDetection iMotionDetection;
-	
-	/************************************************
-	 * VARIABLES - AUGMENTED REALITY
+	 * VARIABLES - MANAGER
 	 ************************************************/
 	
 	private ARManager arManager;
+	private DecodeManager decodeManager;
 	
 	/************************************************
 	 * VARIABLES - DECODING
 	 ************************************************/
 	
 	private DecoderObject decoderObject;
-	private boolean isRepositionThreadRunning = false;
-	
-	private DecodeManager decodeManager;
-	private RepositionThread repositionThread;
-	private boolean decoderThreadRunning = false;
-	
-	
-	int tentativas = 0;
 	private MarkerDetectionSetup setup;
-	
-	
-	
-	private static final int MAX_TENTATIVAS = 10000;
-	
-	private int[] rgb;
-
+	private RepositionMarkerThread repositionThread;
 	/************************************************
 	 * CONSTRUCTOR
 	 ************************************************/
@@ -78,10 +61,12 @@ public class DetectionThread extends Thread {
 	/**
 	 * 
 	 */
-	public DetectionThread( MarkerDetectionSetup setup, NativeLib nativeLib, GLSurfaceView openglView,
-			HashMap<String, MarkerObject> markerObjectMap,
-			UnrecognizedMarkerListener unrecognizedMarkerListener,
-			DecoderObject decoderObject) {
+	public DetectionThread( MarkerDetectionSetup setup, 
+							NativeLib nativeLib, 
+							GLSurfaceView openglView,
+							HashMap<String, MarkerObject> markerObjectMap,
+							UnrecognizedMarkerListener unrecognizedMarkerListener,
+							DecoderObject decoderObject) {
 		
 		this.setup = setup;
 		this.openglView = openglView;
@@ -93,13 +78,15 @@ public class DetectionThread extends Thread {
 		this.decodeManager = new DecodeManager(decoderObject);
 		this.arManager = new ARManager(setup, markerObjectMap);
 
-		this.repositionThread = new RepositionThread(arManager, decodeManager);
+//		this.deco
+//		
+//		this.repositionThread = new RepositionThread(arManager, decodeManager);
+		repositionThread.setPriority(MAX_PRIORITY);
+		repositionThread.start();
 
 		// TODO make size dynamically after the init function.
 		mat = new float[1 + 18 * 5];
-		
-		
-		
+
 //		this.iMotionDetection = new RgbMotionDetection();
 		// application will exit even if this thread remains active.
 		setDaemon(true);
@@ -140,38 +127,29 @@ public class DetectionThread extends Thread {
 					}
 				}
 				
-				Log.i(TAG, "Orientation =" +  decoderObject.getOrientation());
-				if (decoderObject.getOrientation() != 99 && isMarkerFound() ){
-					// Achou um marcaodr
-					Log.i(TAG, "Achou um marcador.");
-					
-					// Quando decodificar o primeiro qrcode, starta a thread de reposicao
-					if ( !isRepositionThreadRunning){
-						repositionThread.setFrameHeight(frameHeight);
-						repositionThread.setFrameWidth(frameWidth);
-						repositionThread.setDecodificar(false);
-						repositionThread.setPriority(MAX_PRIORITY);
-						repositionThread.start();
-						isRepositionThreadRunning = true;
-					}
-
-					synchronized (repositionThread) {
-						repositionThread.setFrame(frame);
-						repositionThread.setRotacao(mat);
-						repositionThread.setDecodificar(true);
-						repositionThread.notify();
-					}
-					
-					// Já achou um marcador
-					if (decodeManager.getLastMarkerName() != null){
-						arManager.reposicionarObjetoVirtual(decodeManager.getLastMarkerName(), mat);
-					}
-						
-						
-				}else{
-					// Nao achou nenhum marcador.
-					repositionThread.setDecodificar(false);
-				}
+//				Log.i(TAG, "Orientation =" +  decoderObject.getOrientation());
+//				if (decoderObject.getOrientation() != 99 && isMarkerFound() ){
+//					// Achou um marcaodr
+//					Log.i(TAG, "Achou um marcador.");
+//					
+//					if(!repositionThread.isDecodificar()){
+////						synchronized (repositionThread) {
+//							repositionThread.setFrame(frame);
+//							repositionThread.setRotacao(mat);
+//							repositionThread.setDecodificar(true);
+////							repositionThread.notify();
+////						}
+//					}
+//					// Já achou um marcador
+//					if (decodeManager.getLastMarkerName() != null){
+//						arManager.reposicionarObjetoVirtual(decodeManager.getLastMarkerName(), mat);
+//					}
+//						
+//						
+//				}else{
+//					// Nao achou nenhum marcador.
+//					repositionThread.setDecodificar(false);
+//				}
 				
 				busy = false;
 				preview.reAddCallbackBuffer(frame);

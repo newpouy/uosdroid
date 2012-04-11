@@ -2,7 +2,7 @@ package com.google.droidar.preview;
 
 import java.lang.reflect.Method;
 
-import br.unb.unbiquitous.marker.detection.DetectionThread;
+import br.unb.unbiquitous.thread.DetectionThread;
 
 
 

@@ -8,6 +8,7 @@ import android.hardware.Camera;
 import android.util.Log;
 import android.view.ViewGroup.LayoutParams;
 import br.unb.unbiquitous.marker.decoder.DecoderObject;
+import br.unb.unbiquitous.thread.DetectionThread;
 
 import com.google.droidar.preview.Preview;
 import com.google.droidar.preview.PreviewPost2_0;
