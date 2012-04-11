@@ -97,7 +97,7 @@ public class DetectionThread extends Thread {
 
 //		this.iMotionDetection = new RgbMotionDetection();
 		// application will exit even if this thread remains active.
-		setDaemon(true);
+//		setDaemon(true);
 	}
 
 	/************************************************
@@ -111,67 +111,67 @@ public class DetectionThread extends Thread {
 	 * 
 	 */
 	@Override
-	public synchronized void run() {
+	public void run() {
 		
 		/* inicializando as threads */
-		Looper.prepare();
+//		Looper.prepare();
 
-		detectionHandler = new DetectionHandler();
+		detectionHandler = new DetectionHandler(nativelib, decoderObject, openglView, preview);
 		decodeQRCodeThread = new DecodeQRCodeThread(detectionHandler, decodeManager);
 		decodeQRCodeThread.start();
 		
 		repositionThread = new RepositionMarkerThread(detectionHandler, arManager);
 		repositionThread.start();
-		handlerInitLatch.countDown();
+//		handlerInitLatch.countDown();
 		
-		Looper.loop();
+//		Looper.loop();
 		
-		while (true) {
-			while (busy == false || stopRequest == true) {
-				try {
-					wait();// wait for a new frame
-				} catch (InterruptedException e) {
-				}
-			}
-
-			if (stopRequest == true) {
-				// do nothing
-			} else {
-				if (calcFps) {
-					// calculate the fps
-					if (start == 0) {
-						start = SystemClock.uptimeMillis();
-					}
-					fcount++;
-					if (fcount == 30) {
-						now = SystemClock.uptimeMillis();
-						fps = 30 / ((now - start) / 1000.0);
-						// Log.i("AR", "fps:" + fps);
-						start = 0;
-						fcount = 0;
-					}
-				}
-				
-//				Log.i(TAG, "Orientation =" +  decoderObject.getOrientation());
-				if (decoderObject.getOrientation() != 99 && isMarkerFound() ){
-					
-					DecodeDTO decodeDTO = new DecodeDTO();
-					decodeDTO.setFrame(frame);
-					decodeDTO.setRotacao(mat);
-					
-					Message message = Message.obtain(detectionHandler, R.id.marker_found, decodeDTO);
-					message.sendToTarget();
-
-					Log.i(TAG, "Mensagem enviada: Marcador encontrado.");
-				
-				}
-				
-				busy = false;
-				preview.reAddCallbackBuffer(frame);
-			}
-
-			yield();
-		}
+//		while (true) {
+//			while (busy == false || stopRequest == true) {
+//				try {
+//					wait();// wait for a new frame
+//				} catch (InterruptedException e) {
+//				}
+//			}
+//
+//			if (stopRequest == true) {
+//				// do nothing
+//			} else {
+//				if (calcFps) {
+//					// calculate the fps
+//					if (start == 0) {
+//						start = SystemClock.uptimeMillis();
+//					}
+//					fcount++;
+//					if (fcount == 30) {
+//						now = SystemClock.uptimeMillis();
+//						fps = 30 / ((now - start) / 1000.0);
+//						// Log.i("AR", "fps:" + fps);
+//						start = 0;
+//						fcount = 0;
+//					}
+//				}
+//				
+////				Log.i(TAG, "Orientation =" +  decoderObject.getOrientation());
+//				if (decoderObject.getOrientation() != 99 && isMarkerFound() ){
+//					
+//					DecodeDTO decodeDTO = new DecodeDTO();
+//					decodeDTO.setFrame(frame);
+//					decodeDTO.setRotacao(mat);
+//					
+//					Message message = Message.obtain(detectionHandler, R.id.marker_found, decodeDTO);
+//					message.sendToTarget();
+//
+//					Log.i(TAG, "Mensagem enviada: Marcador encontrado.");
+//				
+//				}
+//				
+//				busy = false;
+//				preview.reAddCallbackBuffer(frame);
+//			}
+//
+//			yield();
+//		}
 
 	}
 	
@@ -224,11 +224,11 @@ public class DetectionThread extends Thread {
 	 * 
 	 */
 	public DetectionHandler getHandler() {
-		try {
-			handlerInitLatch.await();
-		} catch (InterruptedException ie) {
-			// continue?
-		}
+//		try {
+//			handlerInitLatch.await();
+//		} catch (InterruptedException ie) {
+//			// continue?
+//		}
 		return detectionHandler;
 	}
 	

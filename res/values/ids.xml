@@ -34,5 +34,7 @@
   <item type="id" name="qrcode_decoded_succeeded"/>
   <item type="id" name="qrcode_decode_failed"/>
   <item type="id" name="marker_found"/>
+  <item type="id" name="frame_received"/>
+  <item type="id" name="resize_image"/>
 
 </resources>
