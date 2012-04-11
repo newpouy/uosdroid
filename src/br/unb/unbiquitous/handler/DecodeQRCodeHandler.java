@@ -12,7 +12,7 @@ import br.unb.unbiquitous.marker.decoder.DecodeDTO;
  * @author ricardoandrade
  *
  */
-final class DecodeQRCodeHandler extends Handler {
+final public class DecodeQRCodeHandler extends Handler {
 	
 	/************************************************
 	 * CONSTANTS

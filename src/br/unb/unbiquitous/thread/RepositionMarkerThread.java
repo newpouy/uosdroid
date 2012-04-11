@@ -2,8 +2,9 @@ package br.unb.unbiquitous.thread;
 
 import java.util.concurrent.CountDownLatch;
 
-import android.os.Handler;
 import android.os.Looper;
+import br.unb.unbiquitous.handler.DetectionHandler;
+import br.unb.unbiquitous.handler.RepositionMarkerHandler;
 import br.unb.unbiquitous.manager.ARManager;
 
 /**
@@ -14,22 +15,19 @@ import br.unb.unbiquitous.manager.ARManager;
 public class RepositionMarkerThread extends Thread {
 
 	/************************************************
-	 * CONSTANS
-	 ************************************************/
-	private static final String TAG = RepositionMarkerThread.class.getSimpleName();
-	
-	/************************************************
 	 * VARIABLES
 	 ************************************************/
-	private Handler handler;
+	private RepositionMarkerHandler handler;
 	private final CountDownLatch handlerInitLatch;
 	private ARManager arManager;
+	private DetectionHandler detectionHandler;
 	
 	/************************************************
 	 * CONSTRUCTOR
 	 ************************************************/
 
-	public RepositionMarkerThread(ARManager arManager) {
+	public RepositionMarkerThread(DetectionHandler detectionHandler, ARManager arManager) {
+		this.detectionHandler = detectionHandler;
 		this.arManager = arManager;
 		this.handlerInitLatch = new CountDownLatch(1);
 	}
@@ -41,7 +39,7 @@ public class RepositionMarkerThread extends Thread {
 	/**
 	 * 
 	 */
-	public Handler getHandler() {
+	public RepositionMarkerHandler getHandler() {
 		try {
 			handlerInitLatch.await();
 		} catch (InterruptedException ie) {
@@ -57,6 +55,7 @@ public class RepositionMarkerThread extends Thread {
 	public void run() {
 		Looper.prepare();
 		handler = new RepositionMarkerHandler(arManager);
+		detectionHandler.setRepositionHandler(handler);
 		handlerInitLatch.countDown();
 		Looper.loop();
 	}
