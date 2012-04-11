@@ -1,4 +1,4 @@
-package br.unb.manager.ar;
+package br.unb.unbiquitous.manager;
 
 import java.util.HashMap;
 

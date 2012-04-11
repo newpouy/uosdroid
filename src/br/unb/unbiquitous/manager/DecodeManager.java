@@ -1,9 +1,6 @@
-package br.unb.manager.decode;
+package br.unb.unbiquitous.manager;
 
 import java.util.Calendar;
-
-import org.apache.http.entity.ByteArrayEntity;
-import org.apache.http.util.ByteArrayBuffer;
 
 import android.util.Log;
 import br.unb.unbiquitous.marker.decoder.DecoderObject;
@@ -56,7 +53,7 @@ public class DecodeManager {
 		
 		long tempoTotalDecodificacao = fim.getTimeInMillis() - inicio.getTimeInMillis();
 		
-		Log.i(TAG, "Tempo de decodificação: " + tempoTotalDecodificacao);
+		Log.i(TAG, "Tempo de decodificação: " + tempoTotalDecodificacao + " ms.");
 		
 		if(decoderObject.getQrCodeDecoder().getTextDecoded() != null){
 			Log.i(TAG, "Código decodificado = "+ decoderObject.getQrCodeDecoder().getTextDecoded());
