@@ -29,6 +29,7 @@ public class DetectionHandler extends Handler {
 	 ************************************************/
 	
 	public DetectionHandler(){
+		qrCodeDecodeState = DecodeState.WAITTING;
 	}
 	
 	/************************************************
@@ -52,7 +53,7 @@ public class DetectionHandler extends Handler {
 			synchronized (qrCodeDecodeState) {
 				
 				// Só envio novas requisições quando a thread estiver pronta
-				if ( qrCodeDecodeState.equals(DecodeState.WAIT) ){
+				if ( qrCodeDecodeState.equals(DecodeState.WAITTING) ){
 					qrCodeDecodeState = DecodeState.RUNNING;
 					enviarMsgDecodificar(dto);
 				}
@@ -66,7 +67,7 @@ public class DetectionHandler extends Handler {
 			
 			synchronized (qrCodeDecodeState) {
 				// QRCode decodificado com sucesso
-				qrCodeDecodeState = DecodeState.WAIT;
+				qrCodeDecodeState = DecodeState.WAITTING;
 			}
 			
 			dto = (DecodeDTO) message.obj;
@@ -76,7 +77,7 @@ public class DetectionHandler extends Handler {
 			Log.i(TAG, "Mensagem recebida: Falha na decodificação do QRCode .");
 
 			synchronized (qrCodeDecodeState) {
-				qrCodeDecodeState = DecodeState.WAIT;
+				qrCodeDecodeState = DecodeState.WAITTING;
 			}
 			
 			break;
@@ -96,9 +97,10 @@ public class DetectionHandler extends Handler {
 	private void enviarMsgDecodificar(DecodeDTO dto){
 		if (decodeHandler == null) return;
 		
-		Log.i(TAG, "Mensagem enviada: Decodificar o QRCode.");
 		Message message = Message.obtain(decodeHandler, R.id.decode, dto);
         message.sendToTarget();
+
+        Log.i(TAG, "Mensagem enviada: Decodificar o QRCode.");
 	}
 	
 	
@@ -109,9 +111,10 @@ public class DetectionHandler extends Handler {
 	private void enviarMsgReposicionar(DecodeDTO dto){
 		if (repositionHandler == null) return;
 
-		Log.i(TAG, "Mensagem enviada: Reposicionar o objeto.");
 		Message message = Message.obtain(repositionHandler, R.id.reposition, dto);
         message.sendToTarget();
+
+        Log.i(TAG, "Mensagem enviada: Reposicionar o objeto.");
 	}
 	
 	/**
@@ -121,9 +124,10 @@ public class DetectionHandler extends Handler {
 	private void enviarMsgCriar(DecodeDTO dto){
 		if (repositionHandler == null) return;
 		
-		Log.i(TAG, "Mensagem enviada: Criar novo objeto.");
 		Message message = Message.obtain(repositionHandler, R.id.create, dto);
 		message.sendToTarget();
+
+		Log.i(TAG, "Mensagem enviada: Criar novo objeto.");
 	}
 	
 	/************************************************

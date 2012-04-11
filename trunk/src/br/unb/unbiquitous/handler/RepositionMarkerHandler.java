@@ -12,7 +12,7 @@ import br.unb.unbiquitous.marker.decoder.DecodeDTO;
  * @author ricardoandrade
  *
  */
-final class RepositionMarkerHandler extends Handler {
+final public class RepositionMarkerHandler extends Handler {
 	
 	/************************************************
 	 * CONSTANS

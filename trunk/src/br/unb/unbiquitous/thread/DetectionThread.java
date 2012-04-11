@@ -1,13 +1,21 @@
 package br.unb.unbiquitous.thread;
 
 import java.util.HashMap;
+import java.util.concurrent.CountDownLatch;
 
 import nativeLib.NativeLib;
 import android.opengl.GLSurfaceView;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.os.SystemClock;
 import android.util.Log;
+import br.unb.R;
+import br.unb.unbiquitous.handler.DecodeQRCodeHandler;
+import br.unb.unbiquitous.handler.DetectionHandler;
 import br.unb.unbiquitous.manager.ARManager;
 import br.unb.unbiquitous.manager.DecodeManager;
+import br.unb.unbiquitous.marker.decoder.DecodeDTO;
 import br.unb.unbiquitous.marker.decoder.DecoderObject;
 import br.unb.unbiquitous.marker.detection.MarkerDetectionSetup;
 import br.unb.unbiquitous.marker.detection.UnrecognizedMarkerListener;
@@ -37,8 +45,8 @@ public class DetectionThread extends Thread {
 	private int fcount = 0;
 	private double fps = 0;
 	private boolean calcFps = false;
-	private HashMap<String, MarkerObject> markerObjectMap;
-	private UnrecognizedMarkerListener unrecognizedMarkerListener;
+//	private HashMap<String, MarkerObject> markerObjectMap;
+//	private UnrecognizedMarkerListener unrecognizedMarkerListener;
 	
 	/************************************************
 	 * VARIABLES - MANAGER
@@ -51,9 +59,14 @@ public class DetectionThread extends Thread {
 	 * VARIABLES - DECODING
 	 ************************************************/
 	
+	private DetectionHandler detectionHandler;
+	private final CountDownLatch handlerInitLatch;
+	
 	private DecoderObject decoderObject;
 	private MarkerDetectionSetup setup;
 	private RepositionMarkerThread repositionThread;
+	private DecodeQRCodeThread decodeQRCodeThread;
+	
 	/************************************************
 	 * CONSTRUCTOR
 	 ************************************************/
@@ -70,19 +83,14 @@ public class DetectionThread extends Thread {
 		
 		this.setup = setup;
 		this.openglView = openglView;
-		this.markerObjectMap = markerObjectMap;
+//		this.markerObjectMap = markerObjectMap;
+//		this.unrecognizedMarkerListener = unrecognizedMarkerListener;
 		this.nativelib = nativeLib;
-		this.unrecognizedMarkerListener = unrecognizedMarkerListener;
 		
 		this.decoderObject = decoderObject;
 		this.decodeManager = new DecodeManager(decoderObject);
 		this.arManager = new ARManager(setup, markerObjectMap);
-
-//		this.deco
-//		
-//		this.repositionThread = new RepositionThread(arManager, decodeManager);
-		repositionThread.setPriority(MAX_PRIORITY);
-		repositionThread.start();
+		this.handlerInitLatch = new CountDownLatch(1);
 
 		// TODO make size dynamically after the init function.
 		mat = new float[1 + 18 * 5];
@@ -96,11 +104,28 @@ public class DetectionThread extends Thread {
 	 * PUBLIC METHODS
 	 ************************************************/
 	
+
+	
+	
 	/**
 	 * 
 	 */
 	@Override
 	public synchronized void run() {
+		
+		/* inicializando as threads */
+		Looper.prepare();
+
+		detectionHandler = new DetectionHandler();
+		decodeQRCodeThread = new DecodeQRCodeThread(detectionHandler, decodeManager);
+		decodeQRCodeThread.start();
+		
+		repositionThread = new RepositionMarkerThread(detectionHandler, arManager);
+		repositionThread.start();
+		handlerInitLatch.countDown();
+		
+		Looper.loop();
+		
 		while (true) {
 			while (busy == false || stopRequest == true) {
 				try {
@@ -128,28 +153,18 @@ public class DetectionThread extends Thread {
 				}
 				
 //				Log.i(TAG, "Orientation =" +  decoderObject.getOrientation());
-//				if (decoderObject.getOrientation() != 99 && isMarkerFound() ){
-//					// Achou um marcaodr
-//					Log.i(TAG, "Achou um marcador.");
-//					
-//					if(!repositionThread.isDecodificar()){
-////						synchronized (repositionThread) {
-//							repositionThread.setFrame(frame);
-//							repositionThread.setRotacao(mat);
-//							repositionThread.setDecodificar(true);
-////							repositionThread.notify();
-////						}
-//					}
-//					// Já achou um marcador
-//					if (decodeManager.getLastMarkerName() != null){
-//						arManager.reposicionarObjetoVirtual(decodeManager.getLastMarkerName(), mat);
-//					}
-//						
-//						
-//				}else{
-//					// Nao achou nenhum marcador.
-//					repositionThread.setDecodificar(false);
-//				}
+				if (decoderObject.getOrientation() != 99 && isMarkerFound() ){
+					
+					DecodeDTO decodeDTO = new DecodeDTO();
+					decodeDTO.setFrame(frame);
+					decodeDTO.setRotacao(mat);
+					
+					Message message = Message.obtain(detectionHandler, R.id.marker_found, decodeDTO);
+					message.sendToTarget();
+
+					Log.i(TAG, "Mensagem enviada: Marcador encontrado.");
+				
+				}
 				
 				busy = false;
 				preview.reAddCallbackBuffer(frame);
@@ -205,6 +220,18 @@ public class DetectionThread extends Thread {
 		stopRequest = true;
 	}
 	
+	/**
+	 * 
+	 */
+	public DetectionHandler getHandler() {
+		try {
+			handlerInitLatch.await();
+		} catch (InterruptedException ie) {
+			// continue?
+		}
+		return detectionHandler;
+	}
+	
 	/************************************************
 	 * PRIVATE METHODS
 	 ************************************************/
@@ -244,8 +271,8 @@ public class DetectionThread extends Thread {
 		calcFps = true;
 	}
 
-	public void setMarkerObjectMap(HashMap<String, MarkerObject> markerObjectMap) {
-		this.markerObjectMap = markerObjectMap;
-	}
+//	public void setMarkerObjectMap(HashMap<String, MarkerObject> markerObjectMap) {
+//		this.markerObjectMap = markerObjectMap;
+//	}
 
 }
