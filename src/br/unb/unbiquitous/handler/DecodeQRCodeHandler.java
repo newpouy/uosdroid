@@ -18,8 +18,8 @@ final public class DecodeQRCodeHandler extends Handler {
 	 * CONSTANTS
 	 ************************************************/
 	private static final String TAG = DecodeQRCodeHandler.class.getSimpleName();
-	private static final int FRAME_WIDTH = 840;
-	private static final int FRAME_HEIGHT = 484;
+	private static final int FRAME_WIDTH = 848;
+	private static final int FRAME_HEIGHT = 480;
 	
 	/************************************************
 	 * VARIABLES
@@ -51,7 +51,7 @@ final public class DecodeQRCodeHandler extends Handler {
 			
 			Log.i(TAG, "Mesagem recebida: Decodificar o QRCode.");
 			
-			decode(((DecodeDTO) message.obj).getFrame());
+			decode(((DecodeDTO) message.obj).getByteArrayBuffer().toByteArray());
 			break;
 		}
 	}

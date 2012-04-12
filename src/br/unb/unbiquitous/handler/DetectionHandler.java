@@ -1,5 +1,7 @@
 package br.unb.unbiquitous.handler;
 
+import org.apache.http.util.ByteArrayBuffer;
+
 import nativeLib.NativeLib;
 import android.opengl.GLSurfaceView;
 import android.os.Handler;
@@ -12,6 +14,11 @@ import br.unb.unbiquitous.marker.decoder.DecoderObject;
 import com.google.droidar.preview.Preview;
 import com.google.droidar.util.Log;
 
+/**
+ * 
+ * @author ricardoandrade
+ *
+ */
 public class DetectionHandler extends Handler {
 
 	/************************************************
@@ -31,7 +38,7 @@ public class DetectionHandler extends Handler {
 	private GLSurfaceView openglView;
 	
 	private NativeLib nativeLib;
-	private byte[] frame;
+	private ByteArrayBuffer byteArrayBuffer;
 	private float[] mat;
 	private int frameWidth = 848;
 	private int frameHeight = 480;
@@ -110,13 +117,13 @@ public class DetectionHandler extends Handler {
 		case R.id.frame_received:
 			Log.i(TAG, "Mensagem recebida: Frame recebido.");
 			
-			this.frame = (byte[]) message.obj;
+			this.byteArrayBuffer = (ByteArrayBuffer) message.obj;
 			
 			if (decoderObject.getOrientation() != 99 && isMarkerFound() ){
 				
 				dto = new DecodeDTO();
-				dto.setFrame(frame);
 				dto.setRotacao(mat);
+				dto.setByteArrayBuffer(byteArrayBuffer);
 				
 				synchronized (qrCodeDecodeState) {
 					
@@ -130,7 +137,7 @@ public class DetectionHandler extends Handler {
 				enviarMsgReposicionar(dto);
 				
 			}
-			preview.reAddCallbackBuffer(frame);
+			preview.reAddCallbackBuffer(byteArrayBuffer.toByteArray());
 			
 			break;
 		case R.id.resize_image:
@@ -195,7 +202,7 @@ public class DetectionHandler extends Handler {
 		// Pass the frame to the native code and find the
 		// marker information.
 		// The false at the end is a remainder of the calibration.
-		nativeLib.detectMarkers(frame, mat, frameHeight, frameWidth,false, decoderObject.getOrientation());
+		nativeLib.detectMarkers(byteArrayBuffer.toByteArray(), mat, frameHeight, frameWidth,false, decoderObject.getOrientation());
 		
 			
 		// Needs to be reworked to. Either just deleted, or changed into

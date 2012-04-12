@@ -2,18 +2,16 @@ package com.google.droidar.preview;
 
 import java.lang.reflect.Method;
 
-import br.unb.R;
-import br.unb.unbiquitous.thread.DetectionThread;
-
-
+import org.apache.http.util.ByteArrayBuffer;
 
 import android.content.Context;
 import android.graphics.PixelFormat;
 import android.hardware.Camera;
-import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.view.SurfaceHolder;
+import br.unb.R;
+import br.unb.unbiquitous.thread.DetectionThread;
 
 public class PreviewPost2_0 extends Preview{
 	
@@ -128,7 +126,10 @@ public class PreviewPost2_0 extends Preview{
 			
 			if(myThread.getHandler() == null) return;
 			
-			Message message = Message.obtain(myThread.getHandler(),R.id.frame_received, data);
+			ByteArrayBuffer byteArrayBuffer = new ByteArrayBuffer(data.length);
+			byteArrayBuffer.append(data, 0, data.length);
+			
+			Message message = Message.obtain(myThread.getHandler(),R.id.frame_received, byteArrayBuffer);
 			myThread.getHandler().sendMessage(message);
 			
 		} else if(!paused){
