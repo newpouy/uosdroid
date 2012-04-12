@@ -27,6 +27,8 @@ public abstract class BasicMarker implements MarkerObject {
 	public synchronized void OnMarkerPositionRecognized(float[] markerRotMatrix,
 			int startOffset, int end) {
 
+		if(markerRotMatrix == null) return;
+		
 		Matrix.invertM(invertedCameraMatrix, 0, myCamera.getRotationMatrix(), 0);
 
 		float[] markerCenterPosVec = { 	markerRotMatrix[startOffset + 12],
