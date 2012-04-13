@@ -1,6 +1,14 @@
 package br.unb.unbiquitous.marker.decoder;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.EnumMap;
+import java.util.EnumSet;
+import java.util.Map;
+
+import com.google.zxing.BarcodeFormat;
 import com.google.zxing.BinaryBitmap;
+import com.google.zxing.DecodeHintType;
 import com.google.zxing.MultiFormatReader;
 import com.google.zxing.ReaderException;
 import com.google.zxing.Result;
@@ -18,6 +26,42 @@ public class QRCodeDecoder {
 
 	public QRCodeDecoder(CameraManager cameraManager) {
 		multiFormatReader = new MultiFormatReader();
+		
+		Map<DecodeHintType,Collection<BarcodeFormat>>  hints = new EnumMap<DecodeHintType,Collection<BarcodeFormat>>(DecodeHintType.class);
+		 Collection<BarcodeFormat> decodeFormats = EnumSet.noneOf(BarcodeFormat.class);
+		 decodeFormats.add(BarcodeFormat.QR_CODE);
+	        
+
+		    // The prefs can't change while the thread is running, so pick them up once here.
+//		    if (decodeFormats == null || decodeFormats.isEmpty()) {
+//		      SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(activity);
+//		      decodeFormats = EnumSet.noneOf(BarcodeFormat.class);
+//		      if (prefs.getBoolean(PreferencesActivity.KEY_DECODE_1D, false)) {
+//		        decodeFormats.addAll(DecodeFormatManager.ONE_D_FORMATS);
+//		      }
+//		      
+//		      
+//		      if (prefs.getBoolean(PreferencesActivity.KEY_DECODE_QR, false)) {
+//		        decodeFormats.addAll(DecodeFormatManager.QR_CODE_FORMATS);
+//		      }
+//		      
+//		      
+//		      if (prefs.getBoolean(PreferencesActivity.KEY_DECODE_DATA_MATRIX, false)) {
+//		        decodeFormats.addAll(DecodeFormatManager.DATA_MATRIX_FORMATS);
+//		      }
+//		    }
+		 
+		    hints.put(DecodeHintType.POSSIBLE_FORMATS, decodeFormats);
+
+//		    if (characterSet != null) {
+//		      hints.put(DecodeHintType.CHARACTER_SET, characterSet);
+//		    }
+//		    
+//		    
+//		    hints.put(DecodeHintType.NEED_RESULT_POINT_CALLBACK, resultPointCallback);
+//		
+		multiFormatReader.setHints(hints);
+		
 		this.cameraManager = cameraManager;
 	}
 
@@ -40,7 +84,7 @@ public class QRCodeDecoder {
 		if (source != null) {
 			BinaryBitmap bitmap = new BinaryBitmap(new HybridBinarizer(source));
 			try {
-				rawResult = multiFormatReader.decode(bitmap);
+				rawResult = multiFormatReader.decodeWithState(bitmap);
 				textDecoded = rawResult.getText();
 				return rawResult;
 			} catch (ReaderException re) {
