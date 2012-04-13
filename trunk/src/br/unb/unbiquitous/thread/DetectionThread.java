@@ -3,25 +3,21 @@ package br.unb.unbiquitous.thread;
 import java.util.HashMap;
 import java.util.concurrent.CountDownLatch;
 
+import org.apache.http.util.ByteArrayBuffer;
+
 import nativeLib.NativeLib;
 import android.opengl.GLSurfaceView;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
 import android.os.SystemClock;
-import android.util.Log;
-import br.unb.R;
-import br.unb.unbiquitous.handler.DecodeQRCodeHandler;
 import br.unb.unbiquitous.handler.DetectionHandler;
 import br.unb.unbiquitous.manager.ARManager;
 import br.unb.unbiquitous.manager.DecodeManager;
-import br.unb.unbiquitous.marker.decoder.DecodeDTO;
 import br.unb.unbiquitous.marker.decoder.DecoderObject;
 import br.unb.unbiquitous.marker.detection.MarkerDetectionSetup;
 import br.unb.unbiquitous.marker.detection.UnrecognizedMarkerListener;
 
 import com.google.droidar.gl.MarkerObject;
 import com.google.droidar.preview.Preview;
+import com.google.droidar.preview.PreviewPost2_0;
 
 public class DetectionThread extends Thread {
 	
@@ -66,6 +62,7 @@ public class DetectionThread extends Thread {
 	private MarkerDetectionSetup setup;
 	private RepositionMarkerThread repositionThread;
 	private DecodeQRCodeThread decodeQRCodeThread;
+	private ByteArrayBuffer byteArrayBuffer;
 	
 	/************************************************
 	 * CONSTRUCTOR
@@ -111,50 +108,52 @@ public class DetectionThread extends Thread {
 	 * 
 	 */
 	@Override
-	public void run() {
+	public synchronized void run() {
 		
 		/* inicializando as threads */
 //		Looper.prepare();
 
-		detectionHandler = new DetectionHandler(nativelib, decoderObject, openglView, preview);
-		decodeQRCodeThread = new DecodeQRCodeThread(detectionHandler, decodeManager);
-		decodeQRCodeThread.start();
-		
-		repositionThread = new RepositionMarkerThread(detectionHandler, arManager);
+//		detectionHandler = new DetectionHandler(nativelib, decoderObject, openglView, preview);
+//		
+		repositionThread = new RepositionMarkerThread(arManager);
 		repositionThread.start();
+
+		decodeQRCodeThread = new DecodeQRCodeThread(decodeManager, repositionThread,arManager);
+		decodeQRCodeThread.start();
 //		handlerInitLatch.countDown();
 		
 //		Looper.loop();
 		
-//		while (true) {
-//			while (busy == false || stopRequest == true) {
-//				try {
-//					wait();// wait for a new frame
-//				} catch (InterruptedException e) {
-//				}
-//			}
-//
-//			if (stopRequest == true) {
-//				// do nothing
-//			} else {
-//				if (calcFps) {
-//					// calculate the fps
-//					if (start == 0) {
-//						start = SystemClock.uptimeMillis();
-//					}
-//					fcount++;
-//					if (fcount == 30) {
-//						now = SystemClock.uptimeMillis();
-//						fps = 30 / ((now - start) / 1000.0);
-//						// Log.i("AR", "fps:" + fps);
-//						start = 0;
-//						fcount = 0;
-//					}
-//				}
-//				
-////				Log.i(TAG, "Orientation =" +  decoderObject.getOrientation());
-//				if (decoderObject.getOrientation() != 99 && isMarkerFound() ){
-//					
+		while (true) {
+			while (busy == false || stopRequest == true) {
+				try {
+					wait();// wait for a new frame
+				} catch (InterruptedException e) {
+				}
+			}
+
+			if (stopRequest == true) {
+				// do nothing
+			} else {
+				if (calcFps) {
+					// calculate the fps
+					if (start == 0) {
+						start = SystemClock.uptimeMillis();
+					}
+					fcount++;
+					if (fcount == 30) {
+						now = SystemClock.uptimeMillis();
+						fps = 30 / ((now - start) / 1000.0);
+						// Log.i("AR", "fps:" + fps);
+						start = 0;
+						fcount = 0;
+					}
+				}
+				boolean qrDecodeBusy = false;
+				
+//				Log.i(TAG, "Orientation =" +  decoderObject.getOrientation());
+				if (decoderObject.getOrientation() != 99 && isMarkerFound() ){
+					
 //					DecodeDTO decodeDTO = new DecodeDTO();
 //					decodeDTO.setFrame(frame);
 //					decodeDTO.setRotacao(mat);
@@ -163,15 +162,23 @@ public class DetectionThread extends Thread {
 //					message.sendToTarget();
 //
 //					Log.i(TAG, "Mensagem enviada: Marcador encontrado.");
-//				
-//				}
-//				
-//				busy = false;
-//				preview.reAddCallbackBuffer(frame);
-//			}
-//
-//			yield();
-//		}
+					
+					byteArrayBuffer = new ByteArrayBuffer(this.frame.length);
+					byteArrayBuffer.append(frame, 0, frame.length);
+					decodeQRCodeThread.registerFrame(byteArrayBuffer, mat);
+					
+					
+//					decodeManager.isQRCodeFound(frame, frameWidth, frameHeight);
+				
+				}
+				
+				busy = false;
+				//((PreviewPost2_0)preview).reAddCallbackBuffer(frame);
+				((PreviewPost2_0)preview).reAddCallbackBufferFocus(frame,!decodeQRCodeThread.isBusy());
+			}
+
+			yield();
+		}
 
 	}
 	

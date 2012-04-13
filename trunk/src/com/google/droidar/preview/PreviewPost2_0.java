@@ -10,6 +10,7 @@ import android.hardware.Camera;
 import android.os.Message;
 import android.util.Log;
 import android.view.SurfaceHolder;
+import br.unb.MyAutoFocus;
 import br.unb.R;
 import br.unb.unbiquitous.thread.DetectionThread;
 
@@ -39,9 +40,9 @@ public class PreviewPost2_0 extends Preview{
         if(first){
 
         	// TODO [Ricardo] ver se isso aqui é chamado alguma hora.
-//        	myThread.setImageSizeAndRun(h,w);
+        	myThread.setImageSizeAndRun(h,w);
         	
-        	myThread.run();
+//        	myThread.run();
         	
         	first=false;
         }
@@ -51,6 +52,7 @@ public class PreviewPost2_0 extends Preview{
         addCallbackBuffer(buffer);   
 
         setPreviewCallbackWithBuffer(); 
+//        mCamera.setOneShotPreviewCallback(this);
         
         mCamera.startPreview();
     }
@@ -122,15 +124,15 @@ public class PreviewPost2_0 extends Preview{
 	public void onPreviewFrame(byte[] data, Camera camera) {
 		if (myThread.busy == false) {
 			
-//			myThread.nextFrame(data);
+			myThread.nextFrame(data);
 			
-			if(myThread.getHandler() == null) return;
-			
-			ByteArrayBuffer byteArrayBuffer = new ByteArrayBuffer(data.length);
-			byteArrayBuffer.append(data, 0, data.length);
-			
-			Message message = Message.obtain(myThread.getHandler(),R.id.frame_received, byteArrayBuffer);
-			myThread.getHandler().sendMessage(message);
+//			if(myThread.getHandler() == null) return;
+//			
+//			ByteArrayBuffer byteArrayBuffer = new ByteArrayBuffer(data.length);
+//			byteArrayBuffer.append(data, 0, data.length);
+//			
+//			Message message = Message.obtain(myThread.getHandler(),R.id.frame_received, byteArrayBuffer);
+//			myThread.getHandler().sendMessage(message);
 			
 		} else if(!paused){
 			//Add the buffer back into the queue.
@@ -144,8 +146,21 @@ public class PreviewPost2_0 extends Preview{
 	@Override
 	public void reAddCallbackBuffer(byte[] data) {
 		if(!paused){
+			
+//			mCamera.autoFocus(new MyAutoFocus());
 			addCallbackBuffer(data);
 		}		
+	}
+	
+	public void reAddCallbackBufferFocus(byte[] data, boolean toFocus){
+		if(!paused){
+			if(toFocus){
+				mCamera.autoFocus(new MyAutoFocus());
+			}else{
+				mCamera.cancelAutoFocus();
+			}
+			addCallbackBuffer(data);
+		}
 	}
 
 

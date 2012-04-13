@@ -76,23 +76,6 @@ public class DetectionHandler extends Handler {
 		DecodeDTO dto;
 		switch (message.what) {
 		
-		case R.id.marker_found:
-			
-			Log.i(TAG, "Mensagem recebida: Marcador encontrado.");
-			
-			dto = (DecodeDTO) message.obj;
-			
-			synchronized (qrCodeDecodeState) {
-				
-				// Só envio novas requisições quando a thread estiver pronta
-				if ( qrCodeDecodeState.equals(DecodeState.WAITTING) ){
-					qrCodeDecodeState = DecodeState.RUNNING;
-					enviarMsgDecodificar(dto);
-				}
-			}
-			
-			enviarMsgReposicionar(dto);
-			break;
 		case R.id.qrcode_decoded_succeeded:
 			
 			Log.i(TAG, "Mensagem recebida: QRCode decodificado com sucesso.");
@@ -142,7 +125,7 @@ public class DetectionHandler extends Handler {
 			break;
 		case R.id.resize_image:
 			
-			// TODO [Ricardo] Ver se precisa ser implementado.
+			// TODO [Ricardo] Ver se precisa ser implementado pois o tamanho da tela da câmera não é alterada.
 			break;
 		}
 		

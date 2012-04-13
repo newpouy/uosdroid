@@ -6,6 +6,7 @@ import android.os.Looper;
 import br.unb.unbiquitous.handler.DetectionHandler;
 import br.unb.unbiquitous.handler.RepositionMarkerHandler;
 import br.unb.unbiquitous.manager.ARManager;
+import br.unb.unbiquitous.marker.decoder.DecodeDTO;
 
 /**
  * 
@@ -18,14 +19,23 @@ public class RepositionMarkerThread extends Thread {
 	 * VARIABLES
 	 ************************************************/
 	private RepositionMarkerHandler handler;
-	private final CountDownLatch handlerInitLatch;
+	private CountDownLatch handlerInitLatch;
 	private ARManager arManager;
 	private DetectionHandler detectionHandler;
+	
+	private DecodeDTO decodeDTO;
+	private float[] rotacao;
+	
 	
 	/************************************************
 	 * CONSTRUCTOR
 	 ************************************************/
 
+	public RepositionMarkerThread(ARManager arManager){
+		this.arManager = arManager;
+		decodeDTO = new DecodeDTO();
+	}
+	
 	public RepositionMarkerThread(DetectionHandler detectionHandler, ARManager arManager) {
 		this.detectionHandler = detectionHandler;
 		this.arManager = arManager;
@@ -53,13 +63,38 @@ public class RepositionMarkerThread extends Thread {
 	 */
 	@Override
 	public void run() {
-		Looper.prepare();
-		handler = new RepositionMarkerHandler(arManager);
-		detectionHandler.setRepositionHandler(handler);
-		handlerInitLatch.countDown();
-		Looper.loop();
+//		Looper.prepare();
+//		handler = new RepositionMarkerHandler(arManager);
+//		detectionHandler.setRepositionHandler(handler);
+//		handlerInitLatch.countDown();
+//		Looper.loop();
+		
+		
+		
+		while(true){
+			arManager.reposicionarObjetoVirtual(decodeDTO.getAppName(), decodeDTO.getRotacao());
+		}
+		
+		
 	}
 
+	public void reposicionar(DecodeDTO decodeDTO){
+		this.decodeDTO = decodeDTO;
+	}
+
+	public synchronized DecodeDTO getDecodeDTO() {
+		return decodeDTO;
+	}
+
+	public void setDecodeDTO(DecodeDTO decodeDTO) {
+		this.decodeDTO = decodeDTO;
+	}
+	
+	public void setRotacao(float[] rotacao){
+		synchronized (decodeDTO) {
+			decodeDTO.setRotacao(rotacao);
+		}
+	}
 
 
 }
