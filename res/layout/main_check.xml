@@ -3,87 +3,48 @@
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="fill_parent" 
 	android:layout_height="fill_parent">
-
-	<LinearLayout android:id="@+id/buttonLayout"
-		android:orientation="horizontal"
-		android:layout_width="fill_parent" 
-		android:layout_height="wrap_content"
-		android:layout_alignParentBottom="true" >
-		
-		<Button android:id="@+id/toggleChoiceModeButton"
-			android:layout_width="wrap_content" 
-			android:layout_height="wrap_content"
-			android:layout_weight="0.33"
-			android:layout_margin="2dp" 
-			android:onClick="onButtonClick" 
-			android:text="Toggle Choice Mode" />	
-		
-		<Button android:id="@+id/viewCheckedIdsButton"
-			android:layout_width="wrap_content" 
-			android:layout_height="wrap_content"
-			android:layout_weight="0.33"
-			android:layout_marginTop="2dp" 
-			android:layout_marginBottom="2dp" 
-			android:onClick="onButtonClick" 
-			android:text="Selected IDs" />	
-	
-		<Button android:id="@+id/viewCheckedItemsButton"
-			android:layout_width="wrap_content" 
-			android:layout_height="wrap_content"
-			android:layout_margin="2dp" 
-			android:layout_weight="0.33"
-			android:onClick="onButtonClick" 
-			android:text="Selected Items" />	
- 	</LinearLayout>
  	
 	<LinearLayout android:id="@+id/main"
-    android:orientation="vertical"
-    android:layout_height="fill_parent"
-    android:layout_width="fill_parent">
-	<!-- header -->
- 	 <LinearLayout android:id="@+id/header"
-        android:background="#ff347c12"
-        android:layout_height="wrap_content"
-        android:layout_width="fill_parent">
-        
-        <TextView android:id="@+id/item1"
-            android:layout_height="fill_parent"
-            android:layout_width="wrap_content"
-            android:width="20dip"
-            android:height="30dip"/>
-        
-        <TextView android:id="@+id/item2"
-            android:layout_height="fill_parent"
-            android:layout_width="wrap_content"
-            android:text="Driver"
-            android:width="100dip"
-            android:height="30dip" />
-        
-        <TextView android:id="@+id/item3"
-            android:layout_height="fill_parent"
-            android:layout_width="wrap_content"
-            android:text="Usar"
-            android:width="100dip"
-            android:height="30dip" />
-        
-    </LinearLayout>
- 
-    <!-- List Divider -->
-    <View android:layout_width="fill_parent"
-        android:layout_height="1dip"
-        android:background="?android:attr/listDivider" />
-    
- 	
-	<ListView android:id="@+id/android:list" 
-		android:layout_width="fill_parent"
-		android:layout_height="wrap_content" 
-		android:layout_alignParentTop="true" 
-		android:layout_above="@id/buttonLayout"
-		android:layout_marginTop="5dp"
-		android:layout_marginBottom="5dp"
-		android:layout_marginLeft="5dp" 
-		android:choiceMode="singleChoice" />
+	    android:orientation="vertical"
+	    android:layout_height="fill_parent"
+	    android:layout_width="fill_parent">
+		
 	
+    <!--     android:background="#ff347c12" 
+    -->
+		<!-- header -->
+	 	 <LinearLayout android:id="@+id/header"
+	        android:layout_height="wrap_content"
+	        android:layout_width="fill_parent">
+		
+			<TextView android:id="@+id/item3"
+				android:layout_width="wrap_content" 
+				android:layout_height="wrap_content"
+				android:layout_marginRight="4.5dp"
+				android:textStyle="bold|italic"
+				android:text="Nome do recurso / Usado atualmente na Hydra"
+				android:focusable="false" 
+				 />
+	        
+	    </LinearLayout>
+	
+ 
+  	  	<!-- List Divider -->
+	    <View android:layout_width="fill_parent"
+	        android:layout_height="1dip"
+	        android:background="?android:attr/listDivider" />
+	    
+	 	<!-- android:layout_above="@id/buttonLayout" -->
+		<ListView android:id="@+id/android:list" 
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content" 
+			android:layout_alignParentTop="true" 
+			android:layout_marginTop="5dp"
+			android:layout_marginBottom="5dp"
+			android:layout_marginLeft="5dp" 
+			android:choiceMode="singleChoice" />
+	
+		
 	</LinearLayout>
 		
 </RelativeLayout>

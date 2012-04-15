@@ -3,12 +3,13 @@
  */
 package br.unb.pojo;
 
+
 /**
  * A POJO that contains some properties to show in the list
  * 
  * @author marvinlabs
  */
-public class Item implements Comparable<Item> {
+public class Item  implements Comparable<Item> {
 
 	private long id;
 	private String caption;
@@ -43,4 +44,5 @@ public class Item implements Comparable<Item> {
 	public int compareTo(Item other) {
 		return (int) (id - other.getId());
 	}
+
 }

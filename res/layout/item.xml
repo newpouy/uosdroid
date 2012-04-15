@@ -8,21 +8,10 @@
 	android:paddingTop="5dp"
 	android:paddingBottom="5dp">
 
-	<TextView android:id="@+id/itemId" 
-		android:layout_width="50dp"
-		android:layout_height="fill_parent" 
-		android:layout_alignParentLeft="true" 
-		android:layout_centerVertical="true" 
-		android:layout_marginLeft="5dp"
-		android:textSize="18dp" 
-		android:textStyle="bold|italic"
-		android:textColor="#fccc" 
-		android:focusable="false" />
-
-	<TextView android:id="@+id/itemCaption"
+   
+	<TextView android:id="@+id/driverName"
 		android:layout_width="wrap_content" 
 		android:layout_height="fill_parent"
-		android:layout_toRightOf="@id/itemId" 
 		android:layout_centerVertical="true" 
 		android:textSize="13dp"
 		android:textColor="#feee" 

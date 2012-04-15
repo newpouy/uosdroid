@@ -50,6 +50,8 @@ public class MeuObjetoVirtual extends BasicMarker {
 	private VirtualObjectCommand virtualObjectCommand;
 	private AnimationFaceToCamera animationFaceToCamera;
 	boolean firstTime = true;
+	
+	private List<String> nomeDrivers;
 
 	/************************************************
 	 * CONSTRUCTORS
@@ -128,7 +130,7 @@ public class MeuObjetoVirtual extends BasicMarker {
 	
 	/**
 	 * Método responsável por criar o texto contendo o nome da aplicação e alguns drivers 
-	 * disponibilizados pela aplicação. A fim de não "poluir" a tela, bem todos os drivers 
+	 * disponibilizados pela aplicação. A fim de não "poluir" a tela, nem todos os drivers 
 	 * serão apresentados. Os drivers que não forem apresentados nesse momento, poderão ser 
 	 * visualizados ao clicar no objeto virtual e redirecionados para uma nova tela. 
 	 * 
@@ -207,7 +209,7 @@ public class MeuObjetoVirtual extends BasicMarker {
 		// TODO [Ricardo] Pegar os drivers da Hydra
 		List<String> drivers = new ArrayList<String>();
 		
-		List<String> nomeDrivers = new ArrayList<String>();
+		nomeDrivers = new ArrayList<String>();
 		
 		nomeDrivers.add("Teclado");
 		nomeDrivers.add("Nomes");
@@ -304,6 +306,7 @@ public class MeuObjetoVirtual extends BasicMarker {
 	 * apresentará opções de redirecionamento ou cancelamento do uso dos recursos pela Hydra.
 	 */
 	private void adicionarEventosOnClick(){
+		virtualObjectCommand.setObjetoVirtual(this);
 		textoMeshComponent.setOnClickCommand(virtualObjectCommand);
 		textoMeshComponent.setOnLongClickCommand(virtualObjectCommand);
 		shapeMeshComponent.setOnClickCommand(virtualObjectCommand);
@@ -355,6 +358,12 @@ public class MeuObjetoVirtual extends BasicMarker {
 		this.appName = appName;
 	}
 
-	
+	public List<String> getNomeDrivers() {
+		return nomeDrivers;
+	}
 
+	public void setNomeDrivers(List<String> nomeDrivers) {
+		this.nomeDrivers = nomeDrivers;
+	}
+	
 }
