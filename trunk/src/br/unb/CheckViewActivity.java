@@ -6,14 +6,14 @@ import java.util.Comparator;
 import java.util.List;
 
 import android.app.ListActivity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.SparseBooleanArray;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.Toast;
-import android.widget.AdapterView.OnItemClickListener;
 import br.unb.pojo.Item;
 
 /**
@@ -31,22 +31,17 @@ public class CheckViewActivity extends ListActivity implements OnItemClickListen
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main_check);
-
-		// Create some sample data and sort it alphabetically
-		// --
-		data = new ArrayList<Item>(10);
-		data.add(new Item(10, "France"));
-		data.add(new Item(11, "United Kingdom"));
-		data.add(new Item(12, "Ireland"));
-		data.add(new Item(13, "Germany"));
-		data.add(new Item(14, "Belgium"));
-		data.add(new Item(15, "Luxembourg"));
-		data.add(new Item(16, "Netherlands"));
-		data.add(new Item(17, "Italy"));
-		data.add(new Item(18, "Denmark"));
-		data.add(new Item(19, "Spain"));
-		data.add(new Item(20, "Portugal"));
-		data.add(new Item(21, "Greece"));
+		
+		data = new ArrayList<Item>();
+		
+		Intent intent = getIntent();
+		
+		ArrayList<String> drivers = intent.getStringArrayListExtra("drivers");
+		
+		for ( int i =0; i< drivers.size(); i++){
+			data.add(new Item(Integer.valueOf(i).longValue(), drivers.get(i)));
+		}
+		
 		Collections.sort(data, new Comparator<Item>() {
 			public int compare(Item i1, Item i2) {
 				return i1.getCaption().compareTo(i2.getCaption());
@@ -78,22 +73,23 @@ public class CheckViewActivity extends ListActivity implements OnItemClickListen
 		}
 	}
 
+	
 	/**
 	 * Called when the user presses one of the buttons in the main view
 	 */
-	public void onButtonClick(View v) {
-		switch (v.getId()) {
-		case R.id.viewCheckedIdsButton:
-			showSelectedItemIds();
-			break;
-		case R.id.viewCheckedItemsButton:
-			showSelectedItems();
-			break;
-		case R.id.toggleChoiceModeButton:
-			toggleChoiceMode();
-			break;
-		}
-	}
+//	public void onButtonClick(View v) {
+//		switch (v.getId()) {
+//		case R.id.viewCheckedIdsButton:
+//			showSelectedItemIds();
+//			break;
+//		case R.id.viewCheckedItemsButton:
+//			showSelectedItems();
+//			break;
+//		case R.id.toggleChoiceModeButton:
+//			toggleChoiceMode();
+//			break;
+//		}
+//	}
 
 	/**
 	 * Change the list selection mode
@@ -208,6 +204,7 @@ public class CheckViewActivity extends ListActivity implements OnItemClickListen
 		}
 	}
 
+	@Override
 	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
 		
 		// Pega o item que foi selecionado.
@@ -215,13 +212,15 @@ public class CheckViewActivity extends ListActivity implements OnItemClickListen
 		
 		for(int i= 0; i < listView.getCheckItemIds().length; i++){
 			if(item.getId() == listView.getCheckedItemIds().clone()[i]){
+				
+				// TODO [Ricardo] Implementar aqui a integracao com a hydra.
+				
 				Toast.makeText(this, "Você marcou: " + item.getCaption(),Toast.LENGTH_LONG).show();
 				return;
 			}
 		}
 		
-		Toast.makeText(this, "Você desmarcou: " + item.getCaption(),Toast.LENGTH_LONG).show();
-		// Demostração
+		Toast.makeText(this, "Você desmarcou: " + item.getCaption(),Toast.LENGTH_SHORT).show();
 		
 	}
 
