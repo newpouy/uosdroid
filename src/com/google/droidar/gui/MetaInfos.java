@@ -20,7 +20,7 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.location.Address;
 import android.view.ViewGroup;
-import br.unb.R;
+import br.unb.unbiquitous.activity.R;
 
 /**
  * The {@link MetaInfos} object should be used to separate the information an

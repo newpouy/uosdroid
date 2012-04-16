@@ -12,7 +12,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import br.unb.R;
+import br.unb.unbiquitous.activity.R;
 
 /**
  * This screen can be used to display an introduction to the user when the AR

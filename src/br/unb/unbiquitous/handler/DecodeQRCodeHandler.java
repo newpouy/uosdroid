@@ -3,7 +3,7 @@ package br.unb.unbiquitous.handler;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
-import br.unb.R;
+import br.unb.unbiquitous.activity.R;
 import br.unb.unbiquitous.manager.DecodeManager;
 import br.unb.unbiquitous.marker.decoder.DecodeDTO;
 

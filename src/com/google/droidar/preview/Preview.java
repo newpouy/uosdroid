@@ -2,7 +2,7 @@ package com.google.droidar.preview;
 
 import java.io.IOException;
 
-import br.unb.MyAutoFocus;
+import br.unb.unbiquitous.marker.camera.MyAutoFocus;
 import br.unb.unbiquitous.thread.DetectionThread;
 
 

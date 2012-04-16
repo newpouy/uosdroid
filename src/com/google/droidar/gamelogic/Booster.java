@@ -1,11 +1,11 @@
 package com.google.droidar.gamelogic;
 
+import android.view.Gravity;
+import br.unb.unbiquitous.activity.R;
+
 import com.google.droidar.gui.simpleUI.ModifierGroup;
 import com.google.droidar.gui.simpleUI.modifiers.InfoText;
 import com.google.droidar.gui.simpleUI.modifiers.PlusMinusModifier;
-
-import android.view.Gravity;
-import br.unb.R;
 
 public class Booster extends GameElement {
 

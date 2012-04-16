@@ -1,4 +1,4 @@
-package br.unb;
+package br.unb.unbiquitous.activity;
 
 import java.util.ArrayList;
 
@@ -41,7 +41,7 @@ public class TesteDroidARActivity extends Activity  {
 //			}
 //		});
 
-		 intent = new Intent(this, CheckViewActivity.class);
+		 intent = new Intent(this, ListViewActivity.class);
 		
 		Button b = new Button(this);
 		b.setText("Load Activity");

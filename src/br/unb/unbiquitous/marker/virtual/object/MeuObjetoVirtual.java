@@ -7,7 +7,9 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.widget.TextView;
+import br.unb.unbiquitous.hydra.HydraConnection;
 import br.unb.unbiquitous.marker.command.VirtualObjectCommand;
+import br.unb.unbiquitous.ubiquitos.uos.driverManager.DriverData;
 
 import com.google.droidar.de.rwth.BasicMarker;
 import com.google.droidar.gl.Color;
@@ -29,8 +31,6 @@ import com.google.droidar.worldData.World;
  * @author ricardoandrade
  *
  */
-
-// TODO Tem que melhorar a usabilidade ainda, exemplo: quando o marcador ficar longo do celular tem que recalcular o tamanho do objeto virtual e da fonte.
 public class MeuObjetoVirtual extends BasicMarker {
 
 	/************************************************
@@ -52,6 +52,8 @@ public class MeuObjetoVirtual extends BasicMarker {
 	boolean firstTime = true;
 	
 	private List<String> nomeDrivers;
+	
+	private HydraConnection hydraConnection;
 
 	/************************************************
 	 * CONSTRUCTORS
@@ -207,7 +209,9 @@ public class MeuObjetoVirtual extends BasicMarker {
 	private List<String> buscarNomeDosDrivers(String appName){
 		
 		// TODO [Ricardo] Pegar os drivers da Hydra
-		List<String> drivers = new ArrayList<String>();
+
+//		List<DriverData> drivers = hydraConnection.get
+		
 		
 		nomeDrivers = new ArrayList<String>();
 		

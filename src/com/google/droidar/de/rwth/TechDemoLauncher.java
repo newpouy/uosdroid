@@ -31,7 +31,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import br.unb.R;
+import br.unb.unbiquitous.activity.R;
 
 
 

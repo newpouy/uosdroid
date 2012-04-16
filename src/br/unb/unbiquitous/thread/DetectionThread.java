@@ -226,18 +226,7 @@ public class DetectionThread extends Thread {
 	public void stopThread() {
 		stopRequest = true;
 	}
-	
-	/**
-	 * 
-	 */
-	public DetectionHandler getHandler() {
-//		try {
-//			handlerInitLatch.await();
-//		} catch (InterruptedException ie) {
-//			// continue?
-//		}
-		return detectionHandler;
-	}
+
 	
 	/************************************************
 	 * PRIVATE METHODS

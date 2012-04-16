@@ -6,7 +6,7 @@ import nativeLib.NativeLib;
 import android.opengl.GLSurfaceView;
 import android.os.Handler;
 import android.os.Message;
-import br.unb.R;
+import br.unb.unbiquitous.activity.R;
 import br.unb.unbiquitous.marker.decoder.DecodeDTO;
 import br.unb.unbiquitous.marker.decoder.DecodeState;
 import br.unb.unbiquitous.marker.decoder.DecoderObject;

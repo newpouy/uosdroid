@@ -2,16 +2,12 @@ package com.google.droidar.preview;
 
 import java.lang.reflect.Method;
 
-import org.apache.http.util.ByteArrayBuffer;
-
 import android.content.Context;
 import android.graphics.PixelFormat;
 import android.hardware.Camera;
-import android.os.Message;
 import android.util.Log;
 import android.view.SurfaceHolder;
-import br.unb.MyAutoFocus;
-import br.unb.R;
+import br.unb.unbiquitous.marker.camera.MyAutoFocus;
 import br.unb.unbiquitous.thread.DetectionThread;
 
 public class PreviewPost2_0 extends Preview{

@@ -43,7 +43,7 @@ import com.google.droidar.worldData.World;
 import android.app.Activity;
 import android.widget.Button;
 import android.widget.TextView;
-import br.unb.R;
+import br.unb.unbiquitous.activity.R;
 
 
 /**

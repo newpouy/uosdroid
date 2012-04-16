@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Intent;
-import br.unb.CheckViewActivity;
+import br.unb.unbiquitous.activity.ListViewActivity;
 import br.unb.unbiquitous.marker.virtual.object.MeuObjetoVirtual;
 
 import com.google.droidar.commands.Command;
@@ -35,7 +35,7 @@ public class VirtualObjectCommand extends Command {
 	public boolean execute() {
 		Log.i("VirtualObjectCommand", "objeto clicado.");
 		
-		Intent intent = new Intent(objetoVirtual.getActivity(), CheckViewActivity.class);
+		Intent intent = new Intent(objetoVirtual.getActivity(), ListViewActivity.class);
 		
 		ArrayList<String> drivers = new ArrayList<String>();
 		

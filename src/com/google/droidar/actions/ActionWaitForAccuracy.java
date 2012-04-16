@@ -13,7 +13,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import br.unb.R;
+import br.unb.unbiquitous.activity.R;
 
 public abstract class ActionWaitForAccuracy extends Action {
 

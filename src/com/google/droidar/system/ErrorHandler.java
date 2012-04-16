@@ -17,7 +17,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
-import br.unb.R;
+import br.unb.unbiquitous.activity.R;
 
 /**
  * Register the {@link ErrorHandler} like this: </br>
@@ -53,7 +53,7 @@ import br.unb.R;
  * <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height: normal;mso-layout-grid-align:none;text-autospace:none'>
  * <span style='font-size:
  * 10.0pt;font-family:"Courier New";mso-ansi-language:DE'><span
- * style='mso-tab-count: 1'>      </span><span class=SpellE><span
+ * style='mso-tab-count: 1'>ï¿½ï¿½ï¿½ï¿½ï¿½ </span><span class=SpellE><span
  * style='color:#7F007F'>android:taskAffinity</span></span><span
  * style='color:black'>=</span><i><span style='color:#2A00FF'>&quot;<span
  * class=SpellE>system.ErrorHandler</span>&quot;</span></i><span style='color:
@@ -63,7 +63,7 @@ import br.unb.R;
  * <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height: normal;mso-layout-grid-align:none;text-autospace:none'>
  * <span style='font-size:
  * 10.0pt;font-family:"Courier New";color:black;mso-ansi-language:DE'><span
- * style='mso-tab-count:1'>      </span></span><span style='font-size:10.0pt;
+ * style='mso-tab-count:1'>ï¿½ï¿½ï¿½ï¿½ï¿½ </span></span><span style='font-size:10.0pt;
  * font-family:"Courier New";color:teal;mso-ansi-language :DE'>&lt;</span><span
  * class=SpellE><span style='font-size:10.0pt;font-family:"Courier New";
  * color:#3F7F7F;mso-ansi-language:DE'>intent</span></span><span
@@ -77,7 +77,7 @@ import br.unb.R;
  * <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height: normal;mso-layout-grid-align:none;text-autospace:none'>
  * <span style='font-size:
  * 10.0pt;font-family:"Courier New";color:black;mso-ansi-language:DE'><span
- * style='mso-tab-count:2'>            </span></span><span
+ * style='mso-tab-count:2'>ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ </span></span><span
  * style='font-size:10.0pt;
  * font-family:"Courier New";color:teal;mso-ansi-language :DE'>&lt;</span><span
  * class=SpellE><span style='font-size:10.0pt;font-family:"Courier New";
@@ -93,7 +93,7 @@ import br.unb.R;
  * <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height: normal;mso-layout-grid-align:none;text-autospace:none'>
  * <span style='font-size:
  * 10.0pt;font-family:"Courier New";color:black;mso-ansi-language:DE'><span
- * style='mso-tab-count:1'>      </span><span style='mso-tab-count:1'>     
+ * style='mso-tab-count:1'>ï¿½ï¿½ï¿½ï¿½ï¿½ </span><span style='mso-tab-count:1'>ï¿½ï¿½ï¿½ï¿½ï¿½
  * </span></span><span style='font-size:10.0pt;font-family:"Courier
  * New";color:teal;mso-ansi-language: DE'>&lt;</span><span class=SpellE><span
  * style='font-size:10.0pt;font-family: "Courier New";color
@@ -109,7 +109,7 @@ import br.unb.R;
  * <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height: normal;mso-layout-grid-align:none;text-autospace:none'>
  * <span style='font-size:
  * 10.0pt;font-family:"Courier New";color:black;mso-ansi-language:DE'><span
- * style='mso-tab-count:1'>      </span><span style='mso-tab-count:1'>     
+ * style='mso-tab-count:1'>ï¿½ï¿½ï¿½ï¿½ï¿½ </span><span style='mso-tab-count:1'>ï¿½ï¿½ï¿½ï¿½ï¿½
  * </span></span><span style='font-size:10.0pt;font-family:"Courier
  * New";color:teal;mso-ansi-language: DE'>&lt;</span><span class=SpellE><span
  * style='font-size:10.0pt;font-family:
@@ -126,7 +126,7 @@ import br.unb.R;
  * <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height: normal;mso-layout-grid-align:none;text-autospace:none'>
  * <span style='font-size:
  * 10.0pt;font-family:"Courier New";color:black;mso-ansi-language:DE'><span
- * style='mso-tab-count:1'>      </span></span><span style='font-size:10.0pt;
+ * style='mso-tab-count:1'>ï¿½ï¿½ï¿½ï¿½ï¿½ </span></span><span style='font-size:10.0pt;
  * font-family:"Courier New";color:teal;mso-ansi-language :DE'>&lt;/</span><span
  * class=SpellE><span style='font-size:10.0pt;font-family:"Courier New";
  * color:#3F7F7F;mso-ansi-language:DE'>intent</span></span><span
