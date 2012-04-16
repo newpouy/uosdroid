@@ -1,11 +1,8 @@
 package br.unb.unbiquitous.activity;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.PropertyResourceBundle;
 
 import android.app.Activity;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -14,14 +11,13 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView.AdapterContextMenuInfo;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
-import br.unb.unbiquitous.activity.R;
 import br.unb.unbiquitous.application.UOSDroidApp;
 import br.unb.unbiquitous.configuration.ConfigLog4j;
 import br.unb.unbiquitous.hydra.HydraConnection;
+import br.unb.unbiquitous.marker.decoder.DecoderObject;
 import br.unb.unbiquitous.marker.decoder.QRCodeDecoder;
 import br.unb.unbiquitous.marker.detection.MultiMarkerSetup;
 
@@ -34,12 +30,11 @@ import com.google.zxing.client.android.camera.CameraManager;
  * 
  */
 public class MainUOSActivity extends Activity { 
-//implements	OnItemClickListener{ 
 
 	/************************************************************
 	 * CONSTANTS
 	 ************************************************************/
-	private static final String TAG = "\n\nMainUosActivity\n\n";
+	private static final String TAG = MainUOSActivity.class.getSimpleName();
 	private static final String REDIRECIONAR_RECURSO = "Redirecionar";
 	private static final boolean DEBUG = true;
 
@@ -49,11 +44,16 @@ public class MainUOSActivity extends Activity {
 
 	private UOSDroidApp droidobiquitousApp;
 	private HydraConnection hydraConnection;
+	
+	private DecoderObject decoderObject;
+	private MultiMarkerSetup markerSetup;
 
 	private ListView listView;
 	
 	private CameraManager cameraManager;
 	private QRCodeDecoder qrCodeDecoder;
+	
+	private Button button;
 	
 	private String flagContextMenu = REDIRECIONAR_RECURSO;
 
@@ -77,13 +77,15 @@ public class MainUOSActivity extends Activity {
 		// Starting the middleware
 		startMiddleware();
 
-		setContentView(R.layout.main);
+//		setContentView(R.layout.main);
 
 		// Creating the list view of the drivers
 //		initListView();
 		
-		// Start the augmented reality parameters
-		configureARParameters();
+		// Start the augmented reality
+		startAR();
+		
+		setContentView(button);
 	}
 
 
@@ -176,9 +178,33 @@ public class MainUOSActivity extends Activity {
 	 * PRIVATE METHODS
 	 ************************************************************/
 	
+	private void startAR(){
+		decoderObject = new DecoderObject(this);
+
+		markerSetup = new MultiMarkerSetup();
+		markerSetup.setActivity(this);
+		markerSetup.setDecoderObject(decoderObject);
+		
+		
+		button = new Button(this);
+		button.setText("Load Camera");
+		button.setOnClickListener(new OnClickListener() {
+
+			public void onClick(View v) {
+				ArActivity.startWithSetup(MainUOSActivity.this,
+						markerSetup);
+			}
+		});
+		
+	}
+	
 	private void configureARParameters() {
-		cameraManager = new CameraManager(getApplication());
-    	qrCodeDecoder = new QRCodeDecoder(cameraManager);
+		decoderObject = new DecoderObject(this);
+
+		markerSetup = new MultiMarkerSetup();
+		
+		markerSetup.setActivity(this);
+		markerSetup.setDecoderObject(decoderObject);
 		
 	}
 	
@@ -197,14 +223,20 @@ public class MainUOSActivity extends Activity {
 
 			droidobiquitousApp.start(bundle);
 
-			hydraConnection = new HydraConnection(droidobiquitousApp
-					.getApplicationContext().getGateway());
-
+			hydraConnection = new HydraConnection(droidobiquitousApp.getApplicationContext().getGateway());
 			hydraConnection.setActivity(this);
+			
+			
 		} catch (Exception e) {
 			Log.e(TAG, e.getMessage());
 		}
 	}
+
+
+
+
+
+	
 	
 	
 //	/**
@@ -252,5 +284,14 @@ public class MainUOSActivity extends Activity {
 //		text.setText(driverType.toString());
 //		
 //	}
+	
+	public HydraConnection getHydraConnection() {
+		return hydraConnection;
+	}
+
+	public void setHydraConnection(HydraConnection hydraConnection) {
+		this.hydraConnection = hydraConnection;
+	}
+	
 	
 }

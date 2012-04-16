@@ -8,6 +8,7 @@ import java.util.List;
 import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -18,18 +19,36 @@ import br.unb.unbiquitous.listView.Item;
 import br.unb.unbiquitous.listView.ItemListAdapter;
 
 /**
- * Our main activity, show a list of items and allows to select some of them
  * 
- * @author marvinlabs
+ * @author ricardoandrade
+ *
  */
 public class ListViewActivity extends ListActivity implements OnItemClickListener {
 
+
+	/************************************************************
+	 * CONSTANTS
+	 ************************************************************/
+	private static final String TAG = ListActivity.class.getSimpleName();
+	
+	/************************************************************
+	 * VARIABLES
+	 ************************************************************/
 	private List<Item> data;
 	private ListView listView;
 	private ItemListAdapter adapter;
-	
-	private HydraConnection hydraConnection;
 
+	public static HydraConnection hydraConnection;
+	
+
+
+	/************************************************************
+	 * PUBLIC METHODS
+	 ************************************************************/
+	
+	/**
+	 * 
+	 */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -39,7 +58,7 @@ public class ListViewActivity extends ListActivity implements OnItemClickListene
 		
 		Intent intent = getIntent();
 		
-		ArrayList<String> drivers = intent.getStringArrayListExtra("drivers");
+		ArrayList<String> drivers = intent.getStringArrayListExtra("driversName");
 		
 		for ( int i =0; i< drivers.size(); i++){
 			
@@ -58,13 +77,9 @@ public class ListViewActivity extends ListActivity implements OnItemClickListene
 			}
 		});
 
-		// Create the adapter to render our data
-		// --
 		adapter = new ItemListAdapter(this, data);
 		setListAdapter(adapter);
 
-		// Get some views for later use
-		// --
 		listView = getListView();
 		listView.setItemsCanFocus(false);
 
@@ -73,26 +88,13 @@ public class ListViewActivity extends ListActivity implements OnItemClickListene
 
 	}
 
-	@Override
-	protected void onResume() {
-		super.onResume();
-
-		for (int i = 0; i < listView.getCount(); ++i) {
-			boolean isDriverInUse = hydraConnection.isDriverInUse(data.get(i).getDriverData());
-			listView.setItemChecked(i, isDriverInUse);
-		}
-	}
-
 	/**
-	 * Desmarca todas as checkbox's.
+	 * 
+	 * @param arg0
+	 * @param arg1
+	 * @param arg2
+	 * @param arg3
 	 */
-	private void clearSelection() {
-		final int itemCount = listView.getCount();
-		for (int i = 0; i < itemCount; ++i) {
-			listView.setItemChecked(i, false);
-		}
-	}
-
 	@Override
 	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
 		
@@ -107,6 +109,8 @@ public class ListViewActivity extends ListActivity implements OnItemClickListene
 			}
 		}
 		
+		Log.i(TAG, "Recurso selecionado = " + item.getCaption());
+		
 		// Não conectar se o driver selecionado for o próprio driver da hydra.
 		if (item.getDriverData().equals(hydraConnection.getHydraApplication())){
 			return;
@@ -114,11 +118,22 @@ public class ListViewActivity extends ListActivity implements OnItemClickListene
 		
 		// Redirecionar ou liberar recurso
 		if(isItemMarcado){
+			
+			Log.i(TAG, "Pedido para redirecionamento do recurso = " + item.getCaption());
+			
 			hydraConnection.redirectResource(item.getDriverData());
 			item.setDriverInUse(true);
+			
+			Log.i(TAG, "Recurso " + item.getCaption() + " redirecionado com sucesso.");
+			
 		}else{
-			item.setDriverInUse(false);
+			
+			Log.i(TAG, "Pedido para liberação do recurso = " + item.getCaption());
+			
 			hydraConnection.releaseResource(item.getDriverData());
+			item.setDriverInUse(false);
+			
+			Log.i(TAG, "Recurso " + item.getCaption() + " liberado com sucesso.");
 		}
 		
 		
@@ -129,5 +144,38 @@ public class ListViewActivity extends ListActivity implements OnItemClickListene
 		}
 		
 	}
+
+	/************************************************************
+	 * PROTECTED METHODS
+	 ************************************************************/
+	
+	/**
+	 * 
+	 */
+	@Override
+	protected void onResume() {
+		super.onResume();
+		this.clearSelection();
+		
+		for (int i = 0; i < listView.getCount(); ++i) {
+			boolean isDriverInUse = hydraConnection.isDriverInUse(data.get(i).getDriverData());
+			listView.setItemChecked(i, isDriverInUse);
+		}
+	}
+
+	/************************************************************
+	 * PRIVATE METHODS
+	 ************************************************************/
+	
+	/**
+	 * Desmarca todas as checkbox's.
+	 */
+	private void clearSelection() {
+		final int itemCount = listView.getCount();
+		for (int i = 0; i < itemCount; ++i) {
+			listView.setItemChecked(i, false);
+		}
+	}
+
 
 }
