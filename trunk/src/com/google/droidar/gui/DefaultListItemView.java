@@ -8,7 +8,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import br.unb.R;
+import br.unb.unbiquitous.activity.R;
 
 public class DefaultListItemView extends LinearLayout {
 

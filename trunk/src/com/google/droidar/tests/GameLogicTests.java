@@ -8,7 +8,7 @@ import com.google.droidar.gamelogic.GameParticipant;
 import com.google.droidar.gamelogic.Stat;
 import com.google.droidar.gamelogic.StatList;
 
-import br.unb.R;
+import br.unb.unbiquitous.activity.R;
 
 public class GameLogicTests extends SimpleTesting {
 

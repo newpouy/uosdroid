@@ -20,7 +20,7 @@ import com.google.droidar.worldData.SystemUpdater;
 import com.google.droidar.worldData.World;
 
 import android.app.Activity;
-import br.unb.R;
+import br.unb.unbiquitous.activity.R;
 import br.unb.unbiquitous.marker.detection.MarkerDetectionSetup;
 import br.unb.unbiquitous.marker.detection.MarkerObjectMap;
 import br.unb.unbiquitous.marker.detection.UnrecognizedMarkerListener;

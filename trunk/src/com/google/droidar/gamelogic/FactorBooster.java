@@ -5,7 +5,7 @@ import com.google.droidar.gui.simpleUI.modifiers.InfoText;
 import com.google.droidar.gui.simpleUI.modifiers.PlusMinusModifier;
 
 import android.view.Gravity;
-import br.unb.R;
+import br.unb.unbiquitous.activity.R;
 
 public class FactorBooster extends Booster {
 

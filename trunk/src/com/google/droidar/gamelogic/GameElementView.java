@@ -17,7 +17,7 @@ import android.graphics.RectF;
 import android.graphics.Xfermode;
 import android.util.AttributeSet;
 import android.util.Log;
-import br.unb.R;
+import br.unb.unbiquitous.activity.R;
 
 public class GameElementView extends SimpleCustomView implements Entity {
 

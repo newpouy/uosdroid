@@ -44,7 +44,7 @@ import android.view.ViewGroup.LayoutParams;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
-import br.unb.R;
+import br.unb.unbiquitous.activity.R;
 
 
 /**

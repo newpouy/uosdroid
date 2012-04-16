@@ -4,7 +4,7 @@ import com.google.droidar.gui.simpleUI.ModifierGroup;
 import com.google.droidar.gui.simpleUI.modifiers.InfoText;
 import com.google.droidar.gui.simpleUI.modifiers.PlusMinusModifier;
 
-import br.unb.R;
+import br.unb.unbiquitous.activity.R;
 
 public class ActionThrowFireball extends GameAction {
 

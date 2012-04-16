@@ -1,4 +1,4 @@
-package br.unb;
+package br.unb.unbiquitous.marker.camera;
 
 import android.hardware.Camera;
 import android.hardware.Camera.AutoFocusCallback;

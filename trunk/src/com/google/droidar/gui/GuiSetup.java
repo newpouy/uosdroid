@@ -23,7 +23,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import br.unb.R;
+import br.unb.unbiquitous.activity.R;
 
 
 public class GuiSetup {
