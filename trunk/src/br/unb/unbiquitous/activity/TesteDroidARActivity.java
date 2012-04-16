@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import br.unb.unbiquitous.hydra.HydraConnection;
 import br.unb.unbiquitous.marker.decoder.DecoderObject;
 import br.unb.unbiquitous.marker.detection.MultiMarkerSetup;
 
@@ -16,6 +17,8 @@ public class TesteDroidARActivity extends Activity  {
 	private DecoderObject decoderObject;
 	private MultiMarkerSetup markerSetup;
 	private Intent intent;
+	
+	private HydraConnection hydraConnection;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -72,4 +75,15 @@ public class TesteDroidARActivity extends Activity  {
 		});
 		setContentView(b);
 	}
+
+	public HydraConnection getHydraConnection() {
+		return hydraConnection;
+	}
+
+	public void setHydraConnection(HydraConnection hydraConnection) {
+		this.hydraConnection = hydraConnection;
+	}
+	
+	
+	
 }

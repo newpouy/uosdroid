@@ -1,5 +1,6 @@
 package br.unb.unbiquitous.hydra;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -155,7 +156,7 @@ public class HydraConnection {
 	}
 	
 	/**
-	 * Por enquanto estou considerando que no smart space s� ter� uma aplica��o da hydra rodando. 
+	 * Por enquanto estou considerando que no smart space só terá uma aplicação da hydra rodando. 
 	 * @return
 	 */
 	public DriverData getHydraApplication(){
@@ -240,6 +241,24 @@ public class HydraConnection {
 			}
 		}
 		return null;
+	}
+	
+	/**
+	 * Returns a list with the drivers of the device.
+	 * @param deviceName
+	 * @return
+	 */
+	public List<DriverData> getDriversByDevice(String deviceName){
+		
+		List<DriverData> drivers = new ArrayList<DriverData>();
+		
+		for (DriverData driverData : this.getDriversList()) {
+			if(driverData.getDevice().getName().equalsIgnoreCase(deviceName)){
+				drivers.add(driverData);
+			}
+		}
+		
+		return drivers;
 	}
 	
 	/************************************************************

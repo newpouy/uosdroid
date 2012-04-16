@@ -7,6 +7,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.widget.TextView;
+import br.unb.unbiquitous.activity.MainUOSActivity;
 import br.unb.unbiquitous.hydra.HydraConnection;
 import br.unb.unbiquitous.marker.command.VirtualObjectCommand;
 import br.unb.unbiquitous.ubiquitos.uos.driverManager.DriverData;
@@ -72,6 +73,7 @@ public class MeuObjetoVirtual extends BasicMarker {
 		virtualObjectCommand = new VirtualObjectCommand();
 		animationFaceToCamera = new AnimationFaceToCamera(glCamera);
 		
+		hydraConnection = ((MainUOSActivity) activity).getHydraConnection();
 	}
 
 	/**
@@ -208,19 +210,13 @@ public class MeuObjetoVirtual extends BasicMarker {
 	 */
 	private List<String> buscarNomeDosDrivers(String appName){
 		
-		// TODO [Ricardo] Pegar os drivers da Hydra
-
-//		List<DriverData> drivers = hydraConnection.get
-		
+		List<DriverData> drivers = hydraConnection.getDriversByDevice(appName);
 		
 		nomeDrivers = new ArrayList<String>();
 		
-		nomeDrivers.add("Teclado");
-		nomeDrivers.add("Nomes");
-		nomeDrivers.add("Nome muito grande.");
-		nomeDrivers.add("Mouse");
-		nomeDrivers.add("Tela");
-		nomeDrivers.add("Câmera");
+		for (DriverData driverData : drivers) {
+			nomeDrivers.add(driverData.getInstanceID());
+		}
 		
 		return nomeDrivers;
 	}
@@ -369,5 +365,15 @@ public class MeuObjetoVirtual extends BasicMarker {
 	public void setNomeDrivers(List<String> nomeDrivers) {
 		this.nomeDrivers = nomeDrivers;
 	}
+
+	public HydraConnection getHydraConnection() {
+		return hydraConnection;
+	}
+
+	public void setHydraConnection(HydraConnection hydraConnection) {
+		this.hydraConnection = hydraConnection;
+	}
+	
+	
 	
 }

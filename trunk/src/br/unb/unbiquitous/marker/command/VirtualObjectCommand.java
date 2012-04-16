@@ -37,13 +37,15 @@ public class VirtualObjectCommand extends Command {
 		
 		Intent intent = new Intent(objetoVirtual.getActivity(), ListViewActivity.class);
 		
-		ArrayList<String> drivers = new ArrayList<String>();
+		ListViewActivity.hydraConnection = objetoVirtual.getHydraConnection();
+		
+		ArrayList<String> driversName = new ArrayList<String>();
 		
 		for (String driver : objetoVirtual.getNomeDrivers()) {
-			drivers.add(driver);
+			driversName.add(driver);
 			
 		}
-		intent.putStringArrayListExtra("drivers", drivers);
+		intent.putStringArrayListExtra("driversName", driversName);
 		objetoVirtual.getActivity().startActivity(intent);
 		
 		

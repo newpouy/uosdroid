@@ -19,9 +19,17 @@ import com.google.droidar.gl.MarkerObject;
 import com.google.droidar.preview.Preview;
 import com.google.droidar.preview.PreviewPost2_0;
 
+/**
+ * 
+ * @author ricardoandrade
+ *
+ */
 public class DetectionThread extends Thread {
 	
-	private static final String TAG = "DetectionThread";
+	/************************************************
+	 * CONSTANTS
+	 ************************************************/
+	private static final String TAG = DetectionThread.class.getSimpleName();
 	
 	/************************************************
 	 * VARIABLES
