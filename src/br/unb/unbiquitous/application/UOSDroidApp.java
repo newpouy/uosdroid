@@ -8,9 +8,9 @@ import br.unb.unbiquitous.ubiquitos.uos.adaptabitilyEngine.Gateway;
 import br.unb.unbiquitous.ubiquitos.uos.application.UosApplication;
 import br.unb.unbiquitous.ubiquitos.uos.context.ContextException;
 import br.unb.unbiquitous.ubiquitos.uos.context.UOSApplicationContext;
-import br.unb.unbiquitous.ubiquitos.uos.ontology.OntologyDeploy;
-import br.unb.unbiquitous.ubiquitos.uos.ontology.OntologyStart;
-import br.unb.unbiquitous.ubiquitos.uos.ontology.OntologyUndeploy;
+import br.unb.unbiquitous.ubiquitos.uos.ontologyEngine.api.OntologyDeploy;
+import br.unb.unbiquitous.ubiquitos.uos.ontologyEngine.api.OntologyStart;
+import br.unb.unbiquitous.ubiquitos.uos.ontologyEngine.api.OntologyUndeploy;
 
 /**
  * 

@@ -5,24 +5,19 @@ import java.util.PropertyResourceBundle;
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.ContextMenu;
-import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.ListView;
 import br.unb.unbiquitous.application.UOSDroidApp;
 import br.unb.unbiquitous.configuration.ConfigLog4j;
 import br.unb.unbiquitous.hydra.HydraConnection;
 import br.unb.unbiquitous.marker.decoder.DecoderObject;
-import br.unb.unbiquitous.marker.decoder.QRCodeDecoder;
 import br.unb.unbiquitous.marker.detection.MultiMarkerSetup;
 
 import com.google.droidar.system.ArActivity;
-import com.google.zxing.client.android.camera.CameraManager;
 
 /**
  * 
@@ -35,7 +30,6 @@ public class MainUOSActivity extends Activity {
 	 * CONSTANTS
 	 ************************************************************/
 	private static final String TAG = MainUOSActivity.class.getSimpleName();
-	private static final String REDIRECIONAR_RECURSO = "Redirecionar";
 	private static final boolean DEBUG = true;
 
 	/************************************************************
@@ -48,15 +42,8 @@ public class MainUOSActivity extends Activity {
 	private DecoderObject decoderObject;
 	private MultiMarkerSetup markerSetup;
 
-	private ListView listView;
-	
-	private CameraManager cameraManager;
-	private QRCodeDecoder qrCodeDecoder;
-	
 	private Button button;
 	
-	private String flagContextMenu = REDIRECIONAR_RECURSO;
-
 	/************************************************************
 	 * PUBLIC METHODS
 	 ************************************************************/
@@ -77,15 +64,15 @@ public class MainUOSActivity extends Activity {
 		// Starting the middleware
 		startMiddleware();
 
-//		setContentView(R.layout.main);
+		setContentView(R.layout.main);
 
 		// Creating the list view of the drivers
 //		initListView();
 		
 		// Start the augmented reality
-		startAR();
+//		startAR();
 		
-		setContentView(button);
+//		setContentView(button);
 	}
 
 
@@ -155,25 +142,6 @@ public class MainUOSActivity extends Activity {
 		return true;
 	}
 	
-	@Override
-	public void onCreateContextMenu(ContextMenu menu, View view, ContextMenuInfo menuInfo) {
-	    super.onCreateContextMenu(menu, view, menuInfo);  
-	    menu.setHeaderTitle("Ação");
-	    menu.add(0, view.getId(), 0, flagContextMenu);  
-	}
-
-//	@Override
-//	public boolean onContextItemSelected(MenuItem menuItem) {  
-//		AdapterContextMenuInfo info = (AdapterContextMenuInfo) menuItem.getMenuInfo();
-//		ItemListView itemListView = this.adapterListView.getItem(info.position);
-//
-//		Toast.makeText(this, "You pressed the: " + itemListView.getTexto(),Toast.LENGTH_LONG);
-//		
-//		return true;
-//	}	      
-	
-	
-	
 	/************************************************************
 	 * PRIVATE METHODS
 	 ************************************************************/
@@ -198,16 +166,6 @@ public class MainUOSActivity extends Activity {
 		
 	}
 	
-	private void configureARParameters() {
-		decoderObject = new DecoderObject(this);
-
-		markerSetup = new MultiMarkerSetup();
-		
-		markerSetup.setActivity(this);
-		markerSetup.setDecoderObject(decoderObject);
-		
-	}
-	
 	/**
 	 * Start the middleware with the configs of the bundle and 
 	 * start the hydra connection.
@@ -218,72 +176,21 @@ public class MainUOSActivity extends Activity {
 
 			droidobiquitousApp = new UOSDroidApp();
 
-			bundle = new PropertyResourceBundle(getResources().openRawResource(
-					R.raw.uosdroid));
+			bundle = new PropertyResourceBundle(getResources().openRawResource(R.raw.uosdroid));
 
 			droidobiquitousApp.start(bundle);
 
 			hydraConnection = new HydraConnection(droidobiquitousApp.getApplicationContext().getGateway());
 			hydraConnection.setActivity(this);
 			
-			
 		} catch (Exception e) {
 			Log.e(TAG, e.getMessage());
 		}
 	}
 
-
-
-
-
-	
-	
-	
-//	/**
-//	 * Inicializa o List View.
-//	 */
-//	private void initListView() {
-//		listView = (ListView) findViewById(R.id.tela_consulta_listView);
-//		//listView.setOnItemClickListener(this);
-//		registerForContextMenu(listView);
-//		
-//		//Cria a lista com todos os drivers encontrado por default.
-//		createListView(DriverType.ALL, hydraConnection.getDriversList());
-//	}
-
-	
-//	/**
-//	 * Cria o List View a partir dos drivers passados.
-//	 */
-//	private void createListView(DriverType driverType, List<DriverData> driversData) {
-//		
-//		if(driversData == null){
-//			Toast.makeText(this, "Não foi encontrado drivers para "+ driverType.toString(),Toast.LENGTH_LONG).show();
-//			return;
-//		}
-//		
-//		// Inicializando a lista que preenchera o ListView
-//		itens = new ArrayList<ItemListView>();
-//		
-//		// Populando a lista com os drivers
-//		for (DriverData driverData : driversData) {
-//			ItemListView item = new ItemListView(driverData.getInstanceID(), driverData, driverType);
-//			itens.add(item);
-//		}
-//
-//		// Cria o adapter
-//		adapterListView = new AdapterListView(this, itens);
-//
-//		// Define o Adapter
-//		listView.setAdapter(adapterListView);
-//		
-//		// Cor quando a lista é selecionada para rolagem.
-//		listView.setCacheColorHint(Color.GRAY);
-//
-//		TextView text = (TextView) findViewById(R.id.titulo_driver);
-//		text.setText(driverType.toString());
-//		
-//	}
+	/************************************************************
+	 * GETTERS AND SETTERS
+	 ************************************************************/
 	
 	public HydraConnection getHydraConnection() {
 		return hydraConnection;
