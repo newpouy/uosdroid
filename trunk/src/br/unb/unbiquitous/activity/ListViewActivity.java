@@ -110,11 +110,14 @@ public class ListViewActivity extends ListActivity implements OnItemClickListene
 		}
 		
 		Log.i(TAG, "Recurso selecionado = " + item.getCaption());
+	
+		// TODO [Ricardo] confirmar para ver se não precisa mais, pois os drivers da Hydra são ignorados no RegisterDriver.
+		// enviado pelo método de getListDriversInHydra() na HydraConnection
 		
 		// Não conectar se o driver selecionado for o próprio driver da hydra.
-		if (item.getDriverData().equals(hydraConnection.getHydraApplication())){
-			return;
-		}
+//		if (item.getDriverData().equals(hydraConnection.getHydraApplication())){
+//			return;
+//		}
 		
 		// Redirecionar ou liberar recurso
 		if(isItemMarcado){

@@ -215,7 +215,8 @@ public class MeuObjetoVirtual extends BasicMarker {
 		nomeDrivers = new ArrayList<String>();
 		
 		for (DriverData driverData : drivers) {
-			nomeDrivers.add(driverData.getInstanceID());
+			String[] split = driverData.getInstanceID().split("/.");
+			nomeDrivers.add(split[split.length - 1]);
 		}
 		
 		return nomeDrivers;

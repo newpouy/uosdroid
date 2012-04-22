@@ -7,6 +7,7 @@ public enum DriverType {
 	KEYBOARD("br.unb.unbiquitous.ubiquitos.driver.keyboardDriver"),
 	MOUSE("br.unb.unbiquitous.ubiquitos.driver.mouseDriver"),
 	SCREEN("br.unb.unbiquitous.ubiquitos.driver.screenDriver"),
+	REGISTER("br.unb.unbiquitous.ubiquitos.uos.driver.RegisterDriver"),
 	ALL("");
 	
 	private String path;
