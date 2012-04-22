@@ -88,8 +88,9 @@ public class MainUOSActivity extends Activity {
 		if (DEBUG)
 			Log.e(TAG, "++ ON OPTIONS ITEM SELECTED ++");
 		
-		
-		hydraConnection.getDriversList();
+		hydraConnection.getListDriversInHydra();
+//		hydraConnection.getDriversList();
+//		hydraConnection.getHydraDevice();
 
 		/* chamando uma activity */
 		// Launch the DeviceListActivity to see devices and do scan
