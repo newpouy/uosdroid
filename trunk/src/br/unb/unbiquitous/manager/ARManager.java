@@ -44,7 +44,7 @@ public class ARManager {
 
 		if (isAppNameValid(appName)) {
 
-			appName = "HydraApp";
+			appName = "MouseDriverDevice";
 			
 			MarkerObject markerObj = markerObjectMap.get(appName);
 
@@ -62,7 +62,7 @@ public class ARManager {
 	}
 	
 	public void reposicionarObjetoVirtual(String appName, float[] rotacao){
-		appName = "HydraApp";
+		appName = "MouseDriverDevice";
 		MarkerObject markerObj = markerObjectMap.get(appName);
 
 		// Verifica se o objeto já foi criado anteriormente.

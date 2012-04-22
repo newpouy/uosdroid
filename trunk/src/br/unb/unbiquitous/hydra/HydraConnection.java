@@ -1,19 +1,12 @@
 package br.unb.unbiquitous.hydra;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.TreeSet;
-import java.util.Vector;
-
-import com.google.droidar.util.Vec;
 
 import android.util.Log;
-import android.widget.Toast;
 import br.unb.unbiquitous.activity.MainUOSActivity;
 import br.unb.unbiquitous.application.UOSDroidApp;
 import br.unb.unbiquitous.json.JSONArray;
@@ -59,7 +52,7 @@ public class HydraConnection {
 //	private DriverData hydraDriver;
 	private MainUOSActivity activity;
 	
-	private Set<DriverData> driversList;
+	private List<DriverData> driversList;
 	
 	/************************************************************
 	 * CONSTRUCTOR
@@ -67,12 +60,10 @@ public class HydraConnection {
 	
 	public HydraConnection() {
 		gateway = app.getApplicationContext().getGateway();
-		driversList = new TreeSet<DriverData>();
 	}
 
 	public HydraConnection(Gateway gateway) {
 		this.gateway = gateway;
-		driversList = new TreeSet<DriverData>();
 	}
 	
 	/************************************************************
@@ -95,6 +86,8 @@ public class HydraConnection {
 						parameterMap);
 
 				JSONArray jsonList = new JSONArray(response.getResponseData().get("driverList"));
+				
+				driversList = new ArrayList<DriverData>();
 				
 				for(int i=0 ; i < jsonList.length(); i++){
 					
@@ -231,9 +224,11 @@ public class HydraConnection {
 //			driversList = gateway.listDrivers(null);
 //		}
 //		
-		List<DriverData> drivers = new ArrayList<DriverData>();
-		drivers.addAll(driversList);
-		return drivers;
+		if ( this.driversList == null ){
+			this.getListDriversInHydra();
+		}
+		
+		return this.driversList;
 	}
 
 	/**
@@ -245,7 +240,7 @@ public class HydraConnection {
 		
 		for (DriverData driverData : this.getDriversList()) {
 			
-			if(driverData.getInstanceID().equals(instanceID)){
+			if(driverData.getInstanceID().equals(instanceID) || driverData.getInstanceID().endsWith(instanceID)){
 				return driverData;
 			}
 		}
@@ -253,16 +248,25 @@ public class HydraConnection {
 	}
 	
 	/**
-	 * Returns a list with the drivers of the device.
+	 * Returns a list with the drivers of the device. This list will contain only 
+	 * mouse, keyboard, screen and camera drivers.
+	 * 
 	 * @param deviceName
 	 * @return
 	 */
 	public List<DriverData> getDriversByDevice(String deviceName){
 		
+
 		List<DriverData> drivers = new ArrayList<DriverData>();
 		
 		for (DriverData driverData : this.getDriversList()) {
-			if(driverData.getDevice().getName().equalsIgnoreCase(deviceName)){
+			if(	 driverData.getDevice().getName().equalsIgnoreCase(deviceName) &&	
+				( driverData.getDriver().getName().equals(DriverType.CAMERA.getPath()) ||
+				  driverData.getDriver().getName().equals(DriverType.KEYBOARD.getPath()) ||
+				  driverData.getDriver().getName().equals(DriverType.MOUSE.getPath()) ||
+				  driverData.getDriver().getName().equals(DriverType.SCREEN.getPath())
+			    )){
+
 				drivers.add(driverData);
 			}
 		}
