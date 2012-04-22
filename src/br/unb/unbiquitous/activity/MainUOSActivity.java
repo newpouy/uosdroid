@@ -66,13 +66,11 @@ public class MainUOSActivity extends Activity {
 
 		setContentView(R.layout.main);
 
-		// Creating the list view of the drivers
-//		initListView();
 		
 		// Start the augmented reality
-//		startAR();
+		startAR();
 		
-//		setContentView(button);
+		setContentView(button);
 	}
 
 
