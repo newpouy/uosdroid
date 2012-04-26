@@ -534,8 +534,8 @@ JNIEXPORT jint JNICALL Java_nativeLib_NativeLib_detectMarkers(
 
 					// TODO [Ricardo] gambira
 					orientation = screenOrientation;
-					sprintf(tmp, "borderCorret and orientation = %d", screenOrientation);
-					LOGI(tmp);
+//					sprintf(tmp, "borderCorret and orientation = %d", screenOrientation);
+//					LOGI(tmp);
 
 //					sprintf(tmp, "orientation = %d, screen = %d", orientation, screenOrientation);
 //					LOGI(tmp);
@@ -621,8 +621,8 @@ JNIEXPORT jint JNICALL Java_nativeLib_NativeLib_detectMarkers(
 						LOGI(tmp);
 //#endif
 
-						if((code > 1000 && code < 2000) || ( code > 4000 && code < 4500)){
-
+						if((code > 1000 && code < 2000) || ( code != 4095 && code > 3200 && code < 4500) || (code < 1000 && code != 408)){
+//						if (code == 408 || (code > 1000)){
 							//Only now a marker has been detected and the info can be
 							//added to the return list.
 

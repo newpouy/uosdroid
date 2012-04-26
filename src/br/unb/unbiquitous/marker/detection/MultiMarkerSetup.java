@@ -8,20 +8,16 @@ import com.google.droidar.actions.Action;
 import com.google.droidar.actions.ActionMoveCameraBuffered;
 import com.google.droidar.actions.ActionRotateCameraBuffered;
 import com.google.droidar.commands.Command;
-import com.google.droidar.de.rwth.SimpleMeshPlacer;
 import com.google.droidar.geo.GeoObj;
-import com.google.droidar.gl.Color;
 import com.google.droidar.gl.CustomGLSurfaceView;
 import com.google.droidar.gl.GLCamera;
 import com.google.droidar.gl.GLFactory;
 import com.google.droidar.gl.GLRenderer;
 import com.google.droidar.gl.MarkerObject;
 import com.google.droidar.gl.scenegraph.MeshComponent;
-import com.google.droidar.gl.scenegraph.Shape;
 import com.google.droidar.gui.GuiSetup;
 import com.google.droidar.system.EventManager;
 import com.google.droidar.util.Vec;
-import com.google.droidar.worldData.Obj;
 import com.google.droidar.worldData.SystemUpdater;
 import com.google.droidar.worldData.World;
 
@@ -50,7 +46,7 @@ public class MultiMarkerSetup extends MarkerDetectionSetup {
 //		mesh2.addChild(GLFactory.getInstance().newCircle(new Color(0, 0, 1, 0.6f)));
 //		// mesh1.add(GLFactory.getInstance().newCube());
 		
-		meuObjetoVirtual = new MeuObjetoVirtual("5", camera, world, this.activity);
+//		meuObjetoVirtual = new MeuObjetoVirtual("5", camera, world, this.activity);
 
 	}
 
@@ -78,10 +74,10 @@ public class MultiMarkerSetup extends MarkerDetectionSetup {
 	@Override
 	public void _a3_registerMarkerObjects(MarkerObjectMap markerObjectMap) {
 		this.markerObjectMap = markerObjectMap;
-		markerObjectMap.put(new SimpleMeshPlacer("0", mesh1, camera));
-		markerObjectMap.put(new SimpleMeshPlacer("1", mesh2, camera));
+//		markerObjectMap.put(new SimpleMeshPlacer("0", mesh1, camera));
+//		markerObjectMap.put(new SimpleMeshPlacer("1", mesh2, camera));
 		
-		markerObjectMap.put(meuObjetoVirtual);
+//		markerObjectMap.put(meuObjetoVirtual);
 
 	}
 

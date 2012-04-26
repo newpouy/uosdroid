@@ -2,6 +2,9 @@ package br.unb.unbiquitous.manager;
 
 import java.util.HashMap;
 
+import android.app.Activity;
+import android.util.Log;
+import br.unb.unbiquitous.activity.MainUOSActivity;
 import br.unb.unbiquitous.marker.detection.MultiMarkerSetup;
 
 import com.google.droidar.gl.MarkerObject;
@@ -44,7 +47,7 @@ public class ARManager {
 
 		if (isAppNameValid(appName)) {
 
-			appName = "MouseDriverDevice";
+			Log.e("AppName", "AppName decodificado = " + appName);
 			
 			MarkerObject markerObj = markerObjectMap.get(appName);
 
@@ -62,7 +65,7 @@ public class ARManager {
 	}
 	
 	public void reposicionarObjetoVirtual(String appName, float[] rotacao){
-		appName = "MouseDriverDevice";
+//		appName = "MouseDriverDevice";
 		MarkerObject markerObj = markerObjectMap.get(appName);
 
 		// Verifica se o objeto já foi criado anteriormente.
@@ -88,8 +91,7 @@ public class ARManager {
 	 ************************************************/
 	
 	private boolean isAppNameValid(String appName){
-		// TODO [Ricardo] conexão com a Hydra.
-		return true;
+		return ((MainUOSActivity)setup.getActivity()).getHydraConnection().isDeviceValid(appName);
 	}
 	
 	/**

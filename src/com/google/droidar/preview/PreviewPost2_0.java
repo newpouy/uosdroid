@@ -34,11 +34,7 @@ public class PreviewPost2_0 extends Preview{
         int bufSize = ((h*w)*p.bitsPerPixel)/8;
         Log.d("AR","Camera parameters: Size: "+bufSize+", Height: "+h+", Width: "+w+", pixelformat: "+p.toString());
         if(first){
-
-        	// TODO [Ricardo] ver se isso aqui é chamado alguma hora.
         	myThread.setImageSizeAndRun(h,w);
-        	
-//        	myThread.run();
         	
         	first=false;
         }
@@ -142,14 +138,15 @@ public class PreviewPost2_0 extends Preview{
 	@Override
 	public void reAddCallbackBuffer(byte[] data) {
 		if(!paused){
-			
-//			mCamera.autoFocus(new MyAutoFocus());
 			addCallbackBuffer(data);
 		}		
 	}
 	
 	public void reAddCallbackBufferFocus(byte[] data, boolean toFocus){
 		if(!paused){
+			
+			if (mCamera == null) return;
+			
 			if(toFocus){
 				mCamera.autoFocus(new MyAutoFocus());
 			}else{
