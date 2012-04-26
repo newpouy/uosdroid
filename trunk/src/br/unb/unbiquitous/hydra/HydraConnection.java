@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeSet;
 
 import android.util.Log;
 import br.unb.unbiquitous.activity.MainUOSActivity;
@@ -49,7 +48,6 @@ public class HydraConnection {
 
 	private UOSDroidApp app;
 	private Gateway gateway;
-//	private DriverData hydraDriver;
 	private MainUOSActivity activity;
 	
 	private List<DriverData> driversList;
@@ -218,12 +216,6 @@ public class HydraConnection {
 	 */
 	public List<DriverData> getDriversList() {
 		
-//		if(this.driversList == null){
-//			
-//		}else{
-//			driversList = gateway.listDrivers(null);
-//		}
-//		
 		if ( this.driversList == null ){
 			this.getListDriversInHydra();
 		}
@@ -238,7 +230,7 @@ public class HydraConnection {
 	 */
 	public DriverData getDriverData(String instanceID){
 		
-		for (DriverData driverData : this.getDriversList()) {
+		for (DriverData driverData : this.driversList) {
 			
 			if(driverData.getInstanceID().equals(instanceID) || driverData.getInstanceID().endsWith(instanceID)){
 				return driverData;
@@ -272,6 +264,15 @@ public class HydraConnection {
 		}
 		
 		return drivers;
+	}
+	
+	public boolean isDeviceValid(String deviceName){
+		for (DriverData driverData : this.getDriversList()) {
+			if(driverData.getDevice().getName().equals(deviceName)){
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	/************************************************************

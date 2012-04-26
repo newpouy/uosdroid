@@ -1,14 +1,13 @@
 package br.unb.unbiquitous.thread;
 
 import java.util.HashMap;
-import java.util.concurrent.CountDownLatch;
+
+import nativeLib.NativeLib;
 
 import org.apache.http.util.ByteArrayBuffer;
 
-import nativeLib.NativeLib;
 import android.opengl.GLSurfaceView;
 import android.os.SystemClock;
-import br.unb.unbiquitous.handler.DetectionHandler;
 import br.unb.unbiquitous.manager.ARManager;
 import br.unb.unbiquitous.manager.DecodeManager;
 import br.unb.unbiquitous.marker.decoder.DecoderObject;
@@ -49,8 +48,6 @@ public class DetectionThread extends Thread {
 	private int fcount = 0;
 	private double fps = 0;
 	private boolean calcFps = false;
-//	private HashMap<String, MarkerObject> markerObjectMap;
-//	private UnrecognizedMarkerListener unrecognizedMarkerListener;
 	
 	/************************************************
 	 * VARIABLES - MANAGER
@@ -62,9 +59,6 @@ public class DetectionThread extends Thread {
 	/************************************************
 	 * VARIABLES - DECODING
 	 ************************************************/
-	
-	private DetectionHandler detectionHandler;
-	private final CountDownLatch handlerInitLatch;
 	
 	private DecoderObject decoderObject;
 	private MarkerDetectionSetup setup;
@@ -88,19 +82,18 @@ public class DetectionThread extends Thread {
 		
 		this.setup = setup;
 		this.openglView = openglView;
-//		this.markerObjectMap = markerObjectMap;
-//		this.unrecognizedMarkerListener = unrecognizedMarkerListener;
 		this.nativelib = nativeLib;
 		
 		this.decoderObject = decoderObject;
 		this.decodeManager = new DecodeManager(decoderObject);
 		this.arManager = new ARManager(setup, markerObjectMap);
-		this.handlerInitLatch = new CountDownLatch(1);
+		
+		repositionThread = new RepositionMarkerThread(arManager);
+		decodeQRCodeThread = new DecodeQRCodeThread(decodeManager, repositionThread,arManager);
 
-		// TODO make size dynamically after the init function.
+
 		mat = new float[1 + 18 * 5];
 
-//		this.iMotionDetection = new RgbMotionDetection();
 		// application will exit even if this thread remains active.
 //		setDaemon(true);
 	}
@@ -118,22 +111,10 @@ public class DetectionThread extends Thread {
 	@Override
 	public synchronized void run() {
 		
-		/* inicializando as threads */
-//		Looper.prepare();
-
-//		detectionHandler = new DetectionHandler(nativelib, decoderObject, openglView, preview);
-//		
-		repositionThread = new RepositionMarkerThread(arManager);
-		repositionThread.start();
-
-		decodeQRCodeThread = new DecodeQRCodeThread(decodeManager, repositionThread,arManager);
-		decodeQRCodeThread.start();
-//		handlerInitLatch.countDown();
 		
-//		Looper.loop();
 		
 		while (true) {
-			while (busy == false || stopRequest == true) {
+			while (!busy || stopRequest) {
 				try {
 					wait();// wait for a new frame
 				} catch (InterruptedException e) {
@@ -157,27 +138,11 @@ public class DetectionThread extends Thread {
 						fcount = 0;
 					}
 				}
-				boolean qrDecodeBusy = false;
 				
-//				Log.i(TAG, "Orientation =" +  decoderObject.getOrientation());
 				if (decoderObject.getOrientation() != 99 && isMarkerFound() ){
-					
-//					DecodeDTO decodeDTO = new DecodeDTO();
-//					decodeDTO.setFrame(frame);
-//					decodeDTO.setRotacao(mat);
-//					
-//					Message message = Message.obtain(detectionHandler, R.id.marker_found, decodeDTO);
-//					message.sendToTarget();
-//
-//					Log.i(TAG, "Mensagem enviada: Marcador encontrado.");
-					
 					byteArrayBuffer = new ByteArrayBuffer(this.frame.length);
 					byteArrayBuffer.append(frame, 0, frame.length);
 					decodeQRCodeThread.registerFrame(byteArrayBuffer, mat);
-					
-					
-//					decodeManager.isQRCodeFound(frame, frameWidth, frameHeight);
-				
 				}
 				
 				busy = false;
@@ -221,9 +186,14 @@ public class DetectionThread extends Thread {
 			// this means the thread is active, no starting is needed,
 			// just reset the flag.
 			stopRequest = false;
+			repositionThread.setStopRequest(false);
+			decodeQRCodeThread.setStopRequest(false);
 		} else {
 			// this is a new thread.
 			super.start();
+			
+			repositionThread.start();
+			decodeQRCodeThread.start();
 		}
 
 	}
@@ -233,6 +203,8 @@ public class DetectionThread extends Thread {
 	 */
 	public void stopThread() {
 		stopRequest = true;
+		repositionThread.setStopRequest(true);
+		decodeQRCodeThread.setStopRequest(true);
 	}
 
 	

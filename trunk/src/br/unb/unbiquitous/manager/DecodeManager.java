@@ -56,12 +56,11 @@ public class DecodeManager {
 		Log.i(TAG, "Tempo de decodificação: " + tempoTotalDecodificacao + " ms.");
 		
 		if(decoderObject.getQrCodeDecoder().getTextDecoded() != null){
+			lastMarkerName = decoderObject.getQrCodeDecoder().getTextDecoded();
 			Log.i(TAG, "Código decodificado = "+ decoderObject.getQrCodeDecoder().getTextDecoded());
 		}else{
 			Log.i(TAG, "Não foi possível decodificar o marcador.");
 		}
-		
-		this.newMarker = isNewMarkerDecoded();
 		
 		return decoderObject.getQrCodeDecoder().getTextDecoded() != null;
 	}
@@ -72,6 +71,7 @@ public class DecodeManager {
 	 * PRIVATE METHODS
 	 ************************************************/
 
+	// TODO retirar isso depois
 	/**
 	 * Método responsável por comparar se o último QRCode detectado corresponde a um 
 	 * novo QRCode.

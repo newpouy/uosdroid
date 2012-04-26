@@ -1,10 +1,7 @@
 package br.unb.unbiquitous.thread;
 
-import java.util.concurrent.CountDownLatch;
+import java.awt.Stroke;
 
-import android.os.Looper;
-import br.unb.unbiquitous.handler.DetectionHandler;
-import br.unb.unbiquitous.handler.RepositionMarkerHandler;
 import br.unb.unbiquitous.manager.ARManager;
 import br.unb.unbiquitous.marker.decoder.DecodeDTO;
 
@@ -18,14 +15,10 @@ public class RepositionMarkerThread extends Thread {
 	/************************************************
 	 * VARIABLES
 	 ************************************************/
-	private RepositionMarkerHandler handler;
-	private CountDownLatch handlerInitLatch;
 	private ARManager arManager;
-	private DetectionHandler detectionHandler;
-	
 	private DecodeDTO decodeDTO;
-	private float[] rotacao;
 	
+	private boolean stopRequest;
 	
 	/************************************************
 	 * CONSTRUCTOR
@@ -35,49 +28,28 @@ public class RepositionMarkerThread extends Thread {
 		this.arManager = arManager;
 		decodeDTO = new DecodeDTO();
 	}
-	
-	public RepositionMarkerThread(DetectionHandler detectionHandler, ARManager arManager) {
-		this.detectionHandler = detectionHandler;
-		this.arManager = arManager;
-		this.handlerInitLatch = new CountDownLatch(1);
-	}
 
 	/************************************************
 	 * PUBLIC METHODS
 	 ************************************************/
-	
-	/**
-	 * 
-	 */
-	public RepositionMarkerHandler getHandler() {
-		try {
-			handlerInitLatch.await();
-		} catch (InterruptedException ie) {
-			// continue?
-		}
-		return handler;
-	}
 
 	/**
 	 * 
 	 */
 	@Override
 	public void run() {
-//		Looper.prepare();
-//		handler = new RepositionMarkerHandler(arManager);
-//		detectionHandler.setRepositionHandler(handler);
-//		handlerInitLatch.countDown();
-//		Looper.loop();
-		
-		
-		
 		while(true){
-			arManager.reposicionarObjetoVirtual(decodeDTO.getAppName(), decodeDTO.getRotacao());
+			if(!stopRequest){
+				arManager.reposicionarObjetoVirtual(decodeDTO.getAppName(), decodeDTO.getRotacao());
+			}
 		}
-		
 		
 	}
 
+	/************************************************
+	 * GETTERS AND SETTERS
+	 ************************************************/
+	
 	public void reposicionar(DecodeDTO decodeDTO){
 		this.decodeDTO = decodeDTO;
 	}
@@ -95,6 +67,16 @@ public class RepositionMarkerThread extends Thread {
 			decodeDTO.setRotacao(rotacao);
 		}
 	}
+
+	public boolean isStopRequest() {
+		return stopRequest;
+	}
+
+	public void setStopRequest(boolean stopRequest) {
+		this.stopRequest = stopRequest;
+	}
+	
+	
 
 
 }

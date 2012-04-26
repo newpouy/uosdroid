@@ -125,7 +125,6 @@ public class DetectionHandler extends Handler {
 			break;
 		case R.id.resize_image:
 			
-			// TODO [Ricardo] Ver se precisa ser implementado pois o tamanho da tela da câmera não é alterada.
 			break;
 		}
 		
