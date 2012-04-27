@@ -1,15 +1,14 @@
-#$(info system root: $(SYSROOT) )
-#$(info target out: $(TARGET_OUT) )
 
 LOCAL_CPP_FEATURES := exceptions
-
 LOCAL_PATH := $(call my-dir)
-include $(CLEAR_VARS)
 
+############################ CXCORE #############################
+
+include $(CLEAR_VARS)
 LOCAL_MODULE    := cxcore
 LOCAL_C_INCLUDES := \
         $(LOCAL_PATH)/cxcore/include 
-LOCAL_CFLAGS := $(LOCAL_C_INCLUDES:%=-I%) -fexceptions
+LOCAL_CFLAGS := $(LOCAL_C_INCLUDES:%=-I%)
 LOCAL_LDLIBS := -L$(SYSROOT)/usr/lib -ldl
 
 LOCAL_SRC_FILES := \
@@ -46,7 +45,7 @@ LOCAL_SRC_FILES := \
 
 include $(BUILD_STATIC_LIBRARY)
 
-
+############################ CV #############################
 
 include $(CLEAR_VARS)
 
@@ -125,34 +124,7 @@ LOCAL_SRC_FILES := \
 
 include $(BUILD_STATIC_LIBRARY)
 
-
-# ############# LIBDECODEQR ###############
-
-#include $(CLEAR_VARS)
-#LOCAL_CPP_FEATURES := exceptions
-#LOCAL_MODULE    := libdecodeqr
-#LOCAL_C_INCLUDES := \
-#        $(LOCAL_PATH)/libdecodeqr \
-#LOCAL_CFLAGS := $(LOCAL_C_INCLUDES:%=-I%) -fPIC
-#LOCAL_LDLIBS := -L$(SYSROOT)/usr/lib -ldl
-
-#LOCAL_SRC_FILES := \
-		libdecodeqr/bitstream.cpp \
-		libdecodeqr/codedata.cpp \
-		libdecodeqr/container.cpp \
-		libdecodeqr/ecidecoder.cpp \
-		libdecodeqr/formatinfo.cpp \
-		libdecodeqr/galois.cpp \
-		libdecodeqr/imagereader.cpp \
-		libdecodeqr/libdecodeqr.cpp
-		
-# ############# END LIBDECODEQR ###############
-
-# ############# ZBAR ###############
-
-
-#LOCAL_PATH := $(call my-dir)
-#APP_PATH:= $(NDK)/$(call my-dir) 
+############################ ZBAR #############################
 
 include $(CLEAR_VARS) 
 
@@ -171,13 +143,28 @@ include $(CLEAR_VARS)
 
 LOCAL_MODULE    := zbar
 
-LOCAL_SRC_FILES := convert.c decoder.c error.c image.c img_scanner.c \
-	refcnt.c scanner.c symbol.c video.c window.c \
-	\
-	qrcode/bch15_5.c qrcode/binarize.c qrcode/isaac.c qrcode/qrdec.c qrcode/qrdectxt.c \
-	qrcode/rs.c qrcode/util.c \
-	\
-	processor/null.c video/null.c window/null.c decoder/qr_finder.c \
+LOCAL_SRC_FILES := \
+	zbar/convert.c \
+	zbar/decoder.c \
+	zbar/error.c \
+	zbar/image.c \
+	zbar/img_scanner.c \
+	zbar/refcnt.c \
+	zbar/scanner.c \
+	zbar/symbol.c \
+	zbar/video.c \
+	zbar/window.c \
+	zbar/qrcode/bch15_5.c \
+	zbar/qrcode/binarize.c \
+	zbar/qrcode/isaac.c \
+	zbar/qrcode/qrdec.c \
+	zbar/qrcode/qrdectxt.c \
+	zbar/qrcode/rs.c \
+	zbar/qrcode/util.c \
+	zbar/processor/null.c \
+	zbar/video/null.c \
+	zbar/window/null.c \
+	zbar/decoder/qr_finder.c \
 	android_zbar.c
 	
 LOCAL_CFLAGS := -I$(LOCAL_PATH) -I$(LOCAL_PATH)/$(LIBICONV)
@@ -187,139 +174,7 @@ LOCAL_STATIC_LIBRARIES := libiconv
 
 include $(BUILD_SHARED_LIBRARY)
 
-
-# ############# END ZBAR ###############
-
-
-#include $(CLEAR_VARS)
-
-#LOCAL_MODULE    := cvaux
-#LOCAL_C_INCLUDES := \
-        $(LOCAL_PATH)/cv/src \
-        $(LOCAL_PATH)/cv/include \
-        $(LOCAL_PATH)/cxcore/include \
-        $(LOCAL_PATH)/cvaux/include 
-#LOCAL_CFLAGS := $(LOCAL_C_INCLUDES:%=-I%)
-#LOCAL_LDLIBS := -L$(SYSROOT)/usr/lib -ldl
-
-#LOCAL_SRC_FILES := \
-        cvaux/src/camshift.cpp \
-        cvaux/src/cvaux.cpp \
-        cvaux/src/cvauxutils.cpp \
-        cvaux/src/cvbgfg_acmmm2003.cpp \
-        cvaux/src/cvbgfg_codebook.cpp \
-        cvaux/src/cvbgfg_common.cpp \
-        cvaux/src/cvbgfg_gaussmix.cpp \
-        cvaux/src/cvcalibfilter.cpp \
-        cvaux/src/cvclique.cpp \
-        cvaux/src/cvcorrespond.cpp \
-        cvaux/src/cvcorrimages.cpp \
-        cvaux/src/cvcreatehandmask.cpp \
-        cvaux/src/cvdpstereo.cpp \
-        cvaux/src/cveigenobjects.cpp \
-        cvaux/src/cvepilines.cpp \
-        cvaux/src/cvface.cpp \
-        cvaux/src/cvfacedetection.cpp \
-        cvaux/src/cvfacetemplate.cpp \
-        cvaux/src/cvfindface.cpp \
-        cvaux/src/cvfindhandregion.cpp \
-        cvaux/src/cvhmm.cpp \
-        cvaux/src/cvhmm1d.cpp \
-        cvaux/src/cvhmmobs.cpp \
-        cvaux/src/cvlcm.cpp \
-        cvaux/src/cvlee.cpp \
-        cvaux/src/cvlevmar.cpp \
-        cvaux/src/cvlevmarprojbandle.cpp \
-        cvaux/src/cvlevmartrif.cpp \
-        cvaux/src/cvlines.cpp \
-        cvaux/src/cvlmeds.cpp \
-        cvaux/src/cvmat.cpp \
-        cvaux/src/cvmorphcontours.cpp \
-        cvaux/src/cvmorphing.cpp \
-        cvaux/src/cvprewarp.cpp \
-        cvaux/src/cvscanlines.cpp \
-        cvaux/src/cvsegment.cpp \
-        cvaux/src/cvsubdiv2.cpp \
-        cvaux/src/cvtexture.cpp \
-        cvaux/src/cvtrifocal.cpp \
-        cvaux/src/cvvecfacetracking.cpp \
-        cvaux/src/cvvideo.cpp \
-        cvaux/src/decomppoly.cpp \
-        cvaux/src/enmin.cpp \
-        cvaux/src/extendededges.cpp \
-        cvaux/src/precomp.cpp
-
-#include $(BUILD_STATIC_LIBRARY)
-
-#####################################################
-#													#
-# When using the ML lib, an error might occure 		#
-# while compiling. This can be fixed by removing 	#
-# the double declaration which causes the error.    #
-#													#
-#####################################################
-
-#include $(CLEAR_VARS)
-
-#LOCAL_MODULE    := cvml
-#LOCAL_C_INCLUDES := \
-        $(LOCAL_PATH)/cv/src \
-        $(LOCAL_PATH)/cv/include \
-        $(LOCAL_PATH)/cxcore/include \
-        $(LOCAL_PATH)/ml/include
-#LOCAL_CFLAGS := $(LOCAL_C_INCLUDES:%=-I%) 
-#LOCAL_LDLIBS := -L$(SYSROOT)/usr/lib -ldl
-
-#LOCAL_SRC_FILES := \
-        ml/src/ml.cpp \
-        ml/src/mlann_mlp.cpp \
-        ml/src/mlboost.cpp \
-        ml/src/mlcnn.cpp \
-        ml/src/mlem.cpp \
-        ml/src/mlestimate.cpp \
-        ml/src/mlknearest.cpp \
-        ml/src/mlnbayes.cpp \
-        ml/src/mlrtrees.cpp \
-        ml/src/mlsvm.cpp \
-        ml/src/mltestset.cpp \
-        ml/src/mltree.cpp \
-        ml/src/ml_inner_functions.cpp
-
-#include $(BUILD_STATIC_LIBRARY)
-
-
-
-#include $(CLEAR_VARS)
-
-#LOCAL_MODULE    := cvhighgui
-#LOCAL_C_INCLUDES := \
-        $(LOCAL_PATH)/cv/src \
-        $(LOCAL_PATH)/cv/include \
-        $(LOCAL_PATH)/cxcore/include \
-        $(LOCAL_PATH)/otherlibs/highgui
-#LOCAL_CFLAGS := $(LOCAL_C_INCLUDES:%=-I%) 
-#LOCAL_LDLIBS := -L$(SYSROOT)/usr/lib -ldl
-
-#LOCAL_SRC_FILES := \
-        otherlibs/highgui/bitstrm.cpp \
-        otherlibs/highgui/grfmt_base.cpp \
-        otherlibs/highgui/grfmt_bmp.cpp \
-        otherlibs/highgui/grfmt_exr.cpp \
-        otherlibs/highgui/grfmt_imageio.cpp \
-        otherlibs/highgui/grfmt_jpeg.cpp \
-        otherlibs/highgui/grfmt_jpeg2000.cpp \
-        otherlibs/highgui/grfmt_png.cpp \
-        otherlibs/highgui/grfmt_pxm.cpp \
-        otherlibs/highgui/grfmt_sunras.cpp \
-        otherlibs/highgui/grfmt_tiff.cpp \
-        otherlibs/highgui/image.cpp \
-        otherlibs/highgui/loadsave.cpp \
-        otherlibs/highgui/precomp.cpp \
-        otherlibs/highgui/utils.cpp \
-        otherlibs/highgui/cvcap.cpp \
-        otherlibs/highgui/cvcap_socket.cpp
-
-#include $(BUILD_STATIC_LIBRARY)
+########################### OPENCV ############################
 
 include $(CLEAR_VARS)
 
@@ -337,11 +192,8 @@ LOCAL_CFLAGS := $(LOCAL_C_INCLUDES:%=-I%)
 LOCAL_LDLIBS := -L$(SYSROOT)/usr/lib -ldl -llog \
                 -L$(TARGET_OUT) -lcxcore -lcv   #-lcvaux -lcvhighgui -lcvml
 
-
 LOCAL_SRC_FILES := \
       myOpenCVDetection.c 
-      
-
 
 LOCAL_STATIC_LIBRARIES :=  cv cxcore #libdecodeqr  #cvaux cvhighgui cvml
 
