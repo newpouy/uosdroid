@@ -4,7 +4,7 @@
 
 #include "zbar/zbar.h"
 
-#include "nativeLib_Zbar.h"
+#include "br_unb_unbiquitous_jni_ZbarJni.h"
 JNIEXPORT jstring JNICALL Java_nativeLib_Zbar_decode
   (JNIEnv *env, jobject obj, jint w, jint h, jbyteArray img) {
 

@@ -2,12 +2,12 @@ package br.unb.unbiquitous.thread;
 
 import java.util.HashMap;
 
-import nativeLib.NativeLib;
 
 import org.apache.http.util.ByteArrayBuffer;
 
 import android.opengl.GLSurfaceView;
 import android.os.SystemClock;
+import br.unb.unbiquitous.jni.MarkerDetectionJni;
 import br.unb.unbiquitous.manager.ARManager;
 import br.unb.unbiquitous.manager.DecodeManager;
 import br.unb.unbiquitous.marker.decoder.DecoderObject;
@@ -41,7 +41,7 @@ public class DetectionThread extends Thread {
 	private boolean stopRequest = false;
 	private GLSurfaceView openglView;
 	private Preview preview;
-	private NativeLib nativelib;
+	private MarkerDetectionJni nativelib;
 	private float[] mat;
 	private long start = 0;
 	private long now = 0;
@@ -74,7 +74,7 @@ public class DetectionThread extends Thread {
 	 * 
 	 */
 	public DetectionThread( MarkerDetectionSetup setup, 
-							NativeLib nativeLib, 
+							MarkerDetectionJni nativeLib, 
 							GLSurfaceView openglView,
 							HashMap<String, MarkerObject> markerObjectMap,
 							UnrecognizedMarkerListener unrecognizedMarkerListener,

@@ -62,7 +62,7 @@ public class MainUOSActivity extends Activity {
 		ConfigLog4j.configure();
 
 		// Starting the middleware
-		startMiddleware();
+//		startMiddleware();
 
 		// Start the augmented reality
 		startAR();

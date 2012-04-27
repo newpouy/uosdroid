@@ -1,6 +1,6 @@
-package nativeLib;
+package br.unb.unbiquitous.jni;
 
-public class NativeLib {
+public class MarkerDetectionJni {
 
 	/**
 	 * Detect markers in the current frame and return the detected data.

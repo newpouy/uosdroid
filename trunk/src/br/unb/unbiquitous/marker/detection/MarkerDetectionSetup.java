@@ -1,12 +1,12 @@
 package br.unb.unbiquitous.marker.detection;
 
 
-import nativeLib.NativeLib;
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.hardware.Camera;
 import android.util.Log;
 import android.view.ViewGroup.LayoutParams;
+import br.unb.unbiquitous.jni.MarkerDetectionJni;
 import br.unb.unbiquitous.marker.decoder.DecoderObject;
 import br.unb.unbiquitous.thread.DetectionThread;
 
@@ -30,7 +30,7 @@ public abstract class MarkerDetectionSetup extends Setup {
 	private final String CALIB_PATH = "ARCameraCalibration";
 	private Preview cameraPreview;
 	private DetectionThread myThread;
-	private NativeLib nativeLib = new NativeLib();
+	private MarkerDetectionJni nativeLib = new MarkerDetectionJni();
 	
 	private CameraCalibration calib = null;
 	private Camera.Size cameraSize;
@@ -160,11 +160,11 @@ public abstract class MarkerDetectionSetup extends Setup {
 		this.cameraPreview = cameraPreview;
 	}
 
-	public NativeLib getNativeLib() {
+	public MarkerDetectionJni getNativeLib() {
 		return nativeLib;
 	}
 
-	public void setNativeLib(NativeLib nativeLib) {
+	public void setNativeLib(MarkerDetectionJni nativeLib) {
 		this.nativeLib = nativeLib;
 	}
 
