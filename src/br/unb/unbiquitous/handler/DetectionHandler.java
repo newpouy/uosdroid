@@ -2,11 +2,11 @@ package br.unb.unbiquitous.handler;
 
 import org.apache.http.util.ByteArrayBuffer;
 
-import nativeLib.NativeLib;
 import android.opengl.GLSurfaceView;
 import android.os.Handler;
 import android.os.Message;
 import br.unb.unbiquitous.activity.R;
+import br.unb.unbiquitous.jni.MarkerDetectionJni;
 import br.unb.unbiquitous.marker.decoder.DecodeDTO;
 import br.unb.unbiquitous.marker.decoder.DecodeState;
 import br.unb.unbiquitous.marker.decoder.DecoderObject;
@@ -37,7 +37,7 @@ public class DetectionHandler extends Handler {
 	private DecoderObject decoderObject;
 	private GLSurfaceView openglView;
 	
-	private NativeLib nativeLib;
+	private MarkerDetectionJni nativeLib;
 	private ByteArrayBuffer byteArrayBuffer;
 	private float[] mat;
 	private int frameWidth = 848;
@@ -50,7 +50,7 @@ public class DetectionHandler extends Handler {
 	 * CONSTRUCTOR
 	 ************************************************/
 	
-	public DetectionHandler(NativeLib nativeLib, 
+	public DetectionHandler(MarkerDetectionJni nativeLib, 
 							DecoderObject decoderObject, 
 							GLSurfaceView openglView,
 							Preview preview){

@@ -146,7 +146,7 @@ public class PreviewPost2_0 extends Preview{
 		if(!paused){
 			
 			if (mCamera == null) return;
-			
+
 			if(toFocus){
 				mCamera.autoFocus(new MyAutoFocus());
 			}else{

@@ -2,9 +2,9 @@ package br.unb.unbiquitous.manager;
 
 import java.util.Calendar;
 
-import nativeLib.Zbar;
 
 import android.util.Log;
+import br.unb.unbiquitous.jni.ZbarJni;
 import br.unb.unbiquitous.marker.decoder.DecoderObject;
 
 /**
@@ -22,7 +22,7 @@ public class DecodeManager {
 	private String lastMarkerName;
 	private boolean newMarker;
 	private static final String TAG = "DecodeManager";
-	private Zbar zbar = new Zbar();
+	private ZbarJni zbar = new ZbarJni();
 
 	/************************************************
 	 * CONSTRUCTOR

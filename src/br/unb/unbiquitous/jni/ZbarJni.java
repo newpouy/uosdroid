@@ -1,11 +1,11 @@
-package nativeLib;
+package br.unb.unbiquitous.jni;
 
 /**
  * 
  * @author ricardoandrade
  *
  */
-public class Zbar {
+public class ZbarJni {
 	static {
 		System.loadLibrary("zbar");
 	}

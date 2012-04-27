@@ -1,4 +1,4 @@
-#include "nativeLib_NativeLib.h"
+#include "br_unb_unbiquitous_jni_MarkerDetectionJni.h"
 #include <android/log.h>
 #include "cv.h"
 //#include "opencv.p"
