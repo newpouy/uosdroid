@@ -31,6 +31,7 @@ public abstract class MarkerDetectionSetup extends Setup {
 	private Preview cameraPreview;
 	private DetectionThread myThread;
 	private NativeLib nativeLib = new NativeLib();
+	
 	private CameraCalibration calib = null;
 	private Camera.Size cameraSize;
 	private LayoutParams optimalLayoutParams;

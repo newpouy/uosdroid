@@ -2,6 +2,8 @@ package br.unb.unbiquitous.manager;
 
 import java.util.Calendar;
 
+import nativeLib.Zbar;
+
 import android.util.Log;
 import br.unb.unbiquitous.marker.decoder.DecoderObject;
 
@@ -20,6 +22,7 @@ public class DecodeManager {
 	private String lastMarkerName;
 	private boolean newMarker;
 	private static final String TAG = "DecodeManager";
+	private Zbar zbar = new Zbar();
 
 	/************************************************
 	 * CONSTRUCTOR
@@ -41,28 +44,33 @@ public class DecodeManager {
 	 * informado.
 	 */
 	public boolean isQRCodeFound(byte [] frame, int frameWidth, int frameHeight){
+		
 
 		// Decodificando o QRCode
 		Log.i(TAG, "Decodificando o QRCode.");
+
+//		Calendar inicio = Calendar.getInstance();
+//
+//		decoderObject.getQrCodeDecoder().decode(frame, frameWidth, frameHeight);
+//		
+//		Calendar fim = Calendar.getInstance();
+//		
+//		long tempoTotalDecodificacao = fim.getTimeInMillis() - inicio.getTimeInMillis();
+//		
+//		Log.i(TAG, "Tempo de decodificação: " + tempoTotalDecodificacao + " ms.");
+//		
+//		if(decoderObject.getQrCodeDecoder().getTextDecoded() != null){
+//			lastMarkerName = decoderObject.getQrCodeDecoder().getTextDecoded();
+//			Log.i(TAG, "Código decodificado = "+ decoderObject.getQrCodeDecoder().getTextDecoded());
+//		}else{
+//			Log.i(TAG, "Não foi possível decodificar o marcador.");
+//		}
+//		
+//		return decoderObject.getQrCodeDecoder().getTextDecoded() != null;
 		
-		Calendar inicio = Calendar.getInstance();
 		
-		decoderObject.getQrCodeDecoder().decode(frame, frameWidth, frameHeight);
+		return zbarDecode(frame, frameWidth, frameHeight) != null;
 		
-		Calendar fim = Calendar.getInstance();
-		
-		long tempoTotalDecodificacao = fim.getTimeInMillis() - inicio.getTimeInMillis();
-		
-		Log.i(TAG, "Tempo de decodificação: " + tempoTotalDecodificacao + " ms.");
-		
-		if(decoderObject.getQrCodeDecoder().getTextDecoded() != null){
-			lastMarkerName = decoderObject.getQrCodeDecoder().getTextDecoded();
-			Log.i(TAG, "Código decodificado = "+ decoderObject.getQrCodeDecoder().getTextDecoded());
-		}else{
-			Log.i(TAG, "Não foi possível decodificar o marcador.");
-		}
-		
-		return decoderObject.getQrCodeDecoder().getTextDecoded() != null;
 	}
 	
 
@@ -71,6 +79,28 @@ public class DecodeManager {
 	 * PRIVATE METHODS
 	 ************************************************/
 
+	private String zbarDecode(byte [] frame, int frameWidth, int frameHeight){
+		Calendar inicio = Calendar.getInstance();
+
+		String texto = zbar.decode(frameWidth, frameHeight, frame);
+		
+		Calendar fim = Calendar.getInstance();
+		
+		long tempoTotalDecodificacao = fim.getTimeInMillis() - inicio.getTimeInMillis();
+		
+		Log.i(TAG, "Tempo de decodificação: " + tempoTotalDecodificacao + " ms.");
+		
+		if(texto != null){
+			lastMarkerName = texto;
+			Log.i(TAG, "Código decodificado = "+ texto + ", em " + tempoTotalDecodificacao + " ms.");
+		}else{
+			Log.i(TAG, "Não foi possível decodificar o marcador." + ", em " + tempoTotalDecodificacao + " ms.");
+		}
+		
+		return texto;
+		
+	}
+	
 	// TODO retirar isso depois
 	/**
 	 * Método responsável por comparar se o último QRCode detectado corresponde a um 

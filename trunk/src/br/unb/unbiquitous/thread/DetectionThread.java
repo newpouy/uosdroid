@@ -3,11 +3,13 @@ package br.unb.unbiquitous.thread;
 import java.util.HashMap;
 
 import nativeLib.NativeLib;
+import nativeLib.Zbar;
 
 import org.apache.http.util.ByteArrayBuffer;
 
 import android.opengl.GLSurfaceView;
 import android.os.SystemClock;
+import android.util.Log;
 import br.unb.unbiquitous.manager.ARManager;
 import br.unb.unbiquitous.manager.DecodeManager;
 import br.unb.unbiquitous.marker.decoder.DecoderObject;
@@ -130,7 +132,7 @@ public class DetectionThread extends Thread {
 						start = SystemClock.uptimeMillis();
 					}
 					fcount++;
-					if (fcount == 30) {
+					if (fcount == 30) { 
 						now = SystemClock.uptimeMillis();
 						fps = 30 / ((now - start) / 1000.0);
 						// Log.i("AR", "fps:" + fps);

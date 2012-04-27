@@ -64,72 +64,10 @@ public class MainUOSActivity extends Activity {
 		// Starting the middleware
 		startMiddleware();
 
-		setContentView(R.layout.main);
-
-		
 		// Start the augmented reality
 		startAR();
 		
 		setContentView(button);
-	}
-
-
-	
-
-
-	/**
-	 * Method invoked when a option menu is selected.
-	 */
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-
-		if (DEBUG)
-			Log.e(TAG, "++ ON OPTIONS ITEM SELECTED ++");
-		
-		hydraConnection.getListDriversInHydra();
-//		hydraConnection.getDriversList();
-//		hydraConnection.getHydraDevice();
-
-		/* chamando uma activity */
-		// Launch the DeviceListActivity to see devices and do scan
-		// serverIntent = new Intent(this, DeviceListActivity.class);
-		// startActivityForResult(serverIntent, REQUEST_CONNECT_DEVICE_SECURE
-		/* coloca uma mensagem que some ap�s alguns segundos */
-		// Toast.makeText(this, "You pressed the exit!",
-		// Toast.LENGTH_LONG).show();
-
-//		switch (item.getItemId()) {
-//		
-//		case R.id.camera_driver:
-//			this.createListView(DriverType.CAMERA, hydraConnection.getCameraDriversList());
-//			break;
-//
-//		case R.id.keyboard_driver:
-//			this.createListView(DriverType.KEYBOARD, hydraConnection.getKeyboardDriversList());
-//			break;
-//		
-//		case R.id.mouse_driver:
-//			this.createListView(DriverType.MOUSE, hydraConnection.getMouseDriversList());
-//			break;
-//
-//		case R.id.screen_driver:
-//			this.createListView(DriverType.SCREEN, hydraConnection.getScreenDriversList());
-//			break;
-//		
-//		case R.id.hydra_app:
-//			this.createListView(DriverType.HYDRA, hydraConnection.getHydraDriversList());
-//			break;
-		
-//		case R.id.all:
-//			this.createListView(DriverType.ALL, hydraConnection.getDriversList());
-//			break;
-			
-//		case R.id.camera:
-//			MultiMarkerSetup markerSetup = new MultiMarkerSetup();
-//			ArActivity.startWithSetup(this, markerSetup);
-//		}
-		return true;
-
 	}
 
 	/**
