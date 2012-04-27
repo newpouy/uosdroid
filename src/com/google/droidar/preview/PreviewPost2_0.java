@@ -7,7 +7,7 @@ import android.graphics.PixelFormat;
 import android.hardware.Camera;
 import android.util.Log;
 import android.view.SurfaceHolder;
-import br.unb.unbiquitous.marker.camera.MyAutoFocus;
+import br.unb.unbiquitous.marker.camera.AutoFocus;
 import br.unb.unbiquitous.thread.DetectionThread;
 
 public class PreviewPost2_0 extends Preview{
@@ -148,7 +148,7 @@ public class PreviewPost2_0 extends Preview{
 			if (mCamera == null) return;
 
 			if(toFocus){
-				mCamera.autoFocus(new MyAutoFocus());
+				mCamera.autoFocus(new AutoFocus());
 			}else{
 				mCamera.cancelAutoFocus();
 			}
