@@ -1,13 +1,8 @@
-obj/local/armeabi/objs/opencv/myOpenCVDetection.o: \
- jni/myOpenCVDetection.c jni/br_unb_unbiquitous_jni_MarkerDetectionJni.h \
- /Users/ricardoandrade/Documents/Desenvolvimento/android-ndk-r7b/platforms/android-14/arch-arm/usr/include/jni.h \
- /Users/ricardoandrade/Documents/Desenvolvimento/android-ndk-r7b/platforms/android-14/arch-arm/usr/include/android/log.h \
- jni/cv/include/cv.h jni/cxcore/include/cxcore.h \
- jni/cxcore/include/cxtypes.h \
- /Users/ricardoandrade/Documents/Desenvolvimento/android-ndk-r7b/platforms/android-14/arch-arm/usr/include/assert.h \
+obj/local/armeabi/objs/zbar/zbar/qrcode/binarize.o: \
+ jni/zbar/qrcode/binarize.c \
+ /Users/ricardoandrade/Documents/Desenvolvimento/android-ndk-r7b/platforms/android-14/arch-arm/usr/include/stdlib.h \
  /Users/ricardoandrade/Documents/Desenvolvimento/android-ndk-r7b/platforms/android-14/arch-arm/usr/include/sys/cdefs.h \
  /Users/ricardoandrade/Documents/Desenvolvimento/android-ndk-r7b/platforms/android-14/arch-arm/usr/include/sys/cdefs_elf.h \
- /Users/ricardoandrade/Documents/Desenvolvimento/android-ndk-r7b/platforms/android-14/arch-arm/usr/include/stdlib.h \
  /Users/ricardoandrade/Documents/Desenvolvimento/android-ndk-r7b/platforms/android-14/arch-arm/usr/include/string.h \
  /Users/ricardoandrade/Documents/Desenvolvimento/android-ndk-r7b/platforms/android-14/arch-arm/usr/include/malloc.h \
  /Users/ricardoandrade/Documents/Desenvolvimento/android-ndk-r7b/platforms/android-14/arch-arm/usr/include/alloca.h \
@@ -32,29 +27,25 @@ obj/local/armeabi/objs/opencv/myOpenCVDetection.o: \
  /Users/ricardoandrade/Documents/Desenvolvimento/android-ndk-r7b/platforms/android-14/arch-arm/usr/include/machine/internal_types.h \
  /Users/ricardoandrade/Documents/Desenvolvimento/android-ndk-r7b/platforms/android-14/arch-arm/usr/include/machine/limits.h \
  /Users/ricardoandrade/Documents/Desenvolvimento/android-ndk-r7b/platforms/android-14/arch-arm/usr/include/sys/syslimits.h \
- jni/cxcore/include/cxerror.h jni/cxcore/include/cvver.h \
- jni/cv/include/cvtypes.h jni/cv/include/cvcompat.h \
- /Users/ricardoandrade/Documents/Desenvolvimento/android-ndk-r7b/platforms/android-14/arch-arm/usr/include/stdio.h
+ jni/zbar/qrcode/util.h jni/zbar/qrcode/../image.h \
+ jni/zbar/qrcode/../config.h \
+ /Users/ricardoandrade/Documents/Desenvolvimento/android-ndk-r7b/platforms/android-14/arch-arm/usr/include/inttypes.h \
+ /Users/ricardoandrade/Documents/Desenvolvimento/android-ndk-r7b/platforms/android-14/arch-arm/usr/include/assert.h \
+ jni/zbar/qrcode/../zbar.h jni/zbar/qrcode/../error.h \
+ /Users/ricardoandrade/Documents/Desenvolvimento/android-ndk-r7b/platforms/android-14/arch-arm/usr/include/stdio.h \
+ /Users/ricardoandrade/Documents/Desenvolvimento/android-ndk-r7b/platforms/android-14/arch-arm/usr/include/errno.h \
+ /Users/ricardoandrade/Documents/Desenvolvimento/android-ndk-r7b/platforms/android-14/arch-arm/usr/include/linux/errno.h \
+ /Users/ricardoandrade/Documents/Desenvolvimento/android-ndk-r7b/platforms/android-14/arch-arm/usr/include/asm/errno.h \
+ /Users/ricardoandrade/Documents/Desenvolvimento/android-ndk-r7b/platforms/android-14/arch-arm/usr/include/asm-generic/errno.h \
+ /Users/ricardoandrade/Documents/Desenvolvimento/android-ndk-r7b/platforms/android-14/arch-arm/usr/include/asm-generic/errno-base.h \
+ jni/zbar/qrcode/../symbol.h jni/zbar/qrcode/../refcnt.h \
+ jni/zbar/qrcode/binarize.h
 
-jni/br_unb_unbiquitous_jni_MarkerDetectionJni.h:
-
-/Users/ricardoandrade/Documents/Desenvolvimento/android-ndk-r7b/platforms/android-14/arch-arm/usr/include/jni.h:
-
-/Users/ricardoandrade/Documents/Desenvolvimento/android-ndk-r7b/platforms/android-14/arch-arm/usr/include/android/log.h:
-
-jni/cv/include/cv.h:
-
-jni/cxcore/include/cxcore.h:
-
-jni/cxcore/include/cxtypes.h:
-
-/Users/ricardoandrade/Documents/Desenvolvimento/android-ndk-r7b/platforms/android-14/arch-arm/usr/include/assert.h:
+/Users/ricardoandrade/Documents/Desenvolvimento/android-ndk-r7b/platforms/android-14/arch-arm/usr/include/stdlib.h:
 
 /Users/ricardoandrade/Documents/Desenvolvimento/android-ndk-r7b/platforms/android-14/arch-arm/usr/include/sys/cdefs.h:
 
 /Users/ricardoandrade/Documents/Desenvolvimento/android-ndk-r7b/platforms/android-14/arch-arm/usr/include/sys/cdefs_elf.h:
-
-/Users/ricardoandrade/Documents/Desenvolvimento/android-ndk-r7b/platforms/android-14/arch-arm/usr/include/stdlib.h:
 
 /Users/ricardoandrade/Documents/Desenvolvimento/android-ndk-r7b/platforms/android-14/arch-arm/usr/include/string.h:
 
@@ -104,12 +95,34 @@ jni/cxcore/include/cxtypes.h:
 
 /Users/ricardoandrade/Documents/Desenvolvimento/android-ndk-r7b/platforms/android-14/arch-arm/usr/include/sys/syslimits.h:
 
-jni/cxcore/include/cxerror.h:
+jni/zbar/qrcode/util.h:
 
-jni/cxcore/include/cvver.h:
+jni/zbar/qrcode/../image.h:
 
-jni/cv/include/cvtypes.h:
+jni/zbar/qrcode/../config.h:
 
-jni/cv/include/cvcompat.h:
+/Users/ricardoandrade/Documents/Desenvolvimento/android-ndk-r7b/platforms/android-14/arch-arm/usr/include/inttypes.h:
+
+/Users/ricardoandrade/Documents/Desenvolvimento/android-ndk-r7b/platforms/android-14/arch-arm/usr/include/assert.h:
+
+jni/zbar/qrcode/../zbar.h:
+
+jni/zbar/qrcode/../error.h:
 
 /Users/ricardoandrade/Documents/Desenvolvimento/android-ndk-r7b/platforms/android-14/arch-arm/usr/include/stdio.h:
+
+/Users/ricardoandrade/Documents/Desenvolvimento/android-ndk-r7b/platforms/android-14/arch-arm/usr/include/errno.h:
+
+/Users/ricardoandrade/Documents/Desenvolvimento/android-ndk-r7b/platforms/android-14/arch-arm/usr/include/linux/errno.h:
+
+/Users/ricardoandrade/Documents/Desenvolvimento/android-ndk-r7b/platforms/android-14/arch-arm/usr/include/asm/errno.h:
+
+/Users/ricardoandrade/Documents/Desenvolvimento/android-ndk-r7b/platforms/android-14/arch-arm/usr/include/asm-generic/errno.h:
+
+/Users/ricardoandrade/Documents/Desenvolvimento/android-ndk-r7b/platforms/android-14/arch-arm/usr/include/asm-generic/errno-base.h:
+
+jni/zbar/qrcode/../symbol.h:
+
+jni/zbar/qrcode/../refcnt.h:
+
+jni/zbar/qrcode/binarize.h:
