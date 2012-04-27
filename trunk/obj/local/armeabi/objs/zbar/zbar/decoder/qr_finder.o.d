@@ -1,12 +1,10 @@
-obj/local/armeabi/objs/opencv/myOpenCVDetection.o: \
- jni/myOpenCVDetection.c jni/br_unb_unbiquitous_jni_MarkerDetectionJni.h \
- /Users/ricardoandrade/Documents/Desenvolvimento/android-ndk-r7b/platforms/android-14/arch-arm/usr/include/jni.h \
- /Users/ricardoandrade/Documents/Desenvolvimento/android-ndk-r7b/platforms/android-14/arch-arm/usr/include/android/log.h \
- jni/cv/include/cv.h jni/cxcore/include/cxcore.h \
- jni/cxcore/include/cxtypes.h \
+obj/local/armeabi/objs/zbar/zbar/decoder/qr_finder.o: \
+ jni/zbar/decoder/qr_finder.c jni/zbar/decoder/../config.h \
  /Users/ricardoandrade/Documents/Desenvolvimento/android-ndk-r7b/platforms/android-14/arch-arm/usr/include/assert.h \
  /Users/ricardoandrade/Documents/Desenvolvimento/android-ndk-r7b/platforms/android-14/arch-arm/usr/include/sys/cdefs.h \
  /Users/ricardoandrade/Documents/Desenvolvimento/android-ndk-r7b/platforms/android-14/arch-arm/usr/include/sys/cdefs_elf.h \
+ jni/zbar/decoder/../zbar.h jni/zbar/decoder/../decoder.h \
+ jni/zbar/decoder/../config.h \
  /Users/ricardoandrade/Documents/Desenvolvimento/android-ndk-r7b/platforms/android-14/arch-arm/usr/include/stdlib.h \
  /Users/ricardoandrade/Documents/Desenvolvimento/android-ndk-r7b/platforms/android-14/arch-arm/usr/include/string.h \
  /Users/ricardoandrade/Documents/Desenvolvimento/android-ndk-r7b/platforms/android-14/arch-arm/usr/include/malloc.h \
@@ -25,34 +23,23 @@ obj/local/armeabi/objs/opencv/myOpenCVDetection.o: \
  /Users/ricardoandrade/Documents/Desenvolvimento/android-ndk-r7b/platforms/android-14/arch-arm/usr/include/machine/kernel.h \
  /Users/ricardoandrade/Documents/Desenvolvimento/android-ndk-r7b/platforms/android-14/arch-arm/usr/include/sys/sysmacros.h \
  /Users/ricardoandrade/Documents/Desenvolvimento/android-ndk-r7b/platforms/android-14/arch-arm/usr/include/memory.h \
- /Users/ricardoandrade/Documents/Desenvolvimento/android-ndk-r7b/platforms/android-14/arch-arm/usr/include/math.h \
- /Users/ricardoandrade/Documents/Desenvolvimento/android-ndk-r7b/platforms/android-14/arch-arm/usr/include/limits.h \
- /Users/ricardoandrade/Documents/Desenvolvimento/android-ndk-r7b/platforms/android-14/arch-arm/usr/include/sys/limits.h \
- /Users/ricardoandrade/Documents/Desenvolvimento/android-ndk-r7b/platforms/android-14/arch-arm/usr/include/linux/limits.h \
- /Users/ricardoandrade/Documents/Desenvolvimento/android-ndk-r7b/platforms/android-14/arch-arm/usr/include/machine/internal_types.h \
- /Users/ricardoandrade/Documents/Desenvolvimento/android-ndk-r7b/platforms/android-14/arch-arm/usr/include/machine/limits.h \
- /Users/ricardoandrade/Documents/Desenvolvimento/android-ndk-r7b/platforms/android-14/arch-arm/usr/include/sys/syslimits.h \
- jni/cxcore/include/cxerror.h jni/cxcore/include/cvver.h \
- jni/cv/include/cvtypes.h jni/cv/include/cvcompat.h \
- /Users/ricardoandrade/Documents/Desenvolvimento/android-ndk-r7b/platforms/android-14/arch-arm/usr/include/stdio.h
+ jni/zbar/decoder/../zbar.h jni/zbar/decoder/../decoder/qr_finder.h \
+ jni/zbar/decoder/../decoder/../qrcode.h \
+ jni/zbar/decoder/../decoder/../zbar.h jni/zbar/decoder/../debug.h
 
-jni/br_unb_unbiquitous_jni_MarkerDetectionJni.h:
-
-/Users/ricardoandrade/Documents/Desenvolvimento/android-ndk-r7b/platforms/android-14/arch-arm/usr/include/jni.h:
-
-/Users/ricardoandrade/Documents/Desenvolvimento/android-ndk-r7b/platforms/android-14/arch-arm/usr/include/android/log.h:
-
-jni/cv/include/cv.h:
-
-jni/cxcore/include/cxcore.h:
-
-jni/cxcore/include/cxtypes.h:
+jni/zbar/decoder/../config.h:
 
 /Users/ricardoandrade/Documents/Desenvolvimento/android-ndk-r7b/platforms/android-14/arch-arm/usr/include/assert.h:
 
 /Users/ricardoandrade/Documents/Desenvolvimento/android-ndk-r7b/platforms/android-14/arch-arm/usr/include/sys/cdefs.h:
 
 /Users/ricardoandrade/Documents/Desenvolvimento/android-ndk-r7b/platforms/android-14/arch-arm/usr/include/sys/cdefs_elf.h:
+
+jni/zbar/decoder/../zbar.h:
+
+jni/zbar/decoder/../decoder.h:
+
+jni/zbar/decoder/../config.h:
 
 /Users/ricardoandrade/Documents/Desenvolvimento/android-ndk-r7b/platforms/android-14/arch-arm/usr/include/stdlib.h:
 
@@ -90,26 +77,12 @@ jni/cxcore/include/cxtypes.h:
 
 /Users/ricardoandrade/Documents/Desenvolvimento/android-ndk-r7b/platforms/android-14/arch-arm/usr/include/memory.h:
 
-/Users/ricardoandrade/Documents/Desenvolvimento/android-ndk-r7b/platforms/android-14/arch-arm/usr/include/math.h:
+jni/zbar/decoder/../zbar.h:
 
-/Users/ricardoandrade/Documents/Desenvolvimento/android-ndk-r7b/platforms/android-14/arch-arm/usr/include/limits.h:
+jni/zbar/decoder/../decoder/qr_finder.h:
 
-/Users/ricardoandrade/Documents/Desenvolvimento/android-ndk-r7b/platforms/android-14/arch-arm/usr/include/sys/limits.h:
+jni/zbar/decoder/../decoder/../qrcode.h:
 
-/Users/ricardoandrade/Documents/Desenvolvimento/android-ndk-r7b/platforms/android-14/arch-arm/usr/include/linux/limits.h:
+jni/zbar/decoder/../decoder/../zbar.h:
 
-/Users/ricardoandrade/Documents/Desenvolvimento/android-ndk-r7b/platforms/android-14/arch-arm/usr/include/machine/internal_types.h:
-
-/Users/ricardoandrade/Documents/Desenvolvimento/android-ndk-r7b/platforms/android-14/arch-arm/usr/include/machine/limits.h:
-
-/Users/ricardoandrade/Documents/Desenvolvimento/android-ndk-r7b/platforms/android-14/arch-arm/usr/include/sys/syslimits.h:
-
-jni/cxcore/include/cxerror.h:
-
-jni/cxcore/include/cvver.h:
-
-jni/cv/include/cvtypes.h:
-
-jni/cv/include/cvcompat.h:
-
-/Users/ricardoandrade/Documents/Desenvolvimento/android-ndk-r7b/platforms/android-14/arch-arm/usr/include/stdio.h:
+jni/zbar/decoder/../debug.h:
