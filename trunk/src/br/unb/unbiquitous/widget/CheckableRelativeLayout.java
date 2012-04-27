@@ -1,7 +1,7 @@
 /**
  * 
  */
-package br.unb.widget;
+package br.unb.unbiquitous.widget;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package br.unb.widget;
+package br.unb.unbiquitous.widget;
 
 import android.content.Context;
 import android.util.AttributeSet;

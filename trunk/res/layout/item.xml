@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<br.unb.widget.CheckableRelativeLayout 
+<br.unb.unbiquitous.widget.CheckableRelativeLayout 
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:marvinlabs="http://schemas.android.com/apk/res/fr.marvinlabs.selectablelisttutorial"
 	android:layout_width="fill_parent" 
@@ -17,7 +17,7 @@
 		android:textColor="#feee" 
 		android:focusable="false" />	
 
-	<br.unb.widget.InertCheckBox android:id="@+id/itemCheckBox"
+	<br.unb.unbiquitous.widget.InertCheckBox android:id="@+id/itemCheckBox"
 		android:layout_width="wrap_content" 
 		android:layout_height="wrap_content"
 		android:layout_marginRight="5dp"
@@ -26,4 +26,4 @@
 		android:focusable="false" 
 		android:button="@drawable/checkbox" />
 			
-</br.unb.widget.CheckableRelativeLayout>
+</br.unb.unbiquitous.widget.CheckableRelativeLayout>
