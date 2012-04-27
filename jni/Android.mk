@@ -1,6 +1,7 @@
 #$(info system root: $(SYSROOT) )
 #$(info target out: $(TARGET_OUT) )
 
+LOCAL_CPP_FEATURES := exceptions
 
 LOCAL_PATH := $(call my-dir)
 include $(CLEAR_VARS)
@@ -8,7 +9,7 @@ include $(CLEAR_VARS)
 LOCAL_MODULE    := cxcore
 LOCAL_C_INCLUDES := \
         $(LOCAL_PATH)/cxcore/include 
-LOCAL_CFLAGS := $(LOCAL_C_INCLUDES:%=-I%) 
+LOCAL_CFLAGS := $(LOCAL_C_INCLUDES:%=-I%) -fexceptions
 LOCAL_LDLIBS := -L$(SYSROOT)/usr/lib -ldl
 
 LOCAL_SRC_FILES := \
@@ -122,9 +123,72 @@ LOCAL_SRC_FILES := \
         cv/src/cvutils.cpp \
         cv/src/mycvHaarDetectObjects.cpp
 
-
 include $(BUILD_STATIC_LIBRARY)
 
+
+# ############# LIBDECODEQR ###############
+
+#include $(CLEAR_VARS)
+#LOCAL_CPP_FEATURES := exceptions
+#LOCAL_MODULE    := libdecodeqr
+#LOCAL_C_INCLUDES := \
+#        $(LOCAL_PATH)/libdecodeqr \
+#LOCAL_CFLAGS := $(LOCAL_C_INCLUDES:%=-I%) -fPIC
+#LOCAL_LDLIBS := -L$(SYSROOT)/usr/lib -ldl
+
+#LOCAL_SRC_FILES := \
+		libdecodeqr/bitstream.cpp \
+		libdecodeqr/codedata.cpp \
+		libdecodeqr/container.cpp \
+		libdecodeqr/ecidecoder.cpp \
+		libdecodeqr/formatinfo.cpp \
+		libdecodeqr/galois.cpp \
+		libdecodeqr/imagereader.cpp \
+		libdecodeqr/libdecodeqr.cpp
+		
+# ############# END LIBDECODEQR ###############
+
+# ############# ZBAR ###############
+
+
+#LOCAL_PATH := $(call my-dir)
+#APP_PATH:= $(NDK)/$(call my-dir) 
+
+include $(CLEAR_VARS) 
+
+LOCAL_MODULE := libiconv 
+
+LIBICONV := libiconv
+
+LOCAL_CFLAGS := -I$(LOCAL_PATH)/$(LIBICONV)
+LOCAL_SRC_FILES := $(LIBICONV)/iconv.c
+
+include $(BUILD_STATIC_LIBRARY) 
+
+#LOCAL_PATH := $(call my-dir)
+
+include $(CLEAR_VARS)
+
+LOCAL_MODULE    := zbar
+
+LOCAL_SRC_FILES := convert.c decoder.c error.c image.c img_scanner.c \
+	refcnt.c scanner.c symbol.c video.c window.c \
+	\
+	qrcode/bch15_5.c qrcode/binarize.c qrcode/isaac.c qrcode/qrdec.c qrcode/qrdectxt.c \
+	qrcode/rs.c qrcode/util.c \
+	\
+	processor/null.c video/null.c window/null.c decoder/qr_finder.c \
+	android_zbar.c
+	
+LOCAL_CFLAGS := -I$(LOCAL_PATH) -I$(LOCAL_PATH)/$(LIBICONV)
+LOCAL_LDLIBS := -llog
+
+LOCAL_STATIC_LIBRARIES := libiconv
+
+include $(BUILD_SHARED_LIBRARY)
+
+
+# ############# END ZBAR ###############
 
 
 #include $(CLEAR_VARS)
@@ -259,9 +323,6 @@ include $(BUILD_STATIC_LIBRARY)
 
 include $(CLEAR_VARS)
 
-
-
-
 LOCAL_MODULE    := opencv
 LOCAL_C_INCLUDES := \
         $(LOCAL_PATH)/cv/src \
@@ -274,15 +335,15 @@ LOCAL_C_INCLUDES := \
 LOCAL_CFLAGS := $(LOCAL_C_INCLUDES:%=-I%)
  
 LOCAL_LDLIBS := -L$(SYSROOT)/usr/lib -ldl -llog \
-                -L$(TARGET_OUT) -lcxcore -lcv    #-lcvaux -lcvhighgui -lcvml
+                -L$(TARGET_OUT) -lcxcore -lcv   #-lcvaux -lcvhighgui -lcvml
 
 
 LOCAL_SRC_FILES := \
-      myOpenCVDetection.c
+      myOpenCVDetection.c 
       
 
 
-LOCAL_STATIC_LIBRARIES :=  cv cxcore  #cvaux cvhighgui cvml
+LOCAL_STATIC_LIBRARIES :=  cv cxcore #libdecodeqr  #cvaux cvhighgui cvml
 
 include $(BUILD_SHARED_LIBRARY)
 
