@@ -20,7 +20,7 @@ obj/local/armeabi/objs/zbar/android_zbar.o: jni/android_zbar.c \
  /Users/ricardoandrade/Documents/Desenvolvimento/android-ndk-r7b/platforms/android-14/arch-arm/usr/include/sys/sysmacros.h \
  /Users/ricardoandrade/Documents/Desenvolvimento/android-ndk-r7b/platforms/android-14/arch-arm/usr/include/memory.h \
  /Users/ricardoandrade/Documents/Desenvolvimento/android-ndk-r7b/platforms/android-14/arch-arm/usr/include/android/log.h \
- jni/zbar.h jni/nativeLib_Zbar.h \
+ jni/zbar/zbar.h jni/nativeLib_Zbar.h \
  /Users/ricardoandrade/Documents/Desenvolvimento/android-ndk-r7b/platforms/android-14/arch-arm/usr/include/jni.h
 
 /Users/ricardoandrade/Documents/Desenvolvimento/android-ndk-r7b/platforms/android-14/arch-arm/usr/include/string.h:
@@ -65,7 +65,7 @@ obj/local/armeabi/objs/zbar/android_zbar.o: jni/android_zbar.c \
 
 /Users/ricardoandrade/Documents/Desenvolvimento/android-ndk-r7b/platforms/android-14/arch-arm/usr/include/android/log.h:
 
-jni/zbar.h:
+jni/zbar/zbar.h:
 
 jni/nativeLib_Zbar.h:
 

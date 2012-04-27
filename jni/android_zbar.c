@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <android/log.h>
 
-#include "zbar.h"
+#include "zbar/zbar.h"
 
 #include "nativeLib_Zbar.h"
 JNIEXPORT jstring JNICALL Java_nativeLib_Zbar_decode
