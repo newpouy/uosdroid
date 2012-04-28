@@ -1,20 +1,38 @@
 package br.unb.unbiquitous.marker.decoder;
 
-import android.app.Activity;
-
 import com.google.zxing.client.android.camera.CameraManager;
 
+import br.unb.unbiquitous.jni.MarkerDetectionJni;
+import br.unb.unbiquitous.jni.ZbarJni;
+import android.app.Activity;
+
+/**
+ * Essa classe é responsável por disponibilizar objetos
+ * usados na decodificação de marcadores e QRCodes.
+ * 
+ * @author ricardoandrade
+ *
+ */
 public class DecoderObject {
 
-	private CameraManager cameraManager;
-	private QRCodeDecoder qrCodeDecoder;
-	private Integer orientation;
+	/************************************************
+	 * VARIABLES
+	 ************************************************/
 	
-
+	private Integer orientation;
+	private ZbarJni zbar ;
+	private MarkerDetectionJni markerDetection;
+	private QRCodeDecoder qrCodeDecoder;
+	
+	/************************************************
+	 * GETTERS AND SETTERS
+	 ************************************************/
+	
 	public DecoderObject(Activity activity) {
-		cameraManager = new CameraManager(activity.getApplication());
-		qrCodeDecoder = new QRCodeDecoder(cameraManager);
+		qrCodeDecoder = new QRCodeDecoder(new CameraManager(activity.getApplication()));
 		orientation = new Integer(0);
+		markerDetection = new MarkerDetectionJni();
+		zbar  = new ZbarJni();
 	}
 
 	public Integer getOrientation() {
@@ -25,6 +43,22 @@ public class DecoderObject {
 		this.orientation = rotation;
 	}
 
+	public ZbarJni getZbar() {
+		return zbar;
+	}
+
+	public void setZbar(ZbarJni zbar) {
+		this.zbar = zbar;
+	}
+
+	public MarkerDetectionJni getMarkerDetection() {
+		return markerDetection;
+	}
+
+	public void setMarkerDetection(MarkerDetectionJni markerDetection) {
+		this.markerDetection = markerDetection;
+	}
+
 	public QRCodeDecoder getQrCodeDecoder() {
 		return qrCodeDecoder;
 	}
@@ -32,8 +66,5 @@ public class DecoderObject {
 	public void setQrCodeDecoder(QRCodeDecoder qrCodeDecoder) {
 		this.qrCodeDecoder = qrCodeDecoder;
 	}
-
-
-	
 	
 }

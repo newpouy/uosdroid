@@ -2,15 +2,16 @@ package br.unb.unbiquitous.manager;
 
 import java.util.HashMap;
 
-import android.app.Activity;
 import android.util.Log;
 import br.unb.unbiquitous.activity.MainUOSActivity;
-import br.unb.unbiquitous.marker.detection.MultiMarkerSetup;
+import br.unb.unbiquitous.marker.detection.SingleMarkerSetup;
 
 import com.google.droidar.gl.MarkerObject;
 import com.google.droidar.system.Setup;
 
 /**
+ * Classe responsável por gerenciar a criação e o reposicionamento
+ * dos objetos virtuais da realidade aumentada.
  * 
  * @author ricardoandrade
  *
@@ -41,6 +42,11 @@ public class ARManager {
 	 ************************************************/
 	
 	/**
+	 * A DecodeQRCodeThread invoca esse método quando um QRCode é decodificado.
+	 * É feita uma verificação na Hydra para saber se o QRCode decodificado é
+	 * válido. Caso se a aplicação seja válida e já foi reconhecida anteriormente
+	 * o objeto virtual correspondente é reposicionado. Se a for uma aplicação nova
+	 * é gerado o objeto virtual correspondente.
 	 * 
 	 */
 	public void inserirNovoObjetoVirtual(String appName, float[] rotacao) {
@@ -51,26 +57,27 @@ public class ARManager {
 			
 			MarkerObject markerObj = markerObjectMap.get(appName);
 
-			// TODO Fazer a validacao na hydra
-
-			//Verifica se o objeto já foi criado anteriormente.
 			if (markerObj != null) {
-
-				// Marcador foi encontrado
 				markerObj.OnMarkerPositionRecognized(rotacao, 1, 16);
 			} else {
 				criarObjetoVirtual(appName);
 			}
 		}
 	}
-	
+
+	/**
+	 * Método invocado pela RepositionThread responsável pelo reposicionamento
+	 * do objeto virtual na tela. O reposicionamento ocorre enquanto a decodificação
+	 * do QRCode está sendo feita.
+	 * 
+	 * @param appName
+	 * @param rotacao
+	 */
 	public void reposicionarObjetoVirtual(String appName, float[] rotacao){
-//		appName = "MouseDriverDevice";
+
 		MarkerObject markerObj = markerObjectMap.get(appName);
 
-		// Verifica se o objeto já foi criado anteriormente.
 		if (markerObj != null) {
-			// Marcador foi encontrado
 			markerObj.OnMarkerPositionRecognized(rotacao, 1, 16);
 		}
 	}
@@ -80,6 +87,7 @@ public class ARManager {
 	 */
 	public void retirarObjetosVirtuais() {
 		
+		// TODO [Ricardo] Implementar remoção dos objetos virtuais
 		
 //		unrecognizedMarkerListener.onUnrecognizedMarkerDetected(5, mat, 1, 16,
 //				0 // ver
@@ -90,20 +98,19 @@ public class ARManager {
 	 * PRIVATE METHODS
 	 ************************************************/
 	
+	/**
+	 * Método responsável por verificar, na Hydra, a validade da aplicação informada, decodificada a 
+	 * partir do QRCode.
+	 */
 	private boolean isAppNameValid(String appName){
 		return ((MainUOSActivity)setup.getActivity()).getHydraConnection().isDeviceValid(appName);
 	}
 	
 	/**
-	 * 
+	 * Método responsável por invocar o método para criar o objeto virtual na tela.
 	 */
 	private void criarObjetoVirtual(String appName) {
-		((MultiMarkerSetup) setup).addMarkerObject(appName);
+		((SingleMarkerSetup) setup).addMarkerObject(appName);
 	}
 
-	
-	
-	/************************************************
-	 * GETTERS AND SETTERS
-	 ************************************************/
 }

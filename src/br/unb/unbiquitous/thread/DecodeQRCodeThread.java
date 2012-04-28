@@ -7,8 +7,10 @@ import br.unb.unbiquitous.manager.ARManager;
 import br.unb.unbiquitous.manager.DecodeManager;
 import br.unb.unbiquitous.marker.decoder.DecodeDTO;
 import br.unb.unbiquitous.marker.decoder.DecodeState;
+import br.unb.unbiquitous.util.DecodeProgram;
 
 /**
+ * Thread responsável pela decodificação do QRCode.
  * 
  * @author ricardoandrade
  *
@@ -26,6 +28,7 @@ final class DecodeQRCodeThread extends Thread {
 	/************************************************
 	 * VARIABLES
 	 ************************************************/
+	
 	private DecodeManager decodeManager ;
 	
 	private ByteArrayBuffer byteArrayBuffer;
@@ -55,7 +58,7 @@ final class DecodeQRCodeThread extends Thread {
 	 ************************************************/
 
 	/**
-	 * 
+	 * Método invocado quando a thread é inicializada.
 	 */
 	@Override
 	public synchronized void run() {
@@ -65,13 +68,16 @@ final class DecodeQRCodeThread extends Thread {
 		while(true){
 			while(!busy || stopRequest){
 				try {
-					wait();// wait for a new frame
+					wait(); // esperando pelo novo frame
 				} catch (InterruptedException e) {}
 				
 				Log.i(TAG, "Frame recebido: Decodificando QRCode.");
 				
-				if(decodeManager.isQRCodeFound(byteArrayBuffer.toByteArray(), FRAME_WIDTH, FRAME_HEIGHT)){
+				// Tentando decodificar o QRCode.
+				if(decodeManager.isQRCodeFound(byteArrayBuffer.toByteArray(), FRAME_WIDTH, FRAME_HEIGHT, DecodeProgram.ZBAR)){
+					
 					Log.i(TAG, "Frame recebido: QRCode decodificado com sucesso.");
+					
 					synchronized (decodeDTO) {
 						
 						decodeDTO.setAppName(decodeManager.getLastMarkerName());
@@ -88,6 +94,15 @@ final class DecodeQRCodeThread extends Thread {
 		}
 	}
 	
+	/**
+	 * Método responsável por receber o frame contendo o marcador detectado 
+	 * pela DetectionThread. Seta os dados necessários para a decodificação 
+	 * e aciona esta thread para fazer uma nova detecção.
+	 * 
+	 * 
+	 * @param byteArrayBuffer
+	 * @param rotacao
+	 */
 	public void registerFrame(ByteArrayBuffer byteArrayBuffer, float[] rotacao){
 	
 		Log.i(TAG, "Setando rotação.");
@@ -138,6 +153,5 @@ final class DecodeQRCodeThread extends Thread {
 	public void setStopRequest(boolean stopRequest) {
 		this.stopRequest = stopRequest;
 	}
-	
 	
 }

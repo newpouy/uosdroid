@@ -118,7 +118,7 @@ void loadPixels(char* pixels, IplImage* tgray, int width, int height) {
  * calibrateNext tells if the next frame should be used for calibration or not.
  */
 
-JNIEXPORT jint JNICALL Java_nativeLib_NativeLib_detectMarkers(
+JNIEXPORT jint JNICALL Java_br_unb_unbiquitous_jni_MarkerDetectionJni_detectMarkers(
 		JNIEnv * env, jobject obj, jbyteArray frame, jfloatArray returnInfo,
 		jint height, jint width, jboolean calibrateNext, jint screenOrientation) {
 
@@ -811,7 +811,7 @@ JNIEXPORT jint JNICALL Java_nativeLib_NativeLib_detectMarkers(
 /**
  * Start the calibration.
  */
-JNIEXPORT jboolean JNICALL Java_nativeLib_NativeLib_calibrate(
+JNIEXPORT jboolean JNICALL Java_br_unb_unbiquitous_jni_MarkerDetectionJni_calibrate(
 		JNIEnv * env, jobject obj, jint height, jint width) {
 
 	if (frameCounter == -1) {
@@ -835,7 +835,7 @@ JNIEXPORT jboolean JNICALL Java_nativeLib_NativeLib_calibrate(
 	return 1;
 }
 //Get the current calibration data
-JNIEXPORT jboolean JNICALL Java_nativeLib_NativeLib_getCalibration(
+JNIEXPORT jboolean JNICALL Java_br_unb_unbiquitous_jni_MarkerDetectionJni_getCalibration(
 		JNIEnv * env, jobject obj, jdoubleArray cameraMatrix,
 		jdoubleArray distCoeff) {
 	//return the current calibration data;
@@ -844,7 +844,7 @@ JNIEXPORT jboolean JNICALL Java_nativeLib_NativeLib_getCalibration(
 	return 1;//true
 }
 //Set new calibration data
-JNIEXPORT jboolean JNICALL Java_de_rwth_ar_nativeLib_NativeLib_setCalibration(
+JNIEXPORT jboolean JNICALL Java_br_unb_unbiquitous_jni_MarkerDetectionJni_setCalibration(
 		JNIEnv * env, jobject obj, jdoubleArray cameraMatrix,
 		jdoubleArray distCoeff) {
 	//Parse the calibration data.
@@ -855,7 +855,7 @@ JNIEXPORT jboolean JNICALL Java_de_rwth_ar_nativeLib_NativeLib_setCalibration(
 
 }
 //Set the loaded calibration data and retrieve some constants
-JNIEXPORT jboolean JNICALL Java_nativeLib_NativeLib_initThread(
+JNIEXPORT jboolean JNICALL Java_br_unb_unbiquitous_jni_MarkerDetectionJni_initThread(
 		JNIEnv * env, jobject obj, jintArray parameterArray,
 		jdoubleArray cameraMatrix, jdoubleArray distCoeff) {
 	(*env)->GetDoubleArrayRegion(env, cameraMatrix, 0, 9, kMatNew);

@@ -21,41 +21,41 @@ import com.google.droidar.util.Vec;
 import com.google.droidar.worldData.SystemUpdater;
 import com.google.droidar.worldData.World;
 
-
-public class MultiMarkerSetup extends MarkerDetectionSetup {
-
+/**
+ * 
+ * @author ricardoandrade
+ *
+ */
+public class SingleMarkerSetup extends MarkerDetectionSetup {
+	
+	/************************************************************
+	 * VARIABLES
+	 ************************************************************/
 	private GLCamera camera;
 	private World world;
-	private MeshComponent mesh1;
-	private MeshComponent mesh2;
+	private MeshComponent meshComponent;
 	private MeuObjetoVirtual meuObjetoVirtual;
+	
+	/************************************************************
+	 * PUBLIC METHODS
+	 ************************************************************/
 	
 	@Override
 	public void _a_initFieldsIfNecessary() {
 		camera = new GLCamera(new Vec(0, 0, 10));
 		world = new World(camera);
-//		mesh1 = new Shape();
-//
-//		mesh1.addChild(GLFactory.getInstance().newCoordinateSystem());
-//		// mesh.add(GLFactory.getInstance().newCircle(new Color(0, 0, 1,
-//		// 0.6f)));
-//		mesh1.addChild(GLFactory.getInstance().newCube());
-//		
-//		mesh2 = new Shape();
-//		mesh2.addChild(GLFactory.getInstance().newCoordinateSystem());
-//		mesh2.addChild(GLFactory.getInstance().newCircle(new Color(0, 0, 1, 0.6f)));
-//		// mesh1.add(GLFactory.getInstance().newCube());
-		
-//		meuObjetoVirtual = new MeuObjetoVirtual("5", camera, world, this.activity);
-
 	}
 
 	@Override
 	public UnrecognizedMarkerListener getUnrecognizedMarkerListener() {
 		return new UnrecognizedMarkerListener() {
 
-			public void onUnrecognizedMarkerDetected(int markerCode,
-					float[] mat, int startIdx, int endIdx, int rotationValue) {
+			public void onUnrecognizedMarkerDetected(	int markerCode,
+														float[] mat, 
+														int startIdx, 
+														int endIdx, 
+														int rotationValue) {
+				
 				Log.i("Retirando marcador", "unrecognized markerCode=" + markerCode);
 			}
 		};
@@ -74,27 +74,11 @@ public class MultiMarkerSetup extends MarkerDetectionSetup {
 	@Override
 	public void _a3_registerMarkerObjects(MarkerObjectMap markerObjectMap) {
 		this.markerObjectMap = markerObjectMap;
-//		markerObjectMap.put(new SimpleMeshPlacer("0", mesh1, camera));
-//		markerObjectMap.put(new SimpleMeshPlacer("1", mesh2, camera));
-		
-//		markerObjectMap.put(meuObjetoVirtual);
-
 	}
 
 	@Override
-	public void _b_addWorldsToRenderer(GLRenderer renderer,
-			GLFactory objectFactory, GeoObj currentPosition) {
+	public void _b_addWorldsToRenderer(GLRenderer renderer,	GLFactory objectFactory, GeoObj currentPosition) {
 		renderer.addRenderElement(world);
-//		Obj o = new Obj();
-//		o.setComp(mesh1);
-//		world.add(o);
-//
-//		Obj o2 = new Obj();
-//		o2.setComp(mesh2);
-//		world.add(o2);
-//
-//		world.add(objectFactory.newHexGroupTest(new Vec()));
-
 	}
 
 	@Override
@@ -114,7 +98,6 @@ public class MultiMarkerSetup extends MarkerDetectionSetup {
 		updater.addObjectToUpdateCycle(world);
 
 	}
-
 	
 	/**
 	 * Adiciona os botões na tela. Chamados no Setup.
@@ -136,15 +119,10 @@ public class MultiMarkerSetup extends MarkerDetectionSetup {
 
 				rayDirection.setLength(5);
 
-				mesh1.setPosition(rayPosition.add(rayDirection));
+				meshComponent.setPosition(rayPosition.add(rayDirection));
 
 				return false;
 			}
 		}, "Place 2 meters infront");
-
 	}
-
-	
-	
-	
 }

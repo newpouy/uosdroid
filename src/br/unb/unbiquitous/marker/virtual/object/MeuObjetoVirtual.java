@@ -95,7 +95,7 @@ public class MeuObjetoVirtual extends BasicMarker {
 	@Override
 	public void setObjectPos(Vec positionVec) {
 		
-		// Verifica se é a primeira vez que o terá suas posições setadas.
+		// Verifica se é a primeira vez que terá suas posições setadas.
 		if(firstTime){
 			
 			// Criando o objeto virtual.
