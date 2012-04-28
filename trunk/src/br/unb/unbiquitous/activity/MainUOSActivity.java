@@ -165,8 +165,13 @@ public class MainUOSActivity extends Activity {
 
 		@Override
 		protected Void doInBackground(Void... params) {
+			Log.i(TAG, "++ Inicializando o middleware... ++");
 			startMiddleware();
+			Log.i(TAG, "++ Middleware inicializado. ++");
+			
+			Log.i(TAG, "++ Esperando pelo handshake com a Hydra... ++");
 			waitHydraHandshake();
+			Log.i(TAG, "++ Handshake efetuado com sucesso ... ++");
 			return null;
 		}
 

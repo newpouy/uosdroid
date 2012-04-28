@@ -85,7 +85,10 @@ final class DecodeQRCodeThread extends Thread {
 						
 						arManager.inserirNovoObjetoVirtual(decodeManager.getLastMarkerName(), rotacao);
 					}
+				}else{
+					arManager.retirarObjetosVirtuais();
 				}
+				
 			}
 
 			synchronized (this) {
