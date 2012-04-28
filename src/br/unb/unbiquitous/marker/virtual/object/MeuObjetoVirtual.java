@@ -151,12 +151,12 @@ public class MeuObjetoVirtual extends BasicMarker {
 		v.setTextColor(Color.white().toIntRGB());
 		v.setText(getTextoFormatado(appName));
 		
-		Obj objeto = new Obj();
+		this.objetoTexto = new Obj();
 	    textoMeshComponent = GLFactory.getInstance().newTexturedSquare("textBitmap"	+ appName, IO.loadBitmapFromView(v), controlarTamanhoDoTexto(appName));
 		textoMeshComponent.setPosition(textPosition);
 		textoMeshComponent.addAnimation(animationFaceToCamera);
-		objeto.setComp(this.textoMeshComponent);
-		return objeto;
+		this.objetoTexto.setComp(this.textoMeshComponent);
+		return objetoTexto;
 	}
 
 	/**
@@ -374,7 +374,21 @@ public class MeuObjetoVirtual extends BasicMarker {
 	public void setHydraConnection(HydraConnection hydraConnection) {
 		this.hydraConnection = hydraConnection;
 	}
-	
-	
+
+	public MeshComponent getTextoMeshComponent() {
+		return textoMeshComponent;
+	}
+
+	public void setTextoMeshComponent(MeshComponent textoMeshComponent) {
+		this.textoMeshComponent = textoMeshComponent;
+	}
+
+	public MeshComponent getShapeMeshComponent() {
+		return shapeMeshComponent;
+	}
+
+	public void setShapeMeshComponent(MeshComponent shapeMeshComponent) {
+		this.shapeMeshComponent = shapeMeshComponent;
+	}
 	
 }

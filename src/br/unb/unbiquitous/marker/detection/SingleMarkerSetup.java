@@ -66,10 +66,19 @@ public class SingleMarkerSetup extends MarkerDetectionSetup {
 		markerObjectMap.put(markerObject);
 	}
 
-	public void addMarkerObject(String appName){
+	public MeuObjetoVirtual addMarkerObject(String appName){
 		meuObjetoVirtual = new MeuObjetoVirtual(appName, camera, world, this.activity);
 		this.markerObjectMap.put(meuObjetoVirtual);
+		return meuObjetoVirtual;
 	}
+	
+	public void removeMarkerObject(MeuObjetoVirtual meuObjetoVirtual){
+		world.remove(meuObjetoVirtual.getObjetoTexto());
+		world.remove(meuObjetoVirtual.getTextoMeshComponent());
+		world.remove(meuObjetoVirtual.getShapeMeshComponent());
+		this.markerObjectMap.remove(meuObjetoVirtual.getAppName());
+	}
+	
 	
 	@Override
 	public void _a3_registerMarkerObjects(MarkerObjectMap markerObjectMap) {

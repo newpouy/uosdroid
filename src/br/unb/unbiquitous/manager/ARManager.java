@@ -5,6 +5,7 @@ import java.util.HashMap;
 import android.util.Log;
 import br.unb.unbiquitous.activity.MainUOSActivity;
 import br.unb.unbiquitous.marker.detection.SingleMarkerSetup;
+import br.unb.unbiquitous.marker.virtual.object.MeuObjetoVirtual;
 
 import com.google.droidar.gl.MarkerObject;
 import com.google.droidar.system.Setup;
@@ -24,6 +25,8 @@ public class ARManager {
 	
 	private Setup setup;
 	private HashMap<String, MarkerObject> markerObjectMap;
+	
+	private MeuObjetoVirtual ultimoObjetoVirtual;
 	
 	/************************************************
 	 * CONSTRUCTOR
@@ -55,12 +58,14 @@ public class ARManager {
 
 			Log.e("AppName", "AppName decodificado = " + appName);
 			
+			
 			MarkerObject markerObj = markerObjectMap.get(appName);
 
 			if (markerObj != null) {
+				this.ultimoObjetoVirtual = (MeuObjetoVirtual) markerObj;
 				markerObj.OnMarkerPositionRecognized(rotacao, 1, 16);
 			} else {
-				criarObjetoVirtual(appName);
+				this.ultimoObjetoVirtual = criarObjetoVirtual(appName);
 			}
 		}
 	}
@@ -86,12 +91,7 @@ public class ARManager {
 	 * 
 	 */
 	public void retirarObjetosVirtuais() {
-		
-		// TODO [Ricardo] Implementar remoção dos objetos virtuais
-		
-//		unrecognizedMarkerListener.onUnrecognizedMarkerDetected(5, mat, 1, 16,
-//				0 // ver
-//				);
+		((SingleMarkerSetup) setup).removeMarkerObject(ultimoObjetoVirtual);
 	}
 	
 	/************************************************
@@ -109,8 +109,8 @@ public class ARManager {
 	/**
 	 * Método responsável por invocar o método para criar o objeto virtual na tela.
 	 */
-	private void criarObjetoVirtual(String appName) {
-		((SingleMarkerSetup) setup).addMarkerObject(appName);
+	private MeuObjetoVirtual criarObjetoVirtual(String appName) {
+		return ((SingleMarkerSetup) setup).addMarkerObject(appName);
 	}
 
 }
