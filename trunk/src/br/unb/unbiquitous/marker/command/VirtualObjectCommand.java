@@ -1,7 +1,6 @@
 package br.unb.unbiquitous.marker.command;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import android.content.Intent;
 import br.unb.unbiquitous.activity.ListViewActivity;
@@ -11,7 +10,10 @@ import com.google.droidar.commands.Command;
 import com.google.droidar.util.Log;
 
 /**
- * 
+ * Classe responsável por implemetar um commando,
+ * sendo este acionado toda vez que o objeto virtual
+ * seja clicado.
+ *  
  * @author ricardoandrade
  *
  */
@@ -23,13 +25,17 @@ public class VirtualObjectCommand extends Command {
 	
 	private MeuObjetoVirtual objetoVirtual;
 	
-	
 	/************************************************
 	 * PUBLIC METHODS
 	 ************************************************/
 
 	/**
 	 * Método chamado toda vez que o objeto virtual for clicado.
+	 * O nome dos drivers implementados para a aplicação selecionada 
+	 * é repassado para a activity que listará todos os drivers, podendo
+	 * ser feito o redirecionamento ou liberação dos recursos. 
+	 * 
+	 * 
 	 */
 	@Override
 	public boolean execute() {
@@ -43,21 +49,14 @@ public class VirtualObjectCommand extends Command {
 		
 		for (String driver : objetoVirtual.getNomeDrivers()) {
 			driversName.add(driver);
-			
 		}
+		
 		intent.putStringArrayListExtra("driversName", driversName);
 		objetoVirtual.getActivity().startActivity(intent);
 		
-		
-		return false;
+		return true;
 	}
 
-
-	/************************************************
-	 * PRIVATE METHODS
-	 ************************************************/
-	
-	
 	/************************************************
 	 * GETTERS AND SETTERS
 	 ************************************************/
@@ -66,11 +65,8 @@ public class VirtualObjectCommand extends Command {
 		return objetoVirtual;
 	}
 
-
 	public void setObjetoVirtual(MeuObjetoVirtual objetoVirtual) {
 		this.objetoVirtual = objetoVirtual;
 	}
-	
-	
 	
 }

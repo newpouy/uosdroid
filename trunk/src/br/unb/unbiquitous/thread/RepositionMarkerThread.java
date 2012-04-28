@@ -1,11 +1,11 @@
 package br.unb.unbiquitous.thread;
 
-import java.awt.Stroke;
-
 import br.unb.unbiquitous.manager.ARManager;
 import br.unb.unbiquitous.marker.decoder.DecodeDTO;
 
 /**
+ * Thread responsável por reposicionar o objeto virtual
+ * na tela.
  * 
  * @author ricardoandrade
  * 
@@ -34,7 +34,7 @@ public class RepositionMarkerThread extends Thread {
 	 ************************************************/
 
 	/**
-	 * 
+	 * Método invocado quando a thread é inicializada.
 	 */
 	@Override
 	public void run() {

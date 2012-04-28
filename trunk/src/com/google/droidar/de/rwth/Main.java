@@ -1,6 +1,6 @@
 package com.google.droidar.de.rwth;
 
-import br.unb.unbiquitous.marker.detection.MultiMarkerSetup;
+import br.unb.unbiquitous.marker.detection.SingleMarkerSetup;
 
 import com.google.droidar.system.ArActivity;
 import com.google.droidar.system.Setup;
@@ -17,7 +17,7 @@ public class Main extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		Button b = new Button(this);
-		final MultiMarkerSetup markerSetup = new MultiMarkerSetup();
+		final SingleMarkerSetup markerSetup = new SingleMarkerSetup();
 		b.setText("Load " + markerSetup.getClass().getName());
 		b.setOnClickListener(new OnClickListener() {
 

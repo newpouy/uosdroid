@@ -17,6 +17,9 @@ import com.google.droidar.util.CameraCalibration;
 import com.google.droidar.util.IO;
 
 /**
+ * Classe responsável por fazer a inicialização dos objetos
+ * responsáveis pela manipulação da câmera e posteriormente
+ * a detecção dos marcadores. 
  * 
  * @author ricardoandrade
  *
@@ -24,18 +27,23 @@ import com.google.droidar.util.IO;
 public abstract class MarkerDetectionSetup extends Setup {
 
 	/************************************************************
+	 * CONSTANTS
+	 ************************************************************/
+	private final String CALIB_PATH = "ARCameraCalibration";
+	
+	/************************************************************
 	 * VARIABLES
 	 ************************************************************/
 	
-	private final String CALIB_PATH = "ARCameraCalibration";
+
 	private Preview cameraPreview;
-	private DetectionThread myThread;
-	private MarkerDetectionJni nativeLib = new MarkerDetectionJni();
-	
 	private CameraCalibration calib = null;
 	private Camera.Size cameraSize;
+
 	private LayoutParams optimalLayoutParams;
+	
 	public  Activity activity;
+	private DetectionThread detectionThread;
 	private DecoderObject decoderObject;
 	protected MarkerObjectMap markerObjectMap;
 	
@@ -56,10 +64,8 @@ public abstract class MarkerDetectionSetup extends Setup {
 		markerObjectMap = new MarkerObjectMap();
 		
 		Camera mCamera = Camera.open();
-
 		Camera.Parameters parameters = mCamera.getParameters();
 		cameraSize = parameters.getPreviewSize(); 
-	
 		optimalLayoutParams = new LayoutParams(cameraSize.width, cameraSize.height);
 
 		mCamera.release();
@@ -68,11 +74,11 @@ public abstract class MarkerDetectionSetup extends Setup {
 		// initialize native code.
 		int[] constants = new int[2];
 		
-		nativeLib.initThread(constants, calib.cameraMatrix,	calib.distortionMatrix);
+		decoderObject.getMarkerDetection().initThread(constants, calib.cameraMatrix,	calib.distortionMatrix);
 
-		myThread = new DetectionThread(this, nativeLib, myGLSurfaceView,markerObjectMap, getUnrecognizedMarkerListener(), this.decoderObject);
+		detectionThread = new DetectionThread(this, myGLSurfaceView,markerObjectMap, getUnrecognizedMarkerListener(), this.decoderObject);
 		
-		cameraPreview = new PreviewPost2_0(myTargetActivity, myThread,cameraSize);
+		cameraPreview = new PreviewPost2_0(myTargetActivity, detectionThread,cameraSize);
 
 		// TODO [ Ricardo ] Isso aqui poderá sair pois o controle para visualizacao sera feito no detection thread.
 		_a3_registerMarkerObjects(markerObjectMap);
@@ -95,8 +101,8 @@ public abstract class MarkerDetectionSetup extends Setup {
 		if (cameraPreview != null)
 			cameraPreview.releaseCamera();
 		// Ensure app is gone after back button is pressed!
-		if (myThread != null)
-			myThread.stopThread();
+		if (detectionThread != null)
+			detectionThread.stopThread();
 	}
 
 	@Override
@@ -160,13 +166,6 @@ public abstract class MarkerDetectionSetup extends Setup {
 		this.cameraPreview = cameraPreview;
 	}
 
-	public MarkerDetectionJni getNativeLib() {
-		return nativeLib;
-	}
-
-	public void setNativeLib(MarkerDetectionJni nativeLib) {
-		this.nativeLib = nativeLib;
-	}
 
 	public Camera.Size getCameraSize() {
 		return cameraSize;

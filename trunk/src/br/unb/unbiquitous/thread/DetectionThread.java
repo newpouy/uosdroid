@@ -2,12 +2,10 @@ package br.unb.unbiquitous.thread;
 
 import java.util.HashMap;
 
-
 import org.apache.http.util.ByteArrayBuffer;
 
 import android.opengl.GLSurfaceView;
 import android.os.SystemClock;
-import br.unb.unbiquitous.jni.MarkerDetectionJni;
 import br.unb.unbiquitous.manager.ARManager;
 import br.unb.unbiquitous.manager.DecodeManager;
 import br.unb.unbiquitous.marker.decoder.DecoderObject;
@@ -41,7 +39,6 @@ public class DetectionThread extends Thread {
 	private boolean stopRequest = false;
 	private GLSurfaceView openglView;
 	private Preview preview;
-	private MarkerDetectionJni nativelib;
 	private float[] mat;
 	private long start = 0;
 	private long now = 0;
@@ -74,7 +71,6 @@ public class DetectionThread extends Thread {
 	 * 
 	 */
 	public DetectionThread( MarkerDetectionSetup setup, 
-							MarkerDetectionJni nativeLib, 
 							GLSurfaceView openglView,
 							HashMap<String, MarkerObject> markerObjectMap,
 							UnrecognizedMarkerListener unrecognizedMarkerListener,
@@ -82,7 +78,6 @@ public class DetectionThread extends Thread {
 		
 		this.setup = setup;
 		this.openglView = openglView;
-		this.nativelib = nativeLib;
 		
 		this.decoderObject = decoderObject;
 		this.decodeManager = new DecodeManager(decoderObject);
@@ -91,19 +86,15 @@ public class DetectionThread extends Thread {
 		repositionThread = new RepositionMarkerThread(arManager);
 		decodeQRCodeThread = new DecodeQRCodeThread(decodeManager, repositionThread,arManager);
 
-
 		mat = new float[1 + 18 * 5];
 
 		// application will exit even if this thread remains active.
-//		setDaemon(true);
+		setDaemon(true);
 	}
 
 	/************************************************
 	 * PUBLIC METHODS
 	 ************************************************/
-	
-
-	
 	
 	/**
 	 * 
@@ -216,7 +207,7 @@ public class DetectionThread extends Thread {
 		// Pass the frame to the native code and find the
 		// marker information.
 		// The false at the end is a remainder of the calibration.
-		nativelib.detectMarkers(frame, mat, frameHeight, frameWidth,false, decoderObject.getOrientation());
+		decoderObject.getMarkerDetection().detectMarkers(frame, mat, frameHeight, frameWidth,false, decoderObject.getOrientation());
 		
 			
 		// Needs to be reworked to. Either just deleted, or changed into

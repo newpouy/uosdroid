@@ -2,14 +2,13 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="gen"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/Zxingcore"/>
 	<classpathentry kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
 	<classpathentry kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/uos.basic_auth.api"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/uos.core"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/uos.tcp_udp.plugin"/>
-	<classpathentry kind="lib" path="libs/android-logging-log4j-1.0.2.jar"/>
+	<classpathentry kind="lib" path="libs/android-logging-log4j-1.0.2.jar" sourcepath="/Users/ricardoandrade/.m2/repository/de/mindpipe/android/android-logging-log4j/1.0.2/android-logging-log4j-1.0.2-sources.jar"/>
 	<classpathentry kind="lib" path="libs/hsqldb.jar"/>
 	<classpathentry kind="lib" path="libs/jcl-core-2.2.2.jar"/>
 	<classpathentry kind="lib" path="libs/jpcap.jar"/>
@@ -17,5 +16,6 @@
 	<classpathentry kind="lib" path="libs/log4j-1.2.16.jar"/>
 	<classpathentry kind="lib" path="libs/luaj-jse-2.0.2.jar"/>
 	<classpathentry kind="lib" path="libs/mockito-all-1.8.5.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/Zxingcore"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>
