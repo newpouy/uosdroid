@@ -28,6 +28,8 @@ public class DetectionThread extends Thread {
 	 ************************************************/
 	private static final String TAG = DetectionThread.class.getSimpleName();
 	
+	private static final int NUMERO_MAXIMO_TENTATIVAS = 5;
+	
 	/************************************************
 	 * VARIABLES
 	 ************************************************/
@@ -62,6 +64,8 @@ public class DetectionThread extends Thread {
 	private RepositionMarkerThread repositionThread;
 	private DecodeQRCodeThread decodeQRCodeThread;
 	private ByteArrayBuffer byteArrayBuffer;
+	private int tentativas;
+	
 	
 	/************************************************
 	 * CONSTRUCTOR
@@ -131,6 +135,14 @@ public class DetectionThread extends Thread {
 					byteArrayBuffer = new ByteArrayBuffer(this.frame.length);
 					byteArrayBuffer.append(frame, 0, frame.length);
 					decodeQRCodeThread.registerFrame(byteArrayBuffer, mat);
+					tentativas = 1;
+				}else{
+					if(tentativas <= NUMERO_MAXIMO_TENTATIVAS){
+						tentativas++;
+					}else{
+						arManager.retirarObjetosVirtuais();
+						tentativas = 1;
+					}
 				}
 				
 				busy = false;

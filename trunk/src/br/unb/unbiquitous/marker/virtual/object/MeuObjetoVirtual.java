@@ -38,7 +38,7 @@ public class MeuObjetoVirtual extends BasicMarker {
 	 * VARIABLES
 	 ************************************************/
 	
-	private static int TAMANHO_MAXIMO_NOME_DRIVER = 15;
+	private static int TAMANHO_MAXIMO_NOME_DRIVER = 10;
 	private static int LIMITE_NOMES = 4;
 	
 	private Obj objetoTexto;
@@ -116,6 +116,7 @@ public class MeuObjetoVirtual extends BasicMarker {
 	 */
 	@Override
 	public void setObjRotation(float[] rotMatrix) {	}
+	
 	
 	/************************************************
 	 * PRIVATE METHODS
@@ -238,7 +239,7 @@ public class MeuObjetoVirtual extends BasicMarker {
 		List<String> nomeDrivers = buscarNomeDosDrivers(appName);
 		int quantidadeNomes = 0;
 		
-		stringBuilder.append(appName);
+		quantidadeNomes = formata(appName, stringBuilder);
 		stringBuilder.append("\n\n");
 		
 		for (int i = 0; i < nomeDrivers.size(); i++) {
@@ -246,20 +247,25 @@ public class MeuObjetoVirtual extends BasicMarker {
 				// Insere novos nomes dos drivers até o limite estabelecido.
 				if ( quantidadeNomes < LIMITE_NOMES ){
 					
+					// Concatena o nome do driver.
+					stringBuilder.append("- ");
 					// Valida se o nome não ultrapassou o limite. 
 					// Os drivers com nomes muito grande não serão apresentados 
 					// compondo o objeto virtual.
 					if(validarTamanho(nomeDrivers.get(i))){
 					
-						// Concatena o nome do driver.
-						stringBuilder.append("- " + nomeDrivers.get(i));
-						
+						stringBuilder.append(nomeDrivers.get(i));
 						// Verifica se é o último elemento. Se não for, insere uma nova linha.
 						if( (i + 1) < nomeDrivers.size() ){
 							stringBuilder.append("\n");
 						}
 						quantidadeNomes++;
+					}else{
+						
+						quantidadeNomes += formata(nomeDrivers.get(i), stringBuilder);
+						
 					}
+					
 				}else{
 					
 					// Será apresentado os "..." caso a quantidade de nomes 
@@ -312,6 +318,35 @@ public class MeuObjetoVirtual extends BasicMarker {
 		textoMeshComponent.setOnLongClickCommand(virtualObjectCommand);
 		shapeMeshComponent.setOnClickCommand(virtualObjectCommand);
 		shapeMeshComponent.setOnLongClickCommand(virtualObjectCommand);
+	}
+	
+	private int formata(String palavra, StringBuilder stringBuilder){
+		int tamanho;
+		int quantidadeNomes = 0;
+		if ( (palavra.length() % TAMANHO_MAXIMO_NOME_DRIVER) == 0){
+			tamanho = palavra.length() / TAMANHO_MAXIMO_NOME_DRIVER;
+		}else{
+			tamanho = (palavra.length() / TAMANHO_MAXIMO_NOME_DRIVER) + 1;
+		}
+		
+		for ( int j = 0; j < tamanho; j++){
+			
+			int indiceFinal = 0;
+			
+			if( ((j + 1) * TAMANHO_MAXIMO_NOME_DRIVER) > palavra.length()){
+				indiceFinal = palavra.length(); 
+			}else{
+				indiceFinal = (j+1) * TAMANHO_MAXIMO_NOME_DRIVER;
+			}
+			
+			stringBuilder.append(palavra.substring(j * TAMANHO_MAXIMO_NOME_DRIVER, indiceFinal));
+			
+			if( (j + 1) < tamanho ){
+				stringBuilder.append("\n  ");
+			}
+			quantidadeNomes++;
+		}
+		return quantidadeNomes;
 	}
 
 	

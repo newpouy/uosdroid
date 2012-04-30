@@ -2,8 +2,12 @@ package br.unb.unbiquitous.hydra;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import android.util.Log;
 import br.unb.unbiquitous.activity.MainUOSActivity;
@@ -50,7 +54,7 @@ public class HydraConnection {
 	private Gateway gateway;
 	private MainUOSActivity activity;
 	
-	private List<DriverData> driversList;
+	private Set<DriverData> driversList;
 	
 	/************************************************************
 	 * CONSTRUCTOR
@@ -58,10 +62,12 @@ public class HydraConnection {
 	
 	public HydraConnection() {
 		gateway = app.getApplicationContext().getGateway();
+		this.driversList = new HashSet<DriverData>();
 	}
 
 	public HydraConnection(Gateway gateway) {
 		this.gateway = gateway;
+		this.driversList = new HashSet<DriverData>();
 	}
 	
 	/************************************************************
@@ -85,7 +91,9 @@ public class HydraConnection {
 
 				JSONArray jsonList = new JSONArray(response.getResponseData().get("driverList"));
 				
-				driversList = new ArrayList<DriverData>();
+				// TODO [RICARDO] Verificar qual o motivo de estar deixando gravar duplicado, equals não eh chamado, só o hash..
+				
+				driversList = new HashSet<DriverData>();
 				
 				for(int i=0 ; i < jsonList.length(); i++){
 					
@@ -107,13 +115,6 @@ public class HydraConnection {
 	}
 	
 	public void redirectResource(DriverData driverData){
-		
-//		hydraDriver = getHydraApplication();
-		
-//		if(hydraDriver == null){
-//			Log.e(TAG, HYDRA_NOT_FOUND);
-//			Toast.makeText(activity,HYDRA_NOT_FOUND, Toast.LENGTH_LONG).show();
-//		}
 		
 		if ( driverData != null){
 			try{
@@ -139,13 +140,6 @@ public class HydraConnection {
 	
 	public void releaseResource(DriverData driverData){
 		
-//		hydraDriver = getHydraApplication();
-//		
-//		if(hydraDriver == null){
-//			Log.e(TAG, HYDRA_NOT_FOUND);
-//			Toast.makeText(activity,HYDRA_NOT_FOUND, Toast.LENGTH_LONG).show();
-//		}
-		
 		if(driverData != null){
 			try{
 					
@@ -169,13 +163,6 @@ public class HydraConnection {
 	}
 	
 	public boolean isDriverInUse(DriverData driverData){
-		
-//		hydraDriver = getHydraApplication();
-//		
-//		if(hydraDriver == null){
-//			Log.e(TAG, HYDRA_NOT_FOUND);
-//			Toast.makeText(activity,HYDRA_NOT_FOUND, Toast.LENGTH_LONG).show();
-//		}
 		
 		if(driverData != null){
 			try{
@@ -215,12 +202,9 @@ public class HydraConnection {
 	 * @since 2011.0930
 	 */
 	public List<DriverData> getDriversList() {
-		
-		if ( this.driversList == null ){
-			this.getListDriversInHydra();
-		}
-		
-		return this.driversList;
+		List<DriverData> lista = new ArrayList<DriverData>();
+		lista.addAll(driversList);
+		return lista;
 	}
 
 	/**
@@ -275,9 +259,24 @@ public class HydraConnection {
 		return false;
 	}
 	
+	public void agendarBuscaDriverHydra(){
+		
+		Timer myTimer = new Timer();
+		myTimer.schedule(new TimerTask() {
+			@Override
+			public void run() {
+				Log.i(TAG, "Atualizando a lista de drivers com a hydra");
+				getListDriversInHydra();
+			}
+
+		}, 2000, 60000); // 1 minuto
+		
+	}
+	
 	/************************************************************
 	 * PRIVATE METHODS
 	 ************************************************************/
+	
 
 	/************************************************************
 	 * GETTERS AND SETTERS

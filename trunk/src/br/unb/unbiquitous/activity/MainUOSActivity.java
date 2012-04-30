@@ -4,8 +4,11 @@ import java.util.PropertyResourceBundle;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Intent;
+import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -61,21 +64,17 @@ public class MainUOSActivity extends Activity {
 
 		// Configuring the Log4J
 		ConfigLog4j.configure();
-	}
-
-	@Override
-	protected void onStart() {
-		super.onStart();
 		
+		verificarWifi();
+			
 		new StartMiddlewareTask().execute();
 		
 		// Start the augmented reality
 		startAR();
 		
 		setContentView(button);
+			
 	}
-
-	
 
 	/**
 	 * Creating the options menu.
@@ -125,25 +124,39 @@ public class MainUOSActivity extends Activity {
 
 			droidobiquitousApp = new UOSDroidApp();
 
-			bundle = new PropertyResourceBundle(getResources().openRawResource(
-					R.raw.uosdroid));
+			bundle = new PropertyResourceBundle(getResources().openRawResource(R.raw.uosdroid));
 
 			droidobiquitousApp.start(bundle);
 
-			hydraConnection = new HydraConnection(droidobiquitousApp
-					.getApplicationContext().getGateway());
+			hydraConnection = new HydraConnection(droidobiquitousApp.getApplicationContext().getGateway());
 			hydraConnection.setActivity(this);
 
 		} catch (Exception e) {
 			Log.e(TAG, e.getMessage());
 		}
-	}
+	}	
 	
 	/**
 	 * 
 	 */
 	private void waitHydraHandshake(){
 		while(hydraConnection.getHydraDevice() == null){}
+	}
+	
+	//TODO arrumar isso aqui
+	private void verificarWifi(){
+		boolean firstTime = true;
+		
+		ConnectivityManager manager = (ConnectivityManager)getSystemService(MainUOSActivity.CONNECTIVITY_SERVICE);
+       	Boolean isWifiEnable = manager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).isConnected();
+
+       	while(!isWifiEnable){
+       		if(firstTime){
+       			startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
+       			firstTime = false;
+       		}
+       		isWifiEnable = manager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).isConnected();
+        }
 	}
 
 	/************************************************************
@@ -172,6 +185,10 @@ public class MainUOSActivity extends Activity {
 			Log.i(TAG, "++ Esperando pelo handshake com a Hydra... ++");
 			waitHydraHandshake();
 			Log.i(TAG, "++ Handshake efetuado com sucesso ... ++");
+			
+			Log.i(TAG, "++ Agendando busca de drivers na Hydra ... ++");
+			hydraConnection.agendarBuscaDriverHydra();
+			
 			return null;
 		}
 
@@ -180,6 +197,7 @@ public class MainUOSActivity extends Activity {
 			progressDialog.dismiss();
 		}
 	}
+	
 	
 	/************************************************************
 	 * GETTERS AND SETTERS
