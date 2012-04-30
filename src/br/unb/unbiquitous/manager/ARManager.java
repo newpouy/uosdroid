@@ -52,7 +52,7 @@ public class ARManager {
 	 * é gerado o objeto virtual correspondente.
 	 * 
 	 */
-	public void inserirNovoObjetoVirtual(String appName, float[] rotacao) {
+	public void inserirObjetoVirtual(String appName, float[] rotacao) {
 
 		if (isAppNameValid(appName)) {
 
@@ -65,8 +65,15 @@ public class ARManager {
 				this.ultimoObjetoVirtual = (MeuObjetoVirtual) markerObj;
 				markerObj.OnMarkerPositionRecognized(rotacao, 1, 16);
 			} else {
+				
+				if(ultimoObjetoVirtual != null){
+					retirarObjetosVirtuais();
+				}
+				
 				this.ultimoObjetoVirtual = criarObjetoVirtual(appName);
 			}
+		}else{
+			retirarObjetosVirtuais();
 		}
 	}
 
@@ -91,7 +98,10 @@ public class ARManager {
 	 * 
 	 */
 	public void retirarObjetosVirtuais() {
-		((SingleMarkerSetup) setup).removeMarkerObject(ultimoObjetoVirtual);
+		if(ultimoObjetoVirtual != null){
+			((SingleMarkerSetup) setup).removeMarkerObject(ultimoObjetoVirtual);
+		}
+		ultimoObjetoVirtual = null;
 	}
 	
 	/************************************************
@@ -113,4 +123,5 @@ public class ARManager {
 		return ((SingleMarkerSetup) setup).addMarkerObject(appName);
 	}
 
+	
 }

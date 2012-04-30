@@ -17,7 +17,9 @@ import com.google.droidar.gl.MarkerObject;
 import com.google.droidar.gl.scenegraph.MeshComponent;
 import com.google.droidar.gui.GuiSetup;
 import com.google.droidar.system.EventManager;
+import com.google.droidar.util.EfficientList;
 import com.google.droidar.util.Vec;
+import com.google.droidar.worldData.RenderableEntity;
 import com.google.droidar.worldData.SystemUpdater;
 import com.google.droidar.worldData.World;
 
@@ -73,9 +75,11 @@ public class SingleMarkerSetup extends MarkerDetectionSetup {
 	}
 	
 	public void removeMarkerObject(MeuObjetoVirtual meuObjetoVirtual){
+
 		world.remove(meuObjetoVirtual.getObjetoTexto());
 		world.remove(meuObjetoVirtual.getTextoMeshComponent());
 		world.remove(meuObjetoVirtual.getShapeMeshComponent());
+		
 		this.markerObjectMap.remove(meuObjetoVirtual.getAppName());
 	}
 	
