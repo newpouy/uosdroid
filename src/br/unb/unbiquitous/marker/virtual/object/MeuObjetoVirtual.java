@@ -239,7 +239,8 @@ public class MeuObjetoVirtual extends BasicMarker {
 		List<String> nomeDrivers = buscarNomeDosDrivers(appName);
 		int quantidadeNomes = 0;
 		
-		quantidadeNomes = formata(appName, stringBuilder);
+		quantidadeNomes = formata(appName, stringBuilder, true);
+		
 		stringBuilder.append("\n");
 		
 		for (int i = 0; i < nomeDrivers.size(); i++) {
@@ -262,7 +263,7 @@ public class MeuObjetoVirtual extends BasicMarker {
 						quantidadeNomes++;
 					}else{
 						
-						quantidadeNomes += formata(nomeDrivers.get(i), stringBuilder);
+						quantidadeNomes += formata(nomeDrivers.get(i), stringBuilder, false);
 						
 					}
 					
@@ -320,13 +321,30 @@ public class MeuObjetoVirtual extends BasicMarker {
 		shapeMeshComponent.setOnLongClickCommand(virtualObjectCommand);
 	}
 	
-	private int formata(String palavra, StringBuilder stringBuilder){
+	private int formata(String palavra, StringBuilder stringBuilder, boolean isTitle){
 		int tamanho;
 		int quantidadeNomes = 0;
 		if ( (palavra.length() % TAMANHO_MAXIMO_NOME_DRIVER) == 0){
 			tamanho = palavra.length() / TAMANHO_MAXIMO_NOME_DRIVER;
 		}else{
 			tamanho = (palavra.length() / TAMANHO_MAXIMO_NOME_DRIVER) + 1;
+		}
+		
+		if(isTitle && tamanho == 1){
+			
+			int qntEspacos = TAMANHO_MAXIMO_NOME_DRIVER - palavra.length();
+			
+			for(int i=0;i< qntEspacos; i++){
+				stringBuilder.append(" ");
+			}
+			
+			stringBuilder.append(palavra);
+			
+			for(int i=0;i< qntEspacos; i++){
+				stringBuilder.append(" ");
+			}
+			
+			return 1;
 		}
 		
 		for ( int j = 0; j < tamanho; j++){
