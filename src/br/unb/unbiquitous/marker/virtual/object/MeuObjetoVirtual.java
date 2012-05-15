@@ -38,8 +38,8 @@ public class MeuObjetoVirtual extends BasicMarker {
 	 * VARIABLES
 	 ************************************************/
 	
-	private static int TAMANHO_MAXIMO_NOME_DRIVER = 10;
-	private static int LIMITE_NOMES = 4;
+	private static int TAMANHO_MAXIMO_NOME_DRIVER = 15;
+	private static int LIMITE_NOMES = 5;
 	
 	private Obj objetoTexto;
 	private World world;
@@ -174,7 +174,7 @@ public class MeuObjetoVirtual extends BasicMarker {
 		
 		// TODO [Ricardo] Ver se o nome de um driver é grande d+;
 		
-		return  ( validarTamanho(nomes) && nomes.size()  < LIMITE_NOMES ) ? 3f : 2f ;
+		return  ( validarTamanho(nomes) && nomes.size()  < LIMITE_NOMES ) ? 2.85f : 1.85f ;
 	}
 	
 	/**
@@ -240,10 +240,10 @@ public class MeuObjetoVirtual extends BasicMarker {
 		int quantidadeNomes = 0;
 		
 		quantidadeNomes = formata(appName, stringBuilder);
-		stringBuilder.append("\n\n");
+		stringBuilder.append("\n");
 		
 		for (int i = 0; i < nomeDrivers.size(); i++) {
-		
+				stringBuilder.append("\n");
 				// Insere novos nomes dos drivers até o limite estabelecido.
 				if ( quantidadeNomes < LIMITE_NOMES ){
 					
