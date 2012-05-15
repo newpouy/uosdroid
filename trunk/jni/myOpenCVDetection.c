@@ -621,7 +621,7 @@ JNIEXPORT jint JNICALL Java_br_unb_unbiquitous_jni_MarkerDetectionJni_detectMark
 						LOGI(tmp);
 //#endif
 
-						if((code > 1000 && code < 2000) || ( code != 4095 && code > 3200 && code < 4500) || (code < 1000 && code != 408)){
+						if((code > 1000 && code < 2000) || ( code != 4095 && code > 3000 && code < 4500) || (code < 1000 && code != 408)){
 //						if (code == 408 || (code > 1000)){
 							//Only now a marker has been detected and the info can be
 							//added to the return list.
