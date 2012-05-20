@@ -13,6 +13,7 @@ import android.app.Activity;
  * @author ricardoandrade
  *
  */
+//TODO [Ricardo] Fazer o refactor para ver se essa classe dá para sumir.
 public class DecoderObject {
 
 	/************************************************

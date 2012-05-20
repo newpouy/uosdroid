@@ -18,8 +18,6 @@ public class DecodeManager {
 	 ************************************************/
 	
 	private DecoderObject decoderObject;
-	private String lastMarkerName;
-	private boolean newMarker;
 	private static final String TAG = "DecodeManager";
 
 	/************************************************
@@ -69,16 +67,5 @@ public class DecodeManager {
 		return texto != null;
 	}
 
-	/************************************************
-	 * GETTERS AND SETTERS
-	 ************************************************/
-
-	public boolean isNewMarker(){
-		return this.newMarker;
-	}
-
-	public String getLastMarkerName() {
-		return lastMarkerName;
-	}
 
 }
