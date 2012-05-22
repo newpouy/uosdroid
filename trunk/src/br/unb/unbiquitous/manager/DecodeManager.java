@@ -19,6 +19,7 @@ public class DecodeManager {
 	
 	private DecoderObject decoderObject;
 	private static final String TAG = "DecodeManager";
+	private String lastMarkerName;
 
 	/************************************************
 	 * CONSTRUCTOR
@@ -66,6 +67,17 @@ public class DecodeManager {
 
 		return texto != null;
 	}
+	
+	/************************************************
+	 * GETTERS AND SETTERS
+	 ************************************************/
+
+	public String getLastMarkerName() {
+		return lastMarkerName;
+	}
+	
 
 
+	
+	
 }
