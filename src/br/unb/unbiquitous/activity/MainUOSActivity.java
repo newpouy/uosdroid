@@ -20,6 +20,7 @@ import br.unb.unbiquitous.configuration.ConfigLog4j;
 import br.unb.unbiquitous.hydra.HydraConnection;
 import br.unb.unbiquitous.marker.decoder.DecoderObject;
 import br.unb.unbiquitous.marker.detection.SingleMarkerSetup;
+import br.unb.unbiquitous.util.Medicao;
 
 import com.google.droidar.system.ArActivity;
 
@@ -34,6 +35,7 @@ public class MainUOSActivity extends Activity {
 	 * CONSTANTS
 	 ************************************************************/
 	private static final String TAG = MainUOSActivity.class.getSimpleName();
+	private static final String TAG_MEDICAO = "Medicao Testes";
 	private static final boolean DEBUG = true;
 
 	/************************************************************
@@ -86,6 +88,41 @@ public class MainUOSActivity extends Activity {
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.menu, menu);
 		return true;
+	}
+	
+	
+	@Override
+	protected void onStart() {
+		super.onStart();
+		
+		if (decoderObject != null){
+			
+			boolean first = true;
+			
+			for (Medicao medicao : decoderObject.getMedicoes()) {
+				
+				// Medicao quando a aplicacao eh iniciada
+				if(first){
+					Log.d(TAG_MEDICAO, "+++++++++  PRIMEIRA APARICAO +++++++++ ");
+					first = false;
+				}else{
+					Log.d(TAG_MEDICAO, "+++++++++  NOVA APARICAO +++++++++ ");
+				}
+				
+				Log.d(TAG_MEDICAO, "Tempo de reconhecimento =  " + medicao.getTempoPrimeiraAparicao());
+				
+				if(medicao.getTemposSemPerderAlvo().size() > 0){
+					Log.d(TAG_MEDICAO, "Recorrências: ");
+				}
+				
+				for(int i = 0; i < medicao.getTemposSemPerderAlvo().size(); i++){
+					Log.d(TAG_MEDICAO, "\t" + i + ". Tempo =  " + medicao.getTemposSemPerderAlvo().get(i));
+				}
+				
+				Log.d(TAG_MEDICAO, "++++++++++++++++++++++++++++++++++++++ ");
+			}
+			
+		}
 	}
 
 	/************************************************************
@@ -173,7 +210,8 @@ public class MainUOSActivity extends Activity {
 		protected void onPreExecute() {
 			progressDialog = new ProgressDialog(MainUOSActivity.this);
 			progressDialog.setMessage("Aguardando o handshake com a Hydra...");
-			progressDialog.setCancelable(false);
+			// TODO [Ricardo] ver se da para sair qnd apertar o 'voltar'
+			progressDialog.setCancelable(true);
 			progressDialog.show();
 		}
 

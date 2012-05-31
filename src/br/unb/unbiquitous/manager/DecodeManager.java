@@ -20,6 +20,7 @@ public class DecodeManager {
 	private DecoderObject decoderObject;
 	private static final String TAG = "DecodeManager";
 	private String lastMarkerName;
+	private long tempoDecodificacao;
 
 	/************************************************
 	 * CONSTRUCTOR
@@ -56,13 +57,13 @@ public class DecodeManager {
 		
 		Calendar fim = Calendar.getInstance();
 		
-		long tempoTotalDecodificacao = fim.getTimeInMillis() - inicio.getTimeInMillis();
+		tempoDecodificacao = (fim.getTimeInMillis() - inicio.getTimeInMillis()) / 100;
 		
 		if(texto != null){
 			lastMarkerName = texto;
-			Log.i(TAG, "Código decodificado = "+ texto + ". Tempo de decodificação = " + tempoTotalDecodificacao + " ms.");
+			//Log.i(TAG, "Código decodificado = "+ texto + ". Tempo de decodificação = " + tempoTotalDecodificacao + " ms.");
 		}else{
-			Log.i(TAG, "Não foi possível decodificar o marcador. Tempo de decodificacao = " + tempoTotalDecodificacao + " ms.");
+			//Log.i(TAG, "Não foi possível decodificar o marcador. Tempo de decodificacao = " + tempoTotalDecodificacao + " ms.");
 		}
 
 		return texto != null;
@@ -75,9 +76,19 @@ public class DecodeManager {
 	public String getLastMarkerName() {
 		return lastMarkerName;
 	}
+
+	public long getTempoDecodificacao() {
+		return tempoDecodificacao;
+	}
+
+	public DecoderObject getDecoderObject() {
+		return decoderObject;
+	}
+
+	public void setDecoderObject(DecoderObject decoderObject) {
+		this.decoderObject = decoderObject;
+	}
 	
-
-
 	
 	
 }

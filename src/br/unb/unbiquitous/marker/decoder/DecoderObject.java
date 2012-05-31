@@ -1,9 +1,13 @@
 package br.unb.unbiquitous.marker.decoder;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.google.zxing.client.android.camera.CameraManager;
 
 import br.unb.unbiquitous.jni.MarkerDetectionJni;
 import br.unb.unbiquitous.jni.ZbarJni;
+import br.unb.unbiquitous.util.Medicao;
 import android.app.Activity;
 
 /**
@@ -25,6 +29,8 @@ public class DecoderObject {
 	private MarkerDetectionJni markerDetection;
 	private QRCodeDecoder qrCodeDecoder;
 	
+	private List<Medicao> medicoes;
+	
 	/************************************************
 	 * GETTERS AND SETTERS
 	 ************************************************/
@@ -34,6 +40,7 @@ public class DecoderObject {
 		orientation = new Integer(0);
 		markerDetection = new MarkerDetectionJni();
 		zbar  = new ZbarJni();
+		medicoes = new ArrayList<Medicao>();
 	}
 
 	public Integer getOrientation() {
@@ -67,5 +74,15 @@ public class DecoderObject {
 	public void setQrCodeDecoder(QRCodeDecoder qrCodeDecoder) {
 		this.qrCodeDecoder = qrCodeDecoder;
 	}
+
+	public List<Medicao> getMedicoes() {
+		return medicoes;
+	}
+
+	public void setMedicoes(List<Medicao> medicoes) {
+		this.medicoes = medicoes;
+	}
+	
+	
 	
 }
