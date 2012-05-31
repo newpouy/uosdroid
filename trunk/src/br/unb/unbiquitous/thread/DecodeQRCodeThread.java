@@ -6,8 +6,8 @@ import android.util.Log;
 import br.unb.unbiquitous.manager.ARManager;
 import br.unb.unbiquitous.manager.DecodeManager;
 import br.unb.unbiquitous.marker.decoder.DecodeDTO;
-import br.unb.unbiquitous.marker.decoder.DecodeState;
 import br.unb.unbiquitous.util.DecodeProgram;
+import br.unb.unbiquitous.util.Medicao;
 
 /**
  * Thread responsável pela decodificação do QRCode.
@@ -38,9 +38,10 @@ final class DecodeQRCodeThread extends Thread {
 	private boolean busy;
 	private boolean stopRequest;
 	              
-	private DecodeState decodeState = DecodeState.WAITTING;
 	private RepositionMarkerThread repositionMarkerThread;
 	private ARManager arManager;
+	
+	private Medicao medicao = new Medicao();
 
 	/************************************************
 	 * CONSTRUCTOR
@@ -73,9 +74,12 @@ final class DecodeQRCodeThread extends Thread {
 				
 				Log.i(TAG, "Frame recebido: Decodificando QRCode.");
 				
+				medicao.start();
+				
 				// Tentando decodificar o QRCode.
 				if(decodeManager.isQRCodeFound(byteArrayBuffer.toByteArray(), FRAME_WIDTH, FRAME_HEIGHT, DecodeProgram.ZBAR)){
 					
+					medicao.stop();
 					Log.i(TAG, "Frame recebido: QRCode decodificado com sucesso.");
 					
 					synchronized (decodeDTO) {
@@ -86,9 +90,10 @@ final class DecodeQRCodeThread extends Thread {
 						arManager.inserirObjetoVirtual(decodeManager.getLastMarkerName(), rotacao);
 					}
 				}else{
+					decodeManager.getDecoderObject().getMedicoes().add(medicao);
+					medicao = new Medicao();
 					arManager.retirarObjetosVirtuais();
 				}
-				
 			}
 
 			synchronized (this) {
@@ -131,13 +136,6 @@ final class DecodeQRCodeThread extends Thread {
 	 * GETTERS AND SETTERS
 	 ************************************************/
 	
-	public DecodeState getDecodeState() {
-		return decodeState;
-	}
-
-	public void setDecodeState(DecodeState decodeState) {
-		this.decodeState = decodeState;
-	}
 
 	public boolean isBusy() {
 		return busy;

@@ -67,6 +67,7 @@ public class DetectionThread extends Thread {
 	private int tentativas;
 	
 	
+	
 	/************************************************
 	 * CONSTRUCTOR
 	 ************************************************/
@@ -131,7 +132,6 @@ public class DetectionThread extends Thread {
 						fcount = 0;
 					}
 				}
-				
 				if (decoderObject.getOrientation() != 99 && isMarkerFound() ){
 					byteArrayBuffer = new ByteArrayBuffer(this.frame.length);
 					byteArrayBuffer.append(frame, 0, frame.length);
