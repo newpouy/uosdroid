@@ -98,6 +98,7 @@ public class MainUOSActivity extends Activity {
 		if (decoderObject != null){
 			
 			boolean first = true;
+			Log.d(TAG_MEDICAO, "+++++++++  INICIO DO RELATORIO DOS TESTES +++++++++ ");
 			
 			for (Medicao medicao : decoderObject.getMedicoes()) {
 				
@@ -123,6 +124,12 @@ public class MainUOSActivity extends Activity {
 			}
 			
 		}
+	}
+	
+	@Override
+	protected void onDestroy() {
+		stopMiddleware();
+		super.onDestroy();
 	}
 
 	/************************************************************
@@ -172,6 +179,14 @@ public class MainUOSActivity extends Activity {
 			Log.e(TAG, e.getMessage());
 		}
 	}	
+	
+	private void stopMiddleware(){
+		try {
+			droidobiquitousApp.tearDown(null);
+		} catch (Exception e) {
+			Log.e(TAG,e.getMessage());
+		}
+	}
 	
 	/**
 	 * 

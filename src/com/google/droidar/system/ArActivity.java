@@ -93,8 +93,9 @@ public class ArActivity extends Activity implements SensorEventListener{
 
 	@Override
 	protected void onDestroy() {
-		if (mySetupToUse != null)
+		if (mySetupToUse != null){
 			mySetupToUse.onDestroy(this);
+		}
 		super.onDestroy();
 	}
 

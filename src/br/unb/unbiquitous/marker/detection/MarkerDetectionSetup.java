@@ -98,11 +98,13 @@ public abstract class MarkerDetectionSetup extends Setup {
 	@Override
 	public void onDestroy(Activity a) {
 		super.onDestroy(a);
-		if (cameraPreview != null)
+		if (cameraPreview != null){
 			cameraPreview.releaseCamera();
+		}
 		// Ensure app is gone after back button is pressed!
-		if (detectionThread != null)
+		if (detectionThread != null){
 			detectionThread.stopThread();
+		}
 	}
 
 	@Override

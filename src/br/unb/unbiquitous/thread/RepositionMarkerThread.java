@@ -38,10 +38,8 @@ public class RepositionMarkerThread extends Thread {
 	 */
 	@Override
 	public void run() {
-		while(true){
-			if(!stopRequest){
-				arManager.reposicionarObjetoVirtual(decodeDTO.getAppName(), decodeDTO.getRotacao());
-			}
+		while(!stopRequest){
+			arManager.reposicionarObjetoVirtual(decodeDTO.getAppName(), decodeDTO.getRotacao());
 		}
 		
 	}
