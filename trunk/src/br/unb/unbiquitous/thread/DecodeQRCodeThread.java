@@ -66,8 +66,8 @@ final class DecodeQRCodeThread extends Thread {
 		
 		decodeDTO = repositionMarkerThread.getDecodeDTO();
 		
-		while(true){
-			while(!busy || stopRequest){
+		while(!stopRequest){
+			while(!busy){
 				try {
 					wait(); // esperando pelo novo frame
 				} catch (InterruptedException e) {}

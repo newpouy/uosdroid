@@ -107,18 +107,15 @@ public class DetectionThread extends Thread {
 	 */
 	@Override
 	public synchronized void run() {
-		while (true) {
-			while (!busy || stopRequest) {
+		while (!stopRequest) {
+			while (!busy) {
 				try {
 					wait();// wait for a new frame
 				} catch (InterruptedException e) {
 				}
 			}
 
-			if (stopRequest == true) {
-				// do nothing
-			} else {
-				if (calcFps) {
+			if (calcFps) {
 					// calculate the fps
 					if (start == 0) {
 						start = SystemClock.uptimeMillis();
@@ -151,7 +148,6 @@ public class DetectionThread extends Thread {
 			}
 
 			yield();
-		}
 
 	}
 	
@@ -182,7 +178,7 @@ public class DetectionThread extends Thread {
 		frameHeight = height;
 		frameWidth = width;
 
-		if (stopRequest == true) {
+		if (stopRequest) {
 			// this means the thread is active, no starting is needed,
 			// just reset the flag.
 			stopRequest = false;

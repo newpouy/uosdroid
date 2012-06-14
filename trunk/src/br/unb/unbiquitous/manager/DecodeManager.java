@@ -61,9 +61,9 @@ public class DecodeManager {
 		
 		if(texto != null){
 			lastMarkerName = texto;
-			//Log.i(TAG, "Código decodificado = "+ texto + ". Tempo de decodificação = " + tempoTotalDecodificacao + " ms.");
+			Log.i(TAG, "Código decodificado.");
 		}else{
-			//Log.i(TAG, "Não foi possível decodificar o marcador. Tempo de decodificacao = " + tempoTotalDecodificacao + " ms.");
+			Log.i(TAG, "Não foi possível decodificar o marcador.");
 		}
 
 		return texto != null;
