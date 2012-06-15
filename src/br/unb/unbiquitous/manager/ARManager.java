@@ -4,11 +4,11 @@ import java.util.HashMap;
 
 import android.util.Log;
 import br.unb.unbiquitous.activity.MainUOSActivity;
-import br.unb.unbiquitous.marker.detection.SingleMarkerSetup;
+import br.unb.unbiquitous.marker.setup.SingleMarkerSetup;
 import br.unb.unbiquitous.marker.virtual.object.MeuObjetoVirtual;
 
 import com.google.droidar.gl.MarkerObject;
-import com.google.droidar.system.Setup;
+import com.google.droidar.system.a.Setup;
 
 /**
  * Classe responsável por gerenciar a criação e o reposicionamento

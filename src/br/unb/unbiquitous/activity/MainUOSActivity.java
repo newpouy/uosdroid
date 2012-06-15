@@ -19,10 +19,10 @@ import br.unb.unbiquitous.application.UOSDroidApp;
 import br.unb.unbiquitous.configuration.ConfigLog4j;
 import br.unb.unbiquitous.hydra.HydraConnection;
 import br.unb.unbiquitous.marker.decoder.DecoderObject;
-import br.unb.unbiquitous.marker.detection.SingleMarkerSetup;
+import br.unb.unbiquitous.marker.setup.SingleMarkerSetup;
 import br.unb.unbiquitous.util.Medicao;
 
-import com.google.droidar.system.ArActivity;
+import com.google.droidar.system.a.ArActivity;
 
 /**
  * 
