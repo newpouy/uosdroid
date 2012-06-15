@@ -1,4 +1,4 @@
-package com.google.droidar.system;
+package com.google.droidar.system.a;
 
 
 import javax.microedition.khronos.opengles.GL10;
@@ -26,6 +26,12 @@ import com.google.droidar.gui.simpleUI.EditItem;
 import com.google.droidar.gui.simpleUI.ModifierGroup;
 import com.google.droidar.gui.simpleUI.SimpleUI;
 import com.google.droidar.listeners.SetupListener;
+import com.google.droidar.system.ActivityConnector;
+import com.google.droidar.system.CameraView;
+import com.google.droidar.system.DefaultARSetup;
+import com.google.droidar.system.ErrorHandler;
+import com.google.droidar.system.EventManager;
+import com.google.droidar.system.TaskManager;
 import com.google.droidar.util.EfficientList;
 import com.google.droidar.util.Log;
 import com.google.droidar.util.Vec;

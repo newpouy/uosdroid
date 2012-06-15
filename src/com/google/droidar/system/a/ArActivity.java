@@ -1,4 +1,4 @@
-package com.google.droidar.system;
+package com.google.droidar.system.a;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -12,7 +12,7 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import br.unb.unbiquitous.marker.decoder.DecoderObject;
-import br.unb.unbiquitous.marker.detection.MarkerDetectionSetup;
+import br.unb.unbiquitous.marker.setup.MarkerDetectionSetup;
 
 import com.google.droidar.util.Log;
 
