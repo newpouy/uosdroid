@@ -9,8 +9,8 @@ import android.os.SystemClock;
 import br.unb.unbiquitous.manager.ARManager;
 import br.unb.unbiquitous.manager.DecodeManager;
 import br.unb.unbiquitous.marker.decoder.DecoderObject;
-import br.unb.unbiquitous.marker.detection.MarkerDetectionSetup;
-import br.unb.unbiquitous.marker.detection.UnrecognizedMarkerListener;
+import br.unb.unbiquitous.marker.setup.MarkerDetectionSetup;
+import br.unb.unbiquitous.marker.setup.UnrecognizedMarkerListener;
 
 import com.google.droidar.gl.MarkerObject;
 import com.google.droidar.preview.Preview;
