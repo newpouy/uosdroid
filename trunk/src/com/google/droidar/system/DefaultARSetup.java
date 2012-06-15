@@ -14,6 +14,7 @@ import com.google.droidar.gl.GLCamera;
 import com.google.droidar.gl.GLFactory;
 import com.google.droidar.gl.GLRenderer;
 import com.google.droidar.gui.GuiSetup;
+import com.google.droidar.system.a.Setup;
 import com.google.droidar.util.Log;
 import com.google.droidar.util.Vec;
 import com.google.droidar.worldData.SystemUpdater;
