@@ -12,7 +12,7 @@ import br.unb.unbiquitous.thread.DetectionThread;
 
 import com.google.droidar.preview.Preview;
 import com.google.droidar.preview.PreviewPost2_0;
-import com.google.droidar.system.a.Setup;
+import com.google.droidar.system.Setup;
 import com.google.droidar.util.CameraCalibration;
 import com.google.droidar.util.IO;
 
