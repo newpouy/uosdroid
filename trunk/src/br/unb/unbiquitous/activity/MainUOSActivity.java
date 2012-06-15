@@ -168,7 +168,7 @@ public class MainUOSActivity extends Activity {
 
 			droidobiquitousApp = new UOSDroidApp();
 
-			bundle = new PropertyResourceBundle(getResources().openRawResource(R.raw.uosdroid));
+			bundle = new PropertyResourceBundle(getResources().openRawResource(R.raw.arhydra));
 
 			droidobiquitousApp.start(bundle);
 
