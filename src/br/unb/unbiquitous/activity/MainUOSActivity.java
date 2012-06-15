@@ -22,7 +22,7 @@ import br.unb.unbiquitous.marker.decoder.DecoderObject;
 import br.unb.unbiquitous.marker.setup.SingleMarkerSetup;
 import br.unb.unbiquitous.util.Medicao;
 
-import com.google.droidar.system.a.ArActivity;
+import com.google.droidar.system.ArActivity;
 
 /**
  * 

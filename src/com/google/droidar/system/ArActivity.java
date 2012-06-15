@@ -1,4 +1,4 @@
-package com.google.droidar.system.a;
+package com.google.droidar.system;
 
 import android.app.Activity;
 import android.content.Intent;

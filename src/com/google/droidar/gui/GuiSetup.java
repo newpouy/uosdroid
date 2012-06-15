@@ -3,8 +3,8 @@ package com.google.droidar.gui;
 import com.google.droidar.commands.Command;
 import com.google.droidar.commands.logic.CommandSetWrapperToValue;
 import com.google.droidar.commands.system.CommandDeviceVibrate;
+import com.google.droidar.system.Setup;
 import com.google.droidar.system.TaskManager;
-import com.google.droidar.system.a.Setup;
 import com.google.droidar.util.Log;
 import com.google.droidar.util.Wrapper;
 
