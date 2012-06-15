@@ -21,9 +21,9 @@ import com.google.droidar.worldData.World;
 
 import android.app.Activity;
 import br.unb.unbiquitous.activity.R;
-import br.unb.unbiquitous.marker.detection.MarkerDetectionSetup;
-import br.unb.unbiquitous.marker.detection.MarkerObjectMap;
-import br.unb.unbiquitous.marker.detection.UnrecognizedMarkerListener;
+import br.unb.unbiquitous.marker.setup.MarkerDetectionSetup;
+import br.unb.unbiquitous.marker.setup.MarkerObjectMap;
+import br.unb.unbiquitous.marker.setup.UnrecognizedMarkerListener;
 
 
 public class ExampleMarkerRenderSetup extends MarkerDetectionSetup {

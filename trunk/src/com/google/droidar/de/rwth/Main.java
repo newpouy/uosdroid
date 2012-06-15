@@ -1,6 +1,6 @@
 package com.google.droidar.de.rwth;
 
-import br.unb.unbiquitous.marker.detection.SingleMarkerSetup;
+import br.unb.unbiquitous.marker.setup.SingleMarkerSetup;
 
 import com.google.droidar.system.ArActivity;
 import com.google.droidar.system.Setup;
