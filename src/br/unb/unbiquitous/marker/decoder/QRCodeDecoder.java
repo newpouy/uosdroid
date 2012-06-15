@@ -1,6 +1,5 @@
 package br.unb.unbiquitous.marker.decoder;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.EnumMap;
 import java.util.EnumSet;
