@@ -28,7 +28,6 @@
 				<artifactId>maven-android-plugin</artifactId>
 				<configuration>
 					<sdk>
-						<!-- 8 = 2.2.1 10 = 2.3.3 -->
 						<path>${env.ANDROID_HOME}</path>
 						<platform>10</platform>
 					</sdk>
@@ -38,7 +37,8 @@
 			</plugin>
 		</plugins>
 	</build>
-	<repositories>
+
+ 	<repositories>
 		<repository>
 			<id>ubiquitos</id>
 			<url>http://ubiquitos.googlecode.com/svn/trunk/src/Java/maven/</url>
@@ -66,7 +66,6 @@
 			<artifactId>uos.tcp_udp.plugin</artifactId>
 			<version>2.1.0</version>
 		</dependency>
-
 		<dependency>
 			<groupId>ubiquitos</groupId>
 			<artifactId>uos.basic_auth.api</artifactId>
@@ -81,17 +80,17 @@
 		</dependency>
 
 		<dependency>
-			<groupId>com.google.zxing</groupId>
-			<artifactId>core</artifactId>
-			<version>2.0</version>
-		</dependency>
-		
-		<dependency>
 			<groupId>com.google.droidar</groupId>
 			<artifactId>core</artifactId>
 			<version>1</version>
 			<scope>system</scope>
 			<systemPath>${basedir}/libs/droidar.jar</systemPath>
 		</dependency>
+		<dependency>
+			<groupId>com.google.zxing</groupId>
+			<artifactId>core</artifactId>
+			<version>2.0</version>
+		</dependency>
 	</dependencies>
+	
 </project>

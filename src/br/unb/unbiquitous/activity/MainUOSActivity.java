@@ -92,10 +92,10 @@ public class MainUOSActivity extends Activity {
 	
 	
 	@Override
-	protected void onStart() {
+	public void onStart() {
 		super.onStart();
 		
-		if (decoderObject != null){
+		if (decoderObject.getMedicoes() != null && !decoderObject.getMedicoes().isEmpty()){
 			
 			boolean first = true;
 			Log.d(TAG_MEDICAO, "+++++++++  INICIO DO RELATORIO DOS TESTES +++++++++ ");
