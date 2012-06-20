@@ -104,13 +104,13 @@ public class MainUOSActivity extends Activity {
 				
 				// Medicao quando a aplicacao eh iniciada
 				if(first){
-					Log.d(TAG_MEDICAO, "+++++++++  PRIMEIRA APARICAO +++++++++ ");
+					Log.d(TAG_MEDICAO, "+++++++++ [TESTE] PRIMEIRA APARICAO +++++++++ ");
 					first = false;
 				}else{
-					Log.d(TAG_MEDICAO, "+++++++++  NOVA APARICAO +++++++++ ");
+					Log.d(TAG_MEDICAO, "+++++++++ [TESTE]  NOVA APARICAO +++++++++ ");
 				}
 				
-				Log.d(TAG_MEDICAO, "Tempo de reconhecimento =  " + medicao.getTempoPrimeiraAparicao());
+				Log.d(TAG_MEDICAO, "[TESTE] Tempo de reconhecimento =  " + medicao.getTempoPrimeiraAparicao());
 				
 				if(medicao.getTemposSemPerderAlvo().size() > 0){
 					Log.d(TAG_MEDICAO, "Recorrências: ");
