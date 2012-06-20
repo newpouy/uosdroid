@@ -6,11 +6,13 @@ import org.apache.http.util.ByteArrayBuffer;
 
 import android.opengl.GLSurfaceView;
 import android.os.SystemClock;
+import android.util.Log;
 import br.unb.unbiquitous.manager.ARManager;
 import br.unb.unbiquitous.manager.DecodeManager;
 import br.unb.unbiquitous.marker.decoder.DecoderObject;
 import br.unb.unbiquitous.marker.setup.MarkerDetectionSetup;
 import br.unb.unbiquitous.marker.setup.UnrecognizedMarkerListener;
+import br.unb.unbiquitous.util.Medicao;
 
 import com.google.droidar.gl.MarkerObject;
 import com.google.droidar.preview.Preview;
@@ -66,7 +68,11 @@ public class DetectionThread extends Thread {
 	private ByteArrayBuffer byteArrayBuffer;
 	private int tentativas;
 	
+	private Medicao medicao = Medicao.getInstance();
 	
+	private Long tempoInicio;
+	private static final String TAG_MEDICAO = "TESTES";
+
 	
 	/************************************************
 	 * CONSTRUCTOR
@@ -129,15 +135,23 @@ public class DetectionThread extends Thread {
 						fcount = 0;
 					}
 				}
+				
+				tempoInicio = SystemClock.uptimeMillis();
+				
 				if (decoderObject.getOrientation() != 99 && isMarkerFound() ){
+					
 					byteArrayBuffer = new ByteArrayBuffer(this.frame.length);
 					byteArrayBuffer.append(frame, 0, frame.length);
-					decodeQRCodeThread.registerFrame(byteArrayBuffer, mat);
+					decodeQRCodeThread.registerFrame(byteArrayBuffer, mat, tempoInicio);
 					tentativas = 1;
+
 				}else{
+					
 					if(tentativas <= NUMERO_MAXIMO_TENTATIVAS){
 						tentativas++;
 					}else{
+						
+						Log.e(TAG_MEDICAO, "+++++++++ [TESTE] PERDEU O MARCADOR +++++++++");
 						arManager.retirarObjetosVirtuais();
 						tentativas = 1;
 					}

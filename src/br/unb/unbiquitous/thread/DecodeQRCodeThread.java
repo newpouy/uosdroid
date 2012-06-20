@@ -2,6 +2,7 @@ package br.unb.unbiquitous.thread;
 
 import org.apache.http.util.ByteArrayBuffer;
 
+import android.os.SystemClock;
 import android.util.Log;
 import br.unb.unbiquitous.manager.ARManager;
 import br.unb.unbiquitous.manager.DecodeManager;
@@ -41,7 +42,13 @@ final class DecodeQRCodeThread extends Thread {
 	private RepositionMarkerThread repositionMarkerThread;
 	private ARManager arManager;
 	
-	private Medicao medicao = new Medicao();
+	private Medicao medicao = Medicao.getInstance();
+	
+	private Long tempoInicio;
+	private Long tempoFim;
+	private static final String TAG_MEDICAO = "TESTES";
+	private boolean primeiraAparicao = true;
+
 
 	/************************************************
 	 * CONSTRUCTOR
@@ -74,12 +81,11 @@ final class DecodeQRCodeThread extends Thread {
 				
 				Log.i(TAG, "Frame recebido: Decodificando QRCode.");
 				
-				medicao.start();
-				
 				// Tentando decodificar o QRCode.
 				if(decodeManager.isQRCodeFound(byteArrayBuffer.toByteArray(), FRAME_WIDTH, FRAME_HEIGHT, DecodeProgram.ZBAR)){
 					
-					medicao.stop();
+					mostrarTestes();
+					
 					Log.i(TAG, "Frame recebido: QRCode decodificado com sucesso.");
 					
 					synchronized (decodeDTO) {
@@ -90,8 +96,8 @@ final class DecodeQRCodeThread extends Thread {
 						arManager.inserirObjetoVirtual(decodeManager.getLastMarkerName(), rotacao);
 					}
 				}else{
-					decodeManager.getDecoderObject().getMedicoes().add(medicao);
-					medicao = new Medicao();
+					Log.e(TAG_MEDICAO, "+++++++++ [TESTE] NAO CONSEGUIU DECODIFICAR +++++++++");
+					primeiraAparicao = true;
 					arManager.retirarObjetosVirtuais();
 				}
 			}
@@ -111,7 +117,7 @@ final class DecodeQRCodeThread extends Thread {
 	 * @param byteArrayBuffer
 	 * @param rotacao
 	 */
-	public void registerFrame(ByteArrayBuffer byteArrayBuffer, float[] rotacao){
+	public void registerFrame(ByteArrayBuffer byteArrayBuffer, float[] rotacao, Long tempoInicio){
 	
 		Log.i(TAG, "Setando rotação.");
 		synchronized (decodeDTO) {
@@ -123,8 +129,10 @@ final class DecodeQRCodeThread extends Thread {
 			Log.e(TAG, "Busy = " + busy);
 			this.byteArrayBuffer = byteArrayBuffer;
 			this.rotacao = rotacao;
-			busy = true;
 			
+			this.tempoInicio = tempoInicio;
+			
+			busy = true;
 			synchronized (this) {
 				this.notify();
 			}
@@ -132,6 +140,22 @@ final class DecodeQRCodeThread extends Thread {
 		
 	}
 
+	private void mostrarTestes(){
+		tempoFim = SystemClock.uptimeMillis();
+		
+		Float tempoTotal = (float) ((float)tempoFim - (float) tempoInicio / 1000);
+		
+		if(primeiraAparicao){
+			Log.e(TAG_MEDICAO, "+++++++++ [TESTE] TEMPO PRIMEIRA APARICAO = " + tempoTotal + "s.");
+			primeiraAparicao = false;
+		}else{
+			Log.e(TAG_MEDICAO, "+++++++++ [TESTE] RECORRENCIA = " + tempoTotal + "s.");
+		}
+		
+		tempoInicio = null;
+		tempoFim = null;
+	}
+	
 	/************************************************
 	 * GETTERS AND SETTERS
 	 ************************************************/
