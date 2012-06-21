@@ -129,6 +129,7 @@ public class MainUOSActivity extends Activity {
 	@Override
 	protected void onDestroy() {
 		stopMiddleware();
+		hydraConnection.getScheduler().cancel();
 		super.onDestroy();
 	}
 
@@ -184,7 +185,7 @@ public class MainUOSActivity extends Activity {
 		try {
 			droidobiquitousApp.tearDown(null);
 		} catch (Exception e) {
-			Log.e(TAG,e.getMessage());
+			Log.e(TAG,"Erro ao parar o middleware:" +  e.getMessage());
 		}
 	}
 	

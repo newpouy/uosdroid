@@ -53,6 +53,7 @@ public class HydraConnection {
 	private UOSDroidApp app;
 	private Gateway gateway;
 	private MainUOSActivity activity;
+	private Timer scheduler = new Timer();
 	
 	private Set<DriverData> driversList;
 	
@@ -110,7 +111,7 @@ public class HydraConnection {
 				Log.i(TAG, "Drivers recebidos.");
 				
 			}catch (Exception e) {
-				Log.i(TAG, e.getMessage());
+				Log.i(TAG, "Erro ao atualizar a lista de drivers: " + e.getMessage());
 			}
 	}
 	
@@ -261,8 +262,7 @@ public class HydraConnection {
 	
 	public void agendarBuscaDriverHydra(){
 		
-		Timer myTimer = new Timer();
-		myTimer.schedule(new TimerTask() {
+		scheduler.schedule(new TimerTask() {
 			@Override
 			public void run() {
 				Log.i(TAG, "Atualizando a lista de drivers com a hydra");
@@ -289,5 +289,15 @@ public class HydraConnection {
 	public void setActivity(MainUOSActivity activity) {
 		this.activity = activity;
 	}
+
+	public Timer getScheduler() {
+		return scheduler;
+	}
+
+	public void setScheduler(Timer scheduler) {
+		this.scheduler = scheduler;
+	}
+	
+	
 	
 }

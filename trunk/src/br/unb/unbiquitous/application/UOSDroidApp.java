@@ -54,7 +54,10 @@ public class UOSDroidApp implements UosApplication{
 	public void init(OntologyDeploy ontology) {}
 
 	@Override
-	public void tearDown(OntologyUndeploy ontology) throws Exception {}
+	public void tearDown(OntologyUndeploy ontology) throws Exception {
+		applicationContext.tearDown();
+		
+	}
 	
 	/************************************************************
 	 * GETTERS AND SETTERS
