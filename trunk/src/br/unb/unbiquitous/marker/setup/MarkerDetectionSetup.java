@@ -80,9 +80,7 @@ public abstract class MarkerDetectionSetup extends Setup {
 		
 		cameraPreview = new PreviewPost2_0(myTargetActivity, detectionThread,cameraSize);
 
-		// TODO [ Ricardo ] Isso aqui poderá sair pois o controle para visualizacao sera feito no detection thread.
 		_a3_registerMarkerObjects(markerObjectMap);
-
 	}
 
 	@Override

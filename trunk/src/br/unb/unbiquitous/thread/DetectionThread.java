@@ -106,8 +106,7 @@ public class DetectionThread extends Thread {
 	/************************************************
 	 * PUBLIC METHODS
 	 ************************************************/
-	//TODO [Ricardo] Amarrar a deteção para somente um marcador.
-	
+
 	/**
 	 * 
 	 */

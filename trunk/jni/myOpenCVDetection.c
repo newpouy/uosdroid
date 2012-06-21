@@ -612,13 +612,17 @@ JNIEXPORT jint JNICALL Java_br_unb_unbiquitous_jni_MarkerDetectionJni_detectMark
 						}
 //#ifdef LOG_OUTPUT_ON
 //#endif
-						if((code > maiorCode) && (((code <= 400 || code >= 550) && code < 2000) || (code != 4095 && code > 3000 && code < 4500))){
+						sprintf(tmp, "Codigo detectado: %d", code);
+						LOGI(tmp);
+
+
+						if((code >= maiorCode) && (((code <= 400 || code >= 550) && code < 2000) || (code != 4095 && code > 3000 && code < 4500))){
 								//  || (code < 1000 && code != 408))
 							maiorCode = code;
 							returnValPnt = 1;
 
-							sprintf(tmp, "Detected marker, id: %d", code);
-							LOGI(tmp);
+							sprintf(tmp, "Marcador detectado, codigo: %d", code);
+							LOGD(tmp);
 
 							//Only now a marker has been detected and the info can be
 							//added to the return list.
@@ -763,11 +767,12 @@ JNIEXPORT jint JNICALL Java_br_unb_unbiquitous_jni_MarkerDetectionJni_detectMark
 		contours = contours->h_next;
 	}
 
-	sprintf(tmp, "foram detectados %d marcadores", counter);
-	LOGD(tmp);
 
 	//If one or more markers were detected use the marker threshold.
 	if (counter) {
+
+		sprintf(tmp, "foram detectados %d marcadores", counter);
+		LOGD(tmp);
 
 		// Verificar se encontrou mais de um marcador
 
