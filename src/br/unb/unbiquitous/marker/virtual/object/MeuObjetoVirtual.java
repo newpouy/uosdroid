@@ -172,8 +172,6 @@ public class MeuObjetoVirtual extends BasicMarker {
 		
 		List<String> nomes = buscarNomeDosDrivers(appName);
 		
-		// TODO [Ricardo] Ver se o nome de um driver é grande d+;
-		
 		return  ( validarTamanho(nomes) && nomes.size()  < LIMITE_NOMES ) ? 2.85f : 1.85f ;
 	}
 	

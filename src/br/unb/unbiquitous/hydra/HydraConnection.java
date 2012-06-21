@@ -92,8 +92,6 @@ public class HydraConnection {
 
 				JSONArray jsonList = new JSONArray(response.getResponseData().get("driverList"));
 				
-				// TODO [RICARDO] Verificar qual o motivo de estar deixando gravar duplicado, equals não eh chamado, só o hash..
-				
 				driversList = new HashSet<DriverData>();
 				
 				for(int i=0 ; i < jsonList.length(); i++){

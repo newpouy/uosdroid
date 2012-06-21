@@ -226,7 +226,6 @@ public class MainUOSActivity extends Activity {
 		protected void onPreExecute() {
 			progressDialog = new ProgressDialog(MainUOSActivity.this);
 			progressDialog.setMessage("Aguardando o handshake com a Hydra...");
-			// TODO [Ricardo] ver se da para sair qnd apertar o 'voltar'
 			progressDialog.setCancelable(true);
 			progressDialog.show();
 		}

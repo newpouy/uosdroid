@@ -20,7 +20,7 @@ final class DecodeQRCodeThread extends Thread {
 	
 	/************************************************
 	 * CONSTANTS
-	 ************************************************/
+	 ************************************************/	
 	
 	private static final String TAG = DecodeQRCodeThread.class.getSimpleName();
 	private static final int FRAME_WIDTH = 848;
