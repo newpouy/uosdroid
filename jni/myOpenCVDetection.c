@@ -494,6 +494,7 @@ JNIEXPORT jint JNICALL Java_br_unb_unbiquitous_jni_MarkerDetectionJni_detectMark
 
 					//The marker code.
 					int code = -1;
+					int maiorCode = -1;
 
 					for (a = 0; a < 4; a++) {
 						ipx = rotMat[0] * orientationTestPntsX[a] + rotMat[1]
@@ -532,13 +533,7 @@ JNIEXPORT jint JNICALL Java_br_unb_unbiquitous_jni_MarkerDetectionJni_detectMark
 						}
 					}
 
-					// TODO [Ricardo] gambira
 					orientation = screenOrientation;
-//					sprintf(tmp, "borderCorret and orientation = %d", screenOrientation);
-//					LOGI(tmp);
-
-//					sprintf(tmp, "orientation = %d, screen = %d", orientation, screenOrientation);
-//					LOGI(tmp);
 
 					if (orientation >= 0) {
 
@@ -616,13 +611,15 @@ JNIEXPORT jint JNICALL Java_br_unb_unbiquitous_jni_MarkerDetectionJni_detectMark
 							}
 						}
 //#ifdef LOG_OUTPUT_ON
-						sprintf(tmp, "Detected marker, id: %d", code);
-						printf("Detected marker, id: %d", code);
-						LOGI(tmp);
 //#endif
+						if((code > maiorCode) && (((code <= 400 || code >= 550) && code < 2000) || (code != 4095 && code > 3000 && code < 4500))){
+								//  || (code < 1000 && code != 408))
+							maiorCode = code;
+							returnValPnt = 1;
 
-						if((code > 1000 && code < 2000) || ( code != 4095 && code > 3000 && code < 4500) || (code < 1000 && code != 408)){
-//						if (code == 408 || (code > 1000)){
+							sprintf(tmp, "Detected marker, id: %d", code);
+							LOGI(tmp);
+
 							//Only now a marker has been detected and the info can be
 							//added to the return list.
 
@@ -766,6 +763,9 @@ JNIEXPORT jint JNICALL Java_br_unb_unbiquitous_jni_MarkerDetectionJni_detectMark
 		contours = contours->h_next;
 	}
 
+	sprintf(tmp, "foram detectados %d marcadores", counter);
+	LOGD(tmp);
+
 	//If one or more markers were detected use the marker threshold.
 	if (counter) {
 
@@ -785,10 +785,6 @@ JNIEXPORT jint JNICALL Java_br_unb_unbiquitous_jni_MarkerDetectionJni_detectMark
 			useMarkerthreshold--;
 		}
 	}
-
-
-
-
 
 
 	//Release the storage created for certain methodes.

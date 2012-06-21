@@ -84,8 +84,6 @@ final class DecodeQRCodeThread extends Thread {
 				// Tentando decodificar o QRCode.
 				if(decodeManager.isQRCodeFound(byteArrayBuffer.toByteArray(), FRAME_WIDTH, FRAME_HEIGHT, DecodeProgram.ZBAR)){
 					
-					mostrarTestes();
-					
 					Log.i(TAG, "Frame recebido: QRCode decodificado com sucesso.");
 					
 					synchronized (decodeDTO) {
@@ -94,7 +92,11 @@ final class DecodeQRCodeThread extends Thread {
 						decodeDTO.setRotacao(rotacao);
 						
 						arManager.inserirObjetoVirtual(decodeManager.getLastMarkerName(), rotacao);
+						
 					}
+					
+					mostrarTestes();
+				
 				}else{
 					Log.e(TAG_MEDICAO, "+++++++++ [TESTE] NAO CONSEGUIU DECODIFICAR +++++++++");
 					primeiraAparicao = true;
@@ -143,7 +145,7 @@ final class DecodeQRCodeThread extends Thread {
 	private void mostrarTestes(){
 		tempoFim = SystemClock.uptimeMillis();
 		
-		Float tempoTotal = (float) ((float)tempoFim - (float) tempoInicio / 1000);
+		Float tempoTotal = (float) (((float)tempoFim - (float) tempoInicio) / 1000);
 		
 		if(primeiraAparicao){
 			Log.e(TAG_MEDICAO, "+++++++++ [TESTE] TEMPO PRIMEIRA APARICAO = " + tempoTotal + "s.");
