@@ -28,6 +28,8 @@ public class ARManager {
 	
 	private MeuObjetoVirtual ultimoObjetoVirtual;
 	
+	private static final String TAG_MEDICAO = "TESTES";
+	
 	/************************************************
 	 * CONSTRUCTOR
 	 ************************************************/
@@ -99,6 +101,7 @@ public class ARManager {
 	 */
 	public void retirarObjetosVirtuais() {
 		if(ultimoObjetoVirtual != null){
+			Log.e(TAG_MEDICAO, "+++++++++ [TESTE] PERDEU O MARCADOR +++++++++");
 			((SingleMarkerSetup) setup).removeMarkerObject(ultimoObjetoVirtual);
 		}
 		ultimoObjetoVirtual = null;

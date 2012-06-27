@@ -42,8 +42,6 @@ final class DecodeQRCodeThread extends Thread {
 	private RepositionMarkerThread repositionMarkerThread;
 	private ARManager arManager;
 	
-	private Medicao medicao = Medicao.getInstance();
-	
 	private Long tempoInicio;
 	private Long tempoFim;
 	private static final String TAG_MEDICAO = "TESTES";
@@ -70,14 +68,17 @@ final class DecodeQRCodeThread extends Thread {
 	 */
 	@Override
 	public synchronized void run() {
-		
-		decodeDTO = repositionMarkerThread.getDecodeDTO();
-		
 		while(!stopRequest){
+
+			decodeDTO = repositionMarkerThread.getDecodeDTO();
+			
 			while(!busy){
 				try {
 					wait(); // esperando pelo novo frame
 				} catch (InterruptedException e) {}
+				
+				// problema de setar o stopRequest para true mas a thread ainda estar em wait.
+				if(stopRequest) return;
 				
 				Log.i(TAG, "Frame recebido: Decodificando QRCode.");
 				
@@ -108,6 +109,8 @@ final class DecodeQRCodeThread extends Thread {
 				busy = false;
 			}
 		}
+		
+		Log.e(TAG, "Finalizando a " + TAG);
 	}
 	
 	/**
@@ -121,6 +124,8 @@ final class DecodeQRCodeThread extends Thread {
 	 */
 	public void registerFrame(ByteArrayBuffer byteArrayBuffer, float[] rotacao, Long tempoInicio){
 	
+		if(stopRequest) return;
+		
 		Log.i(TAG, "Setando rotação.");
 		synchronized (decodeDTO) {
 			decodeDTO.setRotacao(rotacao);
@@ -143,6 +148,9 @@ final class DecodeQRCodeThread extends Thread {
 	}
 
 	private void mostrarTestes(){
+		
+		if(stopRequest) return;
+		
 		tempoFim = SystemClock.uptimeMillis();
 		
 		Float tempoTotal = (float) (((float)tempoFim - (float) tempoInicio) / 1000);

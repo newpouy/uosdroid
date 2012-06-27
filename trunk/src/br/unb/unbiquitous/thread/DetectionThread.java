@@ -68,10 +68,7 @@ public class DetectionThread extends Thread {
 	private ByteArrayBuffer byteArrayBuffer;
 	private int tentativas;
 	
-	private Medicao medicao = Medicao.getInstance();
-	
 	private Long tempoInicio;
-	private static final String TAG_MEDICAO = "TESTES";
 
 	
 	/************************************************
@@ -119,6 +116,8 @@ public class DetectionThread extends Thread {
 				} catch (InterruptedException e) {
 				}
 			}
+			
+			if(stopRequest) return;
 
 			if (calcFps) {
 					// calculate the fps
@@ -149,8 +148,6 @@ public class DetectionThread extends Thread {
 					if(tentativas <= NUMERO_MAXIMO_TENTATIVAS){
 						tentativas++;
 					}else{
-						
-						Log.e(TAG_MEDICAO, "+++++++++ [TESTE] PERDEU O MARCADOR +++++++++");
 						arManager.retirarObjetosVirtuais();
 						tentativas = 1;
 					}
@@ -159,7 +156,8 @@ public class DetectionThread extends Thread {
 				busy = false;
 				((PreviewPost2_0)preview).reAddCallbackBuffer(frame);
 			}
-
+			
+			Log.e(TAG, "Finalizando a " + TAG);
 			yield();
 
 	}
@@ -214,6 +212,17 @@ public class DetectionThread extends Thread {
 		stopRequest = true;
 		repositionThread.setStopRequest(true);
 		decodeQRCodeThread.setStopRequest(true);
+
+		synchronized (decodeQRCodeThread) {
+			decodeQRCodeThread.interrupt();
+//			decodeQRCodeThread.notify();
+		}
+		
+		
+		synchronized (this) {
+//			this.notify();
+			this.interrupt();
+		}
 	}
 
 	
@@ -236,7 +245,7 @@ public class DetectionThread extends Thread {
 		// some timer delay
 		openglView.requestRender();
 		
-		return (int) mat[0] > 0;
+		return ((int) mat[0] == 1);
 		
 	}
 	
