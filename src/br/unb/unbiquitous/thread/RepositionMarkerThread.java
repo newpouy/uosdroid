@@ -1,5 +1,6 @@
 package br.unb.unbiquitous.thread;
 
+import android.util.Log;
 import br.unb.unbiquitous.manager.ARManager;
 import br.unb.unbiquitous.marker.decoder.DecodeDTO;
 
@@ -15,6 +16,7 @@ public class RepositionMarkerThread extends Thread {
 	/************************************************
 	 * VARIABLES
 	 ************************************************/
+	private final static String  TAG = RepositionMarkerThread.class.getSimpleName();
 	private ARManager arManager;
 	private DecodeDTO decodeDTO;
 	
@@ -41,6 +43,9 @@ public class RepositionMarkerThread extends Thread {
 		while(!stopRequest){
 			arManager.reposicionarObjetoVirtual(decodeDTO.getAppName(), decodeDTO.getRotacao());
 		}
+		
+		Log.e(TAG, "Finalizando a " + TAG);
+		
 		
 	}
 

@@ -36,10 +36,9 @@ public abstract class MarkerDetectionSetup extends Setup {
 	 ************************************************************/
 	
 
-	private Preview cameraPreview;
+	protected Preview cameraPreview;
 	private CameraCalibration calib = null;
 	private Camera.Size cameraSize;
-
 	private LayoutParams optimalLayoutParams;
 	
 	public  Activity activity;
@@ -63,12 +62,12 @@ public abstract class MarkerDetectionSetup extends Setup {
 
 		markerObjectMap = new MarkerObjectMap();
 		
-		Camera mCamera = Camera.open();
-		Camera.Parameters parameters = mCamera.getParameters();
+		Camera camera = Camera.open();
+		Camera.Parameters parameters = camera.getParameters();
 		cameraSize = parameters.getPreviewSize(); 
 		optimalLayoutParams = new LayoutParams(cameraSize.width, cameraSize.height);
 
-		mCamera.release();
+		camera.release();
 		tryToLoadCameraSettings();
 
 		// initialize native code.

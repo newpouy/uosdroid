@@ -1,6 +1,10 @@
 package br.unb.unbiquitous.marker.setup;
 
+import org.omg.Dynamic.Parameter;
+
 import android.app.Activity;
+import android.hardware.Camera;
+import android.hardware.Camera.Parameters;
 import android.util.Log;
 import br.unb.unbiquitous.marker.virtual.object.MeuObjetoVirtual;
 
@@ -116,24 +120,59 @@ public class SingleMarkerSetup extends MarkerDetectionSetup {
 	@Override
 	public void _e2_addElementsToGuiSetup(GuiSetup guiSetup, Activity activity) {
 		guiSetup.addButtonToBottomView(new Command() {
-
+			
 			@Override
 			public boolean execute() {
-
-				Vec rayPosition = new Vec();
-				Vec rayDirection = new Vec();
-				camera.getPickingRay(rayPosition, rayDirection,
-						GLRenderer.halfWidth, GLRenderer.halfHeight);
-
-				System.out.println("rayPosition=" + rayPosition);
-				System.out.println("rayDirection=" + rayDirection);
-
-				rayDirection.setLength(5);
-
-				meshComponent.setPosition(rayPosition.add(rayDirection));
+				Camera camera = cameraPreview.getCamera();
+				 Camera.Parameters p = camera.getParameters();
+				 
+				int zoomMaximo = p.getMaxZoom();
+				int zoomAtual = p.getZoom();
+				
+				if(zoomAtual < zoomMaximo){
+					zoomAtual++;
+					p.setZoom(zoomAtual);
+					camera.setParameters(p);
+				}
+				return false;
+			}
+		}, "Zoom In");
+		
+		guiSetup.addButtonToBottomView(new Command() {
+			
+			@Override
+			public boolean execute() {
+				Camera camera = cameraPreview.getCamera();
+				 Camera.Parameters p = camera.getParameters();
+				 
+				int zoomMaximo = p.getMaxZoom();
+				int zoomAtual = p.getZoom();
+				
+				if(zoomAtual > 0 ){
+					zoomAtual--;
+					p.setZoom(zoomAtual);
+					camera.setParameters(p);
+				}
 
 				return false;
 			}
-		}, "Place 2 meters infront");
+		}, "Zoom Out");
+		
+		guiSetup.addButtonToBottomView(new Command() {
+			
+			@Override
+			public boolean execute() {
+				Camera camera = cameraPreview.getCamera();
+				Camera.Parameters p = camera.getParameters();
+				
+				if(p.getFlashMode().equals(Camera.Parameters.FLASH_MODE_OFF)){
+					p.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
+				}else{
+					p.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);
+				}
+				camera.setParameters(p);
+				return false;
+			}
+		}, "Flash");
 	}
 }

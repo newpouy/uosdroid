@@ -159,7 +159,8 @@ JNIEXPORT jint JNICALL Java_br_unb_unbiquitous_jni_MarkerDetectionJni_detectMark
 	 *is defined by MAX_DETECTED_MARKER
 	 */
 	int returnValPnt = 1;
-	float returnVals[18 * MAX_DETECTED_MARKERS + 1];
+//	float returnVals[18 * MAX_DETECTED_MARKERS + 1];
+	float returnVals[19];
 	returnVals[0] = 0;
 
 	//Stores the current calculated threshold from the markers
@@ -612,8 +613,8 @@ JNIEXPORT jint JNICALL Java_br_unb_unbiquitous_jni_MarkerDetectionJni_detectMark
 						}
 //#ifdef LOG_OUTPUT_ON
 //#endif
-						sprintf(tmp, "Codigo detectado: %d", code);
-						LOGI(tmp);
+						//sprintf(tmp, "Codigo detectado: %d", code);
+						//LOGI(tmp);
 
 
 						if((code >= maiorCode) && (((code <= 400 || code >= 550) && code < 2000) || (code != 4095 && code > 3000 && code < 4500))){
@@ -689,11 +690,7 @@ JNIEXPORT jint JNICALL Java_br_unb_unbiquitous_jni_MarkerDetectionJni_detectMark
 							rv[2] = -1.0f * rv[2];
 							cvRodrigues2(&RV, &R, 0);
 
-							//Increase the detected marker count
-							returnVals[0]++;
-
 							orientationChange = (orientationChange*M_PI)/180.0f;
-
 
 							float temp0;
 							float temp3;
@@ -721,6 +718,9 @@ JNIEXPORT jint JNICALL Java_br_unb_unbiquitous_jni_MarkerDetectionJni_detectMark
 //							sprintf(tmp, "escrevendo a saída, achou %d marcadores", counter);
 //							LOGD(tmp);
 
+							//Increase the detected marker count
+							// returnVals[0]++;
+							returnVals[0] = 1;
 							//write the rotation matrix into the right part of the list.
 							returnVals[returnValPnt++] = rotMat[0];
 							returnVals[returnValPnt++] = rotMat[3];

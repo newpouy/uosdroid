@@ -99,4 +99,9 @@ public abstract class Preview extends SurfaceView implements
 		}
 	}
 
+	public Camera getCamera(){
+		return mCamera;
+	}
+		
+	
 }

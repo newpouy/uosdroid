@@ -270,7 +270,7 @@ public abstract class Setup {
 		 * renderer object or worldUpdater etc
 		 */
 		
-		//_e1_addElementsToOverlay(myOverlayView, myTargetActivity);
+		_e1_addElementsToOverlay(myOverlayView, myTargetActivity);
 		
 		// myTargetActivity.addContentView(myOverlayView, new LayoutParams(
 		// LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
