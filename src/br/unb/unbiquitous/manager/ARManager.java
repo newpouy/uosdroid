@@ -6,6 +6,8 @@ import android.util.Log;
 import br.unb.unbiquitous.activity.MainUOSActivity;
 import br.unb.unbiquitous.marker.setup.SingleMarkerSetup;
 import br.unb.unbiquitous.marker.virtual.object.MeuObjetoVirtual;
+import br.unb.unbiquitous.util.CalculoMedicao;
+import br.unb.unbiquitous.util.TipoMedicao;
 
 import com.google.droidar.gl.MarkerObject;
 import com.google.droidar.system.Setup;
@@ -101,7 +103,9 @@ public class ARManager {
 	 */
 	public void retirarObjetosVirtuais() {
 		if(ultimoObjetoVirtual != null){
-			Log.e(TAG_MEDICAO, "+++++++++ [TESTE] PERDEU O MARCADOR +++++++++");
+			
+			CalculoMedicao.getInstance().registrar(TipoMedicao.PERDEU_MARCADOR, null);
+//			Log.e(TAG_MEDICAO, "+++++++++ [TESTE] PERDEU O MARCADOR +++++++++");
 			((SingleMarkerSetup) setup).removeMarkerObject(ultimoObjetoVirtual);
 		}
 		ultimoObjetoVirtual = null;

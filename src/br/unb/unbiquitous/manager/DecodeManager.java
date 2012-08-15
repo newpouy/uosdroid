@@ -6,6 +6,8 @@ import android.util.Log;
 import br.unb.unbiquitous.marker.decoder.DecoderObject;
 import br.unb.unbiquitous.util.DecodeProgram;
 
+import com.google.zxing.Result;
+
 /**
  * 
  * @author ricardoandrade
@@ -42,7 +44,7 @@ public class DecodeManager {
 	 */
 	public boolean isQRCodeFound(byte [] frame, int frameWidth, int frameHeight, DecodeProgram decodeProgram){
 		
-		String texto;
+		String texto = null;
 
 		// Decodificando o QRCode
 		Log.i(TAG, "Decodificando o QRCode.");
@@ -50,7 +52,10 @@ public class DecodeManager {
 		Calendar inicio = Calendar.getInstance();
 
 		if(decodeProgram.equals(DecodeProgram.ZXING)){
-			texto = decoderObject.getQrCodeDecoder().decode(frame, frameWidth, frameHeight).getText();
+			Result result = null;
+			if((result = decoderObject.getQrCodeDecoder().decode(frame, frameWidth, frameHeight))!= null){
+				texto = result.getText();
+			}
 		}else{
 			texto = decoderObject.getZbar().decode(frameWidth, frameHeight, frame);
 		}

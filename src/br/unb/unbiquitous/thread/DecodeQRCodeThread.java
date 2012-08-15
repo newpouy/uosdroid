@@ -7,8 +7,10 @@ import android.util.Log;
 import br.unb.unbiquitous.manager.ARManager;
 import br.unb.unbiquitous.manager.DecodeManager;
 import br.unb.unbiquitous.marker.decoder.DecodeDTO;
+import br.unb.unbiquitous.util.CalculoMedicao;
 import br.unb.unbiquitous.util.DecodeProgram;
 import br.unb.unbiquitous.util.Medicao;
+import br.unb.unbiquitous.util.TipoMedicao;
 
 /**
  * Thread responsável pela decodificação do QRCode.
@@ -99,7 +101,9 @@ final class DecodeQRCodeThread extends Thread {
 					mostrarTestes();
 				
 				}else{
-					Log.e(TAG_MEDICAO, "+++++++++ [TESTE] NAO CONSEGUIU DECODIFICAR +++++++++");
+					
+					CalculoMedicao.getInstance().registrar(TipoMedicao.NAO_CONSEGUIU_DECODIFICAR, null);
+//					Log.e(TAG_MEDICAO, "+++++++++ [TESTE] NAO CONSEGUIU DECODIFICAR +++++++++");
 					primeiraAparicao = true;
 					arManager.retirarObjetosVirtuais();
 				}
@@ -156,10 +160,15 @@ final class DecodeQRCodeThread extends Thread {
 		Float tempoTotal = (float) (((float)tempoFim - (float) tempoInicio) / 1000);
 		
 		if(primeiraAparicao){
-			Log.e(TAG_MEDICAO, "+++++++++ [TESTE] TEMPO PRIMEIRA APARICAO = " + tempoTotal + "s.");
+			
+			CalculoMedicao.getInstance().registrar(TipoMedicao.PRIMEIRA_APARICAO, tempoTotal);
+//			Log.e(TAG_MEDICAO, "+++++++++ [TESTE] TEMPO PRIMEIRA APARICAO = " + tempoTotal + "s.");
+	
 			primeiraAparicao = false;
 		}else{
-			Log.e(TAG_MEDICAO, "+++++++++ [TESTE] RECORRENCIA = " + tempoTotal + "s.");
+			
+			CalculoMedicao.getInstance().registrar(TipoMedicao.RECORRENCIA, tempoTotal);
+//			Log.e(TAG_MEDICAO, "+++++++++ [TESTE] RECORRENCIA = " + tempoTotal + "s.");
 		}
 		
 		tempoInicio = null;

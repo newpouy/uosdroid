@@ -28,7 +28,7 @@
 				<artifactId>maven-android-plugin</artifactId>
 				<configuration>
 					<sdk>
-						<path>${env.ANDROID_HOME}</path>
+						<path>/Users/ricardoandrade/Documents/Desenvolvimento/sdk_teste/</path>
 						<platform>10</platform>
 					</sdk>
 					<deleteConflictingFiles>true</deleteConflictingFiles>
