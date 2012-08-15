@@ -3,6 +3,7 @@ package br.unb.unbiquitous.activity;
 import java.util.PropertyResourceBundle;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.ConnectivityManager;
@@ -12,15 +13,17 @@ import android.provider.Settings;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.TextView;
 import br.unb.unbiquitous.application.UOSDroidApp;
 import br.unb.unbiquitous.configuration.ConfigLog4j;
 import br.unb.unbiquitous.hydra.HydraConnection;
 import br.unb.unbiquitous.marker.decoder.DecoderObject;
 import br.unb.unbiquitous.marker.setup.SingleMarkerSetup;
-import br.unb.unbiquitous.util.Medicao;
+import br.unb.unbiquitous.util.CalculoMedicao;
 
 import com.google.droidar.system.ArActivity;
 
@@ -90,40 +93,43 @@ public class MainUOSActivity extends Activity {
 		return true;
 	}
 	
-	
 	@Override
-	public void onStart() {
-		super.onStart();
+	public boolean onOptionsItemSelected(MenuItem item) {
 		
-		if (decoderObject.getMedicoes() != null && !decoderObject.getMedicoes().isEmpty()){
-			
-			boolean first = true;
-			Log.d(TAG_MEDICAO, "+++++++++  INICIO DO RELATORIO DOS TESTES +++++++++ ");
-			
-			for (Medicao medicao : decoderObject.getMedicoes()) {
-				
-				// Medicao quando a aplicacao eh iniciada
-				if(first){
-					Log.d(TAG_MEDICAO, "+++++++++ [TESTE] PRIMEIRA APARICAO +++++++++ ");
-					first = false;
-				}else{
-					Log.d(TAG_MEDICAO, "+++++++++ [TESTE]  NOVA APARICAO +++++++++ ");
-				}
-				
-				Log.d(TAG_MEDICAO, "[TESTE] Tempo de reconhecimento =  " + medicao.getTempoPrimeiraAparicao());
-				
-				if(medicao.getTemposSemPerderAlvo().size() > 0){
-					Log.d(TAG_MEDICAO, "Recorrências: ");
-				}
-				
-				for(int i = 0; i < medicao.getTemposSemPerderAlvo().size(); i++){
-					Log.d(TAG_MEDICAO, "\t" + i + ". Tempo =  " + medicao.getTemposSemPerderAlvo().get(i));
-				}
-				
-				Log.d(TAG_MEDICAO, "++++++++++++++++++++++++++++++++++++++ ");
-			}
-			
+		switch (item.getItemId()) {
+		case R.id.item_relatorio:
+			CalculoMedicao.getInstance().calcular();
+			exibirRelatorio();
+			break;
+		default:
+			break;
 		}
+		
+		return super.onOptionsItemSelected(item);
+	}
+	
+	public void exibirRelatorio(){
+		final Dialog dialog = new Dialog(this);
+
+		dialog.setContentView(R.layout.relatorio);
+		dialog.setTitle("Relatório dos testes");
+
+		TextView primeiro = (TextView) dialog.findViewById(R.id.relatorio_primeira);
+		primeiro.setText(	"Tempo médio da primeira aparição = "+ CalculoMedicao.getInstance().getTempoMedioPrimeiraAparicao() + "s" +
+							"\nTempo médio de recorrência = " + CalculoMedicao.getInstance().getTempoMedioRecorrencia() + "s" +
+							"\nTaxa de erro = " + CalculoMedicao.getInstance().getTaxaErro() + "%" +
+							"\nTaxa que não conseguiu decodificar = " + CalculoMedicao.getInstance().getTaxaNaoDecodificacao() + "%"
+						);
+		
+		Button button = (Button) dialog.findViewById(R.id.relatorio_botao);
+		 
+		button.setOnClickListener(new OnClickListener() {
+        @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+		dialog.show();
 	}
 	
 	@Override
@@ -148,7 +154,7 @@ public class MainUOSActivity extends Activity {
 		markerSetup.setDecoderObject(decoderObject);
 
 		button = new Button(this);
-		button.setText("Load Camera");
+		button.setText("Iniciar");
 		button.setOnClickListener(new OnClickListener() {
 
 			public void onClick(View v) {

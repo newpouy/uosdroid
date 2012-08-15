@@ -1,6 +1,10 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
    
-   
+     <item android:id="@+id/item_relatorio"
+          android:icon="@android:drawable/ic_menu_search"
+          android:title="@string/option_relatorio" />
+    
+    <!-- 
     <item android:id="@+id/hydra_app"
           android:icon="@android:drawable/ic_menu_search"
           android:title="@string/hydra_app" />
@@ -20,12 +24,11 @@
     <item android:id="@+id/screen_driver"
           android:icon="@android:drawable/ic_menu_search"
           android:title="@string/screen_driver" />
-    
-    
  
    <item android:id="@+id/camera"
           android:icon="@android:drawable/ic_menu_mylocation"
           android:title="@string/camera" />
+     -->
    
    
     

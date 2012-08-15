@@ -13,6 +13,8 @@
     <string name="secure_connect">Conectar um dispositivo</string>
     <string name="all">Todos</string>
     <string name="camera">Câmera</string>
+    <string name="option_relatorio">Relatório</string>
+    
 
     <!-- Drivers -->
     <string name="camera_driver">Camera</string>

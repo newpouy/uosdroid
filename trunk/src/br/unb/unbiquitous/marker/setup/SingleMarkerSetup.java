@@ -1,10 +1,7 @@
 package br.unb.unbiquitous.marker.setup;
 
-import org.omg.Dynamic.Parameter;
-
 import android.app.Activity;
 import android.hardware.Camera;
-import android.hardware.Camera.Parameters;
 import android.util.Log;
 import br.unb.unbiquitous.marker.virtual.object.MeuObjetoVirtual;
 
