@@ -24,6 +24,8 @@ public class CalculoMedicao {
 	private Float taxaNaoDecodificacao;
 	private Float tempoMedioPrimeiraAparicao;
 	private Float tempoMedioRecorrencia;
+	private Integer totalRecorrencia;
+	private Integer totalPrimeiraAparicao;
 
 	/*********************************************
 	 * CONSTRUCTOR
@@ -60,7 +62,8 @@ public class CalculoMedicao {
 		
 		taxaErro = calcularTaxa(TipoMedicao.PERDEU_MARCADOR) * 100;
 		taxaNaoDecodificacao = calcularTaxa(TipoMedicao.NAO_CONSEGUIU_DECODIFICAR) * 100;
-		
+		totalRecorrencia = getTotal(TipoMedicao.RECORRENCIA);
+		totalPrimeiraAparicao = getTotal(TipoMedicao.PRIMEIRA_APARICAO);
 		
 		Log.e(TAG,"++++++++ Relatório +++++++");
 		Log.e(TAG,"Tempo médio da primeira aparição = " + tempoMedioPrimeiraAparicao + "s");
@@ -68,6 +71,10 @@ public class CalculoMedicao {
 		Log.e(TAG,"Taxa de erro = " + taxaErro + "%");
 		Log.e(TAG,"Taxa que não conseguiu decodificar = " + taxaNaoDecodificacao + "%");
 		
+	}
+	
+	public void resetarMedicoes(){
+		this.medicoes = new ArrayList<Medicao>();
 	}
 
 	/*********************************************
@@ -105,6 +112,18 @@ public class CalculoMedicao {
 		return Float.valueOf(count / ((float) medicoes.size()));
 	}
 
+	private Integer getTotal(TipoMedicao tipoMedicao){
+		int count = 0;
+		
+		for (Medicao medicao : medicoes) {
+			if(medicao.getTipoMedicao().equals(tipoMedicao)){
+				count++;
+			}
+		}
+		
+		return count;
+	}
+	
 	/*********************************************
 	 * GETTERS AND SETTERS
 	 *********************************************/
@@ -147,6 +166,22 @@ public class CalculoMedicao {
 
 	public void setTempoMedioRecorrencia(Float tempoMedioRecorrencia) {
 		this.tempoMedioRecorrencia = tempoMedioRecorrencia;
+	}
+
+	public Integer getTotalRecorrencia() {
+		return totalRecorrencia;
+	}
+
+	public void setTotalRecorrencia(Integer totalRecorrencia) {
+		this.totalRecorrencia = totalRecorrencia;
+	}
+
+	public Integer getTotalPrimeiraAparicao() {
+		return totalPrimeiraAparicao;
+	}
+
+	public void setTotalPrimeiraAparicao(Integer totalPrimeiraAparicao) {
+		this.totalPrimeiraAparicao = totalPrimeiraAparicao;
 	}
 	
 	
