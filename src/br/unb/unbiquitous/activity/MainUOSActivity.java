@@ -1,10 +1,14 @@
 package br.unb.unbiquitous.activity;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.PropertyResourceBundle;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.os.AsyncTask;
@@ -101,11 +105,33 @@ public class MainUOSActivity extends Activity {
 			CalculoMedicao.getInstance().calcular();
 			exibirRelatorio();
 			break;
+		case R.id.resetar_relatorio:
+			confirmarExclusaoRelatorio();
+			break;
 		default:
 			break;
 		}
 		
 		return super.onOptionsItemSelected(item);
+	}
+	
+	
+	public void confirmarExclusaoRelatorio(){
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setMessage("Confirma exclusão do relatório?")
+		       .setCancelable(false)
+		       .setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+		           public void onClick(DialogInterface dialog, int id) {
+		                CalculoMedicao.getInstance().resetarMedicoes();
+		           }
+		       })
+		       .setNegativeButton("Não", new DialogInterface.OnClickListener() {
+		           public void onClick(DialogInterface dialog, int id) {
+		                dialog.cancel();
+		           }
+		       });
+		AlertDialog alert = builder.create();
+		alert.show();
 	}
 	
 	public void exibirRelatorio(){
@@ -114,11 +140,15 @@ public class MainUOSActivity extends Activity {
 		dialog.setContentView(R.layout.relatorio);
 		dialog.setTitle("Relatório dos testes");
 
+		NumberFormat format = new DecimalFormat("#.00");
 		TextView primeiro = (TextView) dialog.findViewById(R.id.relatorio_primeira);
-		primeiro.setText(	"Tempo médio da primeira aparição = "+ CalculoMedicao.getInstance().getTempoMedioPrimeiraAparicao() + "s" +
-							"\nTempo médio de recorrência = " + CalculoMedicao.getInstance().getTempoMedioRecorrencia() + "s" +
-							"\nTaxa de erro = " + CalculoMedicao.getInstance().getTaxaErro() + "%" +
-							"\nTaxa que não conseguiu decodificar = " + CalculoMedicao.getInstance().getTaxaNaoDecodificacao() + "%"
+		primeiro.setText(	
+							"Total de primeira aparições= " + CalculoMedicao.getInstance().getTotalPrimeiraAparicao()  +
+							"\nTempo médio da primeira aparição = "+ format.format(CalculoMedicao.getInstance().getTempoMedioPrimeiraAparicao()) + "s" +
+							"\n\nTotal de recorrências = " + CalculoMedicao.getInstance().getTotalPrimeiraAparicao() +
+							"\nTempo médio de recorrência = " + format.format(CalculoMedicao.getInstance().getTempoMedioRecorrencia()) + "s" +
+							"\n\nTaxa de erro = " + format.format(CalculoMedicao.getInstance().getTaxaErro()) + "%" +
+							"\nTaxa que não conseguiu decodificar = " + format.format(CalculoMedicao.getInstance().getTaxaNaoDecodificacao()) + "%"
 						);
 		
 		Button button = (Button) dialog.findViewById(R.id.relatorio_botao);
