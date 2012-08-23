@@ -42,7 +42,6 @@ public class MainUOSActivity extends Activity {
 	 * CONSTANTS
 	 ************************************************************/
 	private static final String TAG = MainUOSActivity.class.getSimpleName();
-	private static final String TAG_MEDICAO = "Medicao Testes";
 	private static final boolean DEBUG = true;
 
 	/************************************************************
@@ -145,7 +144,7 @@ public class MainUOSActivity extends Activity {
 		primeiro.setText(	
 							"Total de primeira aparições= " + CalculoMedicao.getInstance().getTotalPrimeiraAparicao()  +
 							"\nTempo médio da primeira aparição = "+ format.format(CalculoMedicao.getInstance().getTempoMedioPrimeiraAparicao()) + "s" +
-							"\n\nTotal de recorrências = " + CalculoMedicao.getInstance().getTotalPrimeiraAparicao() +
+							"\n\nTotal de recorrências = " + CalculoMedicao.getInstance().getTotalRecorrencia() +
 							"\nTempo médio de recorrência = " + format.format(CalculoMedicao.getInstance().getTempoMedioRecorrencia()) + "s" +
 							"\n\nTaxa de erro = " + format.format(CalculoMedicao.getInstance().getTaxaErro()) + "%" +
 							"\nTaxa que não conseguiu decodificar = " + format.format(CalculoMedicao.getInstance().getTaxaNaoDecodificacao()) + "%"
