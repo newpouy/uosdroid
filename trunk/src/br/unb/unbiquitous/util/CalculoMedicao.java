@@ -52,6 +52,8 @@ public class CalculoMedicao {
 		medicao.setTipoMedicao(tipoMedicao);
 		medicao.setTempo(tempo);
 
+		Log.e("Medicao", "Tipo: " + tipoMedicao + "\t tempo: "+tempo);
+		
 		medicoes.add(medicao);
 	}
 

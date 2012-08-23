@@ -9,7 +9,6 @@ import br.unb.unbiquitous.manager.DecodeManager;
 import br.unb.unbiquitous.marker.decoder.DecodeDTO;
 import br.unb.unbiquitous.util.CalculoMedicao;
 import br.unb.unbiquitous.util.DecodeProgram;
-import br.unb.unbiquitous.util.Medicao;
 import br.unb.unbiquitous.util.TipoMedicao;
 
 /**
@@ -46,7 +45,7 @@ final class DecodeQRCodeThread extends Thread {
 	
 	private Long tempoInicio;
 	private Long tempoFim;
-	private static final String TAG_MEDICAO = "TESTES";
+//	private static final String TAG_MEDICAO = "TESTES";
 	private boolean primeiraAparicao = true;
 
 
@@ -70,11 +69,16 @@ final class DecodeQRCodeThread extends Thread {
 	 */
 	@Override
 	public synchronized void run() {
-		while(!stopRequest){
 
+		// aguardando a inicializacao do decodeDTO pela RepositionThread
+		while (decodeDTO == null){
 			decodeDTO = repositionMarkerThread.getDecodeDTO();
+		}
+		
+		while(!stopRequest){
 			
 			while(!busy){
+				
 				try {
 					wait(); // esperando pelo novo frame
 				} catch (InterruptedException e) {}
@@ -98,7 +102,7 @@ final class DecodeQRCodeThread extends Thread {
 						
 					}
 					
-					mostrarTestes();
+					realizarMedicao();
 				
 				}else{
 					
@@ -128,7 +132,7 @@ final class DecodeQRCodeThread extends Thread {
 	 */
 	public void registerFrame(ByteArrayBuffer byteArrayBuffer, float[] rotacao, Long tempoInicio){
 	
-		if(stopRequest) return;
+		if(stopRequest || decodeDTO == null) return;
 		
 		Log.i(TAG, "Setando rotação.");
 		synchronized (decodeDTO) {
@@ -151,7 +155,7 @@ final class DecodeQRCodeThread extends Thread {
 		
 	}
 
-	private void mostrarTestes(){
+	private void realizarMedicao(){
 		
 		if(stopRequest) return;
 		
