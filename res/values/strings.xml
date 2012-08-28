@@ -13,8 +13,9 @@
     <string name="secure_connect">Conectar um dispositivo</string>
     <string name="all">Todos</string>
     <string name="camera">Câmera</string>
-    <string name="option_relatorio">Relatório</string>
+    <string name="exibir_relatorio">Relatório</string>
     <string name="resetar_relatorio">Resetar Relatório</string>
+    <string name="enviar_relatorio">Enviar Relatório</string>
     
 
     <!-- Drivers -->

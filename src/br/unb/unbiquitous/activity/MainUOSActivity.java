@@ -1,14 +1,9 @@
 package br.unb.unbiquitous.activity;
 
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
 import java.util.PropertyResourceBundle;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.os.AsyncTask;
@@ -21,13 +16,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.TextView;
 import br.unb.unbiquitous.application.UOSDroidApp;
 import br.unb.unbiquitous.configuration.ConfigLog4j;
 import br.unb.unbiquitous.hydra.HydraConnection;
 import br.unb.unbiquitous.marker.decoder.DecoderObject;
 import br.unb.unbiquitous.marker.setup.SingleMarkerSetup;
-import br.unb.unbiquitous.util.CalculoMedicao;
+import br.unb.unbiquitous.util.Relatorio;
 
 import com.google.droidar.system.ArActivity;
 
@@ -100,12 +94,14 @@ public class MainUOSActivity extends Activity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		
 		switch (item.getItemId()) {
-		case R.id.item_relatorio:
-			CalculoMedicao.getInstance().calcular();
-			exibirRelatorio();
+		case R.id.exibir_relatorio:
+			Relatorio.getInstance().exibir(this);
 			break;
 		case R.id.resetar_relatorio:
-			confirmarExclusaoRelatorio();
+			Relatorio.getInstance().resetar(this);
+			break;
+		case R.id.enviar_relatorio:
+			Relatorio.getInstance().enviarParaEmail(this);
 			break;
 		default:
 			break;
@@ -115,51 +111,6 @@ public class MainUOSActivity extends Activity {
 	}
 	
 	
-	public void confirmarExclusaoRelatorio(){
-		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setMessage("Confirma exclusão do relatório?")
-		       .setCancelable(false)
-		       .setPositiveButton("Sim", new DialogInterface.OnClickListener() {
-		           public void onClick(DialogInterface dialog, int id) {
-		                CalculoMedicao.getInstance().resetarMedicoes();
-		           }
-		       })
-		       .setNegativeButton("Não", new DialogInterface.OnClickListener() {
-		           public void onClick(DialogInterface dialog, int id) {
-		                dialog.cancel();
-		           }
-		       });
-		AlertDialog alert = builder.create();
-		alert.show();
-	}
-	
-	public void exibirRelatorio(){
-		final Dialog dialog = new Dialog(this);
-
-		dialog.setContentView(R.layout.relatorio);
-		dialog.setTitle("Relatório dos testes");
-
-		NumberFormat format = new DecimalFormat("#.00");
-		TextView primeiro = (TextView) dialog.findViewById(R.id.relatorio_primeira);
-		primeiro.setText(	
-							"Total de primeira aparições= " + CalculoMedicao.getInstance().getTotalPrimeiraAparicao()  +
-							"\nTempo médio da primeira aparição = "+ format.format(CalculoMedicao.getInstance().getTempoMedioPrimeiraAparicao()) + "s" +
-							"\n\nTotal de recorrências = " + CalculoMedicao.getInstance().getTotalRecorrencia() +
-							"\nTempo médio de recorrência = " + format.format(CalculoMedicao.getInstance().getTempoMedioRecorrencia()) + "s" +
-							"\n\nTaxa de erro = " + format.format(CalculoMedicao.getInstance().getTaxaErro()) + "%" +
-							"\nTaxa que não conseguiu decodificar = " + format.format(CalculoMedicao.getInstance().getTaxaNaoDecodificacao()) + "%"
-						);
-		
-		Button button = (Button) dialog.findViewById(R.id.relatorio_botao);
-		 
-		button.setOnClickListener(new OnClickListener() {
-        @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
-		dialog.show();
-	}
 	
 	@Override
 	protected void onDestroy() {
