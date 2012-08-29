@@ -12,6 +12,8 @@ import br.unb.unbiquitous.manager.DecodeManager;
 import br.unb.unbiquitous.marker.decoder.DecoderObject;
 import br.unb.unbiquitous.marker.setup.MarkerDetectionSetup;
 import br.unb.unbiquitous.marker.setup.UnrecognizedMarkerListener;
+import br.unb.unbiquitous.util.CalculoMedicao;
+import br.unb.unbiquitous.util.TipoMedicao;
 
 import com.google.droidar.gl.MarkerObject;
 import com.google.droidar.preview.Preview;
@@ -148,6 +150,8 @@ public class DetectionThread extends Thread {
 						tentativas++;
 					}else{
 						arManager.retirarObjetosVirtuais();
+						CalculoMedicao.getInstance().registrar(TipoMedicao.PERDEU_MARCADOR, null);
+//						Log.e(TAG_MEDICAO, "+++++++++ [TESTE] PERDEU O MARCADOR +++++++++");
 						tentativas = 1;
 					}
 				}

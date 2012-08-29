@@ -19,13 +19,18 @@ public class CalculoMedicao {
 	private static CalculoMedicao calculoMedicao;
 	
 	private List<Medicao> medicoes = new ArrayList<Medicao>();
+	
+	private Medicao ultimaMedicao;
 
 	private Float taxaErro;
 	private Float taxaNaoDecodificacao;
 	private Float tempoMedioPrimeiraAparicao;
 	private Float tempoMedioRecorrencia;
+	private Float tempoMedioReconhecimentoAoPerderMarcador;
 	private Integer totalRecorrencia;
 	private Integer totalPrimeiraAparicao;
+	private Integer totalReconhecimentoAoPerderMarcador;
+	
 
 	/*********************************************
 	 * CONSTRUCTOR
@@ -48,6 +53,9 @@ public class CalculoMedicao {
 	
 	public void registrar(TipoMedicao tipoMedicao, Float tempo) {
 
+		//TODO FIXME Lentidao ==> ver se nao dá para cancelar o processo, que provavelmente está na decodificacao. 
+		if (tempo > 10) return;
+		
 		Medicao medicao = new Medicao();
 		medicao.setTipoMedicao(tipoMedicao);
 		medicao.setTempo(tempo);
@@ -55,17 +63,21 @@ public class CalculoMedicao {
 		Log.e("Medicao", "Tipo: " + tipoMedicao + "\t tempo: "+tempo);
 		
 		medicoes.add(medicao);
+		ultimaMedicao = medicao;
 	}
 
 	public void calcular() {
 
 		tempoMedioPrimeiraAparicao = calcularTempoMedio(TipoMedicao.PRIMEIRA_APARICAO);
 		tempoMedioRecorrencia = calcularTempoMedio(TipoMedicao.RECORRENCIA);
+		tempoMedioReconhecimentoAoPerderMarcador = calcularTempoMedio(TipoMedicao.RECONHECIMENTO_AO_PERDER_MARCADOR);
 		
 		taxaErro = calcularTaxa(TipoMedicao.PERDEU_MARCADOR) * 100;
 		taxaNaoDecodificacao = calcularTaxa(TipoMedicao.NAO_CONSEGUIU_DECODIFICAR) * 100;
+		
 		totalRecorrencia = getTotal(TipoMedicao.RECORRENCIA);
 		totalPrimeiraAparicao = getTotal(TipoMedicao.PRIMEIRA_APARICAO);
+		totalReconhecimentoAoPerderMarcador = getTotal(TipoMedicao.RECONHECIMENTO_AO_PERDER_MARCADOR);
 		
 		Log.e(TAG,"++++++++ Relatório +++++++");
 		Log.e(TAG,"Tempo médio da primeira aparição = " + tempoMedioPrimeiraAparicao + "s");
@@ -97,7 +109,7 @@ public class CalculoMedicao {
 			}
 		}
 
-		return Float.valueOf(tempoTotal/total);
+		return total == 0 ? 0 : Float.valueOf(tempoTotal/total);
 	}
 
 	private Float calcularTaxa(TipoMedicao tipoMedicao){
@@ -184,6 +196,32 @@ public class CalculoMedicao {
 
 	public void setTotalPrimeiraAparicao(Integer totalPrimeiraAparicao) {
 		this.totalPrimeiraAparicao = totalPrimeiraAparicao;
+	}
+
+	public Float getTempoMedioReconhecimentoAoPerderMarcador() {
+		return tempoMedioReconhecimentoAoPerderMarcador;
+	}
+
+	public void setTempoMedioReconhecimentoAoPerderMarcador(
+			Float tempoMedioReconhecimentoAoPerderMarcador) {
+		this.tempoMedioReconhecimentoAoPerderMarcador = tempoMedioReconhecimentoAoPerderMarcador;
+	}
+
+	public Integer getTotalReconhecimentoAoPerderMarcador() {
+		return totalReconhecimentoAoPerderMarcador;
+	}
+
+	public void setTotalReconhecimentoAoPerderMarcador(
+			Integer totalReconhecimentoAoPerderMarcador) {
+		this.totalReconhecimentoAoPerderMarcador = totalReconhecimentoAoPerderMarcador;
+	}
+
+	public Medicao getUltimaMedicao() {
+		return ultimaMedicao;
+	}
+
+	public void setUltimaMedicao(Medicao ultimaMedicao) {
+		this.ultimaMedicao = ultimaMedicao;
 	}
 	
 	
