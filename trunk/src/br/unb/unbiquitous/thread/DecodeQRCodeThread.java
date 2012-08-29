@@ -9,6 +9,7 @@ import br.unb.unbiquitous.manager.DecodeManager;
 import br.unb.unbiquitous.marker.decoder.DecodeDTO;
 import br.unb.unbiquitous.util.CalculoMedicao;
 import br.unb.unbiquitous.util.DecodeProgram;
+import br.unb.unbiquitous.util.Medicao;
 import br.unb.unbiquitous.util.TipoMedicao;
 
 /**
@@ -98,17 +99,17 @@ final class DecodeQRCodeThread extends Thread {
 						decodeDTO.setAppName(decodeManager.getLastMarkerName());
 						decodeDTO.setRotacao(rotacao);
 						
-						arManager.inserirObjetoVirtual(decodeManager.getLastMarkerName(), rotacao);
-						
+						if(arManager.inserirObjetoVirtual(decodeManager.getLastMarkerName(), rotacao)){
+							realizarMedicao();
+						}
 					}
-					
-					realizarMedicao();
-				
+
 				}else{
 					
 					CalculoMedicao.getInstance().registrar(TipoMedicao.NAO_CONSEGUIU_DECODIFICAR, null);
 //					Log.e(TAG_MEDICAO, "+++++++++ [TESTE] NAO CONSEGUIU DECODIFICAR +++++++++");
-					primeiraAparicao = true;
+//					primeiraAparicao = true;
+					
 					arManager.retirarObjetosVirtuais();
 				}
 			}
@@ -169,9 +170,20 @@ final class DecodeQRCodeThread extends Thread {
 //			Log.e(TAG_MEDICAO, "+++++++++ [TESTE] TEMPO PRIMEIRA APARICAO = " + tempoTotal + "s.");
 	
 			primeiraAparicao = false;
+		
 		}else{
 			
-			CalculoMedicao.getInstance().registrar(TipoMedicao.RECORRENCIA, tempoTotal);
+			Medicao ultimaMedicao = CalculoMedicao.getInstance().getUltimaMedicao();
+			
+			if(		ultimaMedicao.getTipoMedicao().equals(TipoMedicao.PERDEU_MARCADOR) || 
+					ultimaMedicao.getTipoMedicao().equals(TipoMedicao.NAO_CONSEGUIU_DECODIFICAR)){
+
+				CalculoMedicao.getInstance().registrar(TipoMedicao.RECONHECIMENTO_AO_PERDER_MARCADOR, tempoTotal);
+				
+			}else{
+				CalculoMedicao.getInstance().registrar(TipoMedicao.RECORRENCIA, tempoTotal);
+			}
+			
 //			Log.e(TAG_MEDICAO, "+++++++++ [TESTE] RECORRENCIA = " + tempoTotal + "s.");
 		}
 		

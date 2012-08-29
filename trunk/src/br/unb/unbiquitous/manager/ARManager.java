@@ -6,8 +6,6 @@ import android.util.Log;
 import br.unb.unbiquitous.activity.MainUOSActivity;
 import br.unb.unbiquitous.marker.setup.SingleMarkerSetup;
 import br.unb.unbiquitous.marker.virtual.object.MeuObjetoVirtual;
-import br.unb.unbiquitous.util.CalculoMedicao;
-import br.unb.unbiquitous.util.TipoMedicao;
 
 import com.google.droidar.gl.MarkerObject;
 import com.google.droidar.system.Setup;
@@ -29,8 +27,6 @@ public class ARManager {
 	private HashMap<String, MarkerObject> markerObjectMap;
 	
 	private MeuObjetoVirtual ultimoObjetoVirtual;
-	
-	private static final String TAG_MEDICAO = "TESTES";
 	
 	/************************************************
 	 * CONSTRUCTOR
@@ -55,8 +51,11 @@ public class ARManager {
 	 * o objeto virtual correspondente é reposicionado. Se a for uma aplicação nova
 	 * é gerado o objeto virtual correspondente.
 	 * 
+	 * Retorna verdadeiro caso a aplicação esteja ativa e o objeto virtual for
+	 * incluído com sucesso. Caso contrário, retorna falso. 
+	 * 
 	 */
-	public void inserirObjetoVirtual(String appName, float[] rotacao) {
+	public boolean inserirObjetoVirtual(String appName, float[] rotacao) {
 
 		if (isAppNameValid(appName)) {
 
@@ -76,8 +75,10 @@ public class ARManager {
 				
 				this.ultimoObjetoVirtual = criarObjetoVirtual(appName);
 			}
+			return true;
 		}else{
 			retirarObjetosVirtuais();
+			return false;
 		}
 	}
 
@@ -103,9 +104,6 @@ public class ARManager {
 	 */
 	public void retirarObjetosVirtuais() {
 		if(ultimoObjetoVirtual != null){
-			
-			CalculoMedicao.getInstance().registrar(TipoMedicao.PERDEU_MARCADOR, null);
-//			Log.e(TAG_MEDICAO, "+++++++++ [TESTE] PERDEU O MARCADOR +++++++++");
 			((SingleMarkerSetup) setup).removeMarkerObject(ultimoObjetoVirtual);
 		}
 		ultimoObjetoVirtual = null;

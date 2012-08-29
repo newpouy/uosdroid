@@ -167,6 +167,8 @@ public class Relatorio {
 		stringBuilder.append(delimitador + "Tempo médio da primeira aparição = "+ format.format(CalculoMedicao.getInstance().getTempoMedioPrimeiraAparicao()) + "s");
 		stringBuilder.append(delimitador + "Total de recorrências = " + CalculoMedicao.getInstance().getTotalRecorrencia());
 		stringBuilder.append(delimitador + "Tempo médio de recorrência = " + format.format(CalculoMedicao.getInstance().getTempoMedioRecorrencia()) + "s");
+		stringBuilder.append(delimitador + "Total de reconhecimento ao perder marcador = " + CalculoMedicao.getInstance().getTotalReconhecimentoAoPerderMarcador());
+		stringBuilder.append(delimitador + "Tempo médio de reconhecimento ao perder marcador = " + format.format(CalculoMedicao.getInstance().getTempoMedioReconhecimentoAoPerderMarcador()) + "s");
 		stringBuilder.append(delimitador + "Taxa de erro = " + format.format(CalculoMedicao.getInstance().getTaxaErro()) + "%");
 		stringBuilder.append(delimitador + "Taxa que não conseguiu decodificar = " + format.format(CalculoMedicao.getInstance().getTaxaNaoDecodificacao()) + "%");
 		
