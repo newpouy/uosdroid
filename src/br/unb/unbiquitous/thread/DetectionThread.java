@@ -118,7 +118,10 @@ public class DetectionThread extends Thread {
 				}
 			}
 			
-			if(stopRequest) return;
+			if(stopRequest){
+				Log.e(TAG, "Finalizando a " + TAG);
+				return;
+			}
 
 			if (calcFps) {
 					// calculate the fps
@@ -191,6 +194,9 @@ public class DetectionThread extends Thread {
 	public void setImageSizeAndRun(int height, int width) {
 		frameHeight = height;
 		frameWidth = width;
+		
+		decodeQRCodeThread.setFrameHeight(height);
+		decodeQRCodeThread.setFrameWidth(width);
 
 		if (stopRequest) {
 			// this means the thread is active, no starting is needed,
@@ -212,19 +218,20 @@ public class DetectionThread extends Thread {
 	 * 
 	 */
 	public void stopThread() {
-		stopRequest = true;
+		
 		repositionThread.setStopRequest(true);
 		decodeQRCodeThread.setStopRequest(true);
 
-		synchronized (decodeQRCodeThread) {
-			decodeQRCodeThread.interrupt();
+//		synchronized (decodeQRCodeThread) {
+//			decodeQRCodeThread.interrupt();
 //			decodeQRCodeThread.notify();
-		}
+//		}
 		
 		
 		synchronized (this) {
-//			this.notify();
-			this.interrupt();
+			stopRequest = true;
+			this.notify();
+//			this.interrupt();
 		}
 	}
 

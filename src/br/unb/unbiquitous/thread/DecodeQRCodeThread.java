@@ -4,11 +4,11 @@ import org.apache.http.util.ByteArrayBuffer;
 
 import android.os.SystemClock;
 import android.util.Log;
+import br.unb.unbiquitous.configuration.ConfigApp;
 import br.unb.unbiquitous.manager.ARManager;
 import br.unb.unbiquitous.manager.DecodeManager;
 import br.unb.unbiquitous.marker.decoder.DecodeDTO;
 import br.unb.unbiquitous.util.CalculoMedicao;
-import br.unb.unbiquitous.util.DecodeProgram;
 import br.unb.unbiquitous.util.Medicao;
 import br.unb.unbiquitous.util.TipoMedicao;
 
@@ -25,8 +25,11 @@ final class DecodeQRCodeThread extends Thread {
 	 ************************************************/	
 	
 	private static final String TAG = DecodeQRCodeThread.class.getSimpleName();
-	private static final int FRAME_WIDTH = 848;
-	private static final int FRAME_HEIGHT = 480;
+//	private static final int FRAME_WIDTH = 848;
+//	private static final int FRAME_HEIGHT = 480;
+
+	private int frameWidth;
+	private int frameHeight;
 
 	/************************************************
 	 * VARIABLES
@@ -85,12 +88,14 @@ final class DecodeQRCodeThread extends Thread {
 				} catch (InterruptedException e) {}
 				
 				// problema de setar o stopRequest para true mas a thread ainda estar em wait.
-				if(stopRequest) return;
-				
+				if(stopRequest){
+					Log.e(TAG, "Finalizando a " + TAG);
+					return;
+				}
 				Log.i(TAG, "Frame recebido: Decodificando QRCode.");
 				
 				// Tentando decodificar o QRCode.
-				if(decodeManager.isQRCodeFound(byteArrayBuffer.toByteArray(), FRAME_WIDTH, FRAME_HEIGHT, DecodeProgram.ZBAR)){
+				if(decodeManager.isQRCodeFound(byteArrayBuffer.toByteArray(), frameWidth, frameHeight, ConfigApp.getInstance().getDecodeProgram())){
 					
 					Log.i(TAG, "Frame recebido: QRCode decodificado com sucesso.");
 					
@@ -112,14 +117,16 @@ final class DecodeQRCodeThread extends Thread {
 					
 					arManager.retirarObjetosVirtuais();
 				}
+
+				synchronized (this) {
+					busy = false;
+				}
+
 			}
 
-			synchronized (this) {
-				busy = false;
-			}
 		}
 		
-		Log.e(TAG, "Finalizando a " + TAG);
+		
 	}
 	
 	/**
@@ -212,6 +219,33 @@ final class DecodeQRCodeThread extends Thread {
 
 	public void setStopRequest(boolean stopRequest) {
 		this.stopRequest = stopRequest;
+		synchronized (this) {
+			this.notify();
+			this.interrupt();
+		}
 	}
+
+
+	public int getFrameWidth() {
+		return frameWidth;
+	}
+
+
+	public void setFrameWidth(int frameWidth) {
+		this.frameWidth = frameWidth;
+	}
+
+
+	public int getFrameHeight() {
+		return frameHeight;
+	}
+
+
+	public void setFrameHeight(int frameHeight) {
+		this.frameHeight = frameHeight;
+	}
+
+	
+
 	
 }

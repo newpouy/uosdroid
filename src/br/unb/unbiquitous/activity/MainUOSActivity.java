@@ -3,7 +3,9 @@ package br.unb.unbiquitous.activity;
 import java.util.PropertyResourceBundle;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.os.AsyncTask;
@@ -16,11 +18,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.Toast;
 import br.unb.unbiquitous.application.UOSDroidApp;
+import br.unb.unbiquitous.configuration.ConfigApp;
 import br.unb.unbiquitous.configuration.ConfigLog4j;
 import br.unb.unbiquitous.hydra.HydraConnection;
 import br.unb.unbiquitous.marker.decoder.DecoderObject;
 import br.unb.unbiquitous.marker.setup.SingleMarkerSetup;
+import br.unb.unbiquitous.util.DecodeProgram;
 import br.unb.unbiquitous.util.Relatorio;
 
 import com.google.droidar.system.ArActivity;
@@ -103,6 +108,10 @@ public class MainUOSActivity extends Activity {
 		case R.id.enviar_relatorio:
 			Relatorio.getInstance().enviarParaEmail(this);
 			break;
+		case R.id.configuracoes:
+			exibirPainelConfiguracoes();
+			break;
+			
 		default:
 			break;
 		}
@@ -110,13 +119,64 @@ public class MainUOSActivity extends Activity {
 		return super.onOptionsItemSelected(item);
 	}
 	
-	
+	@Override
+	public void onBackPressed() {
+		confirmarSaida();
+	}
 	
 	@Override
 	protected void onDestroy() {
-		stopMiddleware();
-		hydraConnection.getScheduler().cancel();
-		super.onDestroy();
+		 super.onDestroy();
+	}
+	
+	private void exibirPainelConfiguracoes(){
+		
+		String [] items = new String[DecodeProgram.values().length];   
+		int index = -1;
+		
+		for (int i = 0 ; i < items.length; i++){
+			items[i] = DecodeProgram.values()[i].getDescicao();
+			if(DecodeProgram.values()[i].equals(ConfigApp.getInstance().getDecodeProgram()) ){
+				index = i;
+			}
+			
+		}
+		
+		final CharSequence[] itemsPrograma = items;
+
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setTitle("Decodificação do QRCode");
+		builder.setSingleChoiceItems(items, index, new DialogInterface.OnClickListener() {
+		    public void onClick(DialogInterface dialog, int item) {
+		        Toast.makeText(getApplicationContext(),itemsPrograma[item] + " selecionado.", Toast.LENGTH_SHORT).show();
+		        ConfigApp.getInstance().setDecodeProgram(DecodeProgram.getDecodeProgram(itemsPrograma[item].toString()));
+		        dialog.dismiss();
+		    }
+		});
+		AlertDialog alert = builder.create();
+		alert.show();
+		
+	}
+	
+	private void confirmarSaida(){
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		
+		builder.setMessage("Confirma saída?")
+		       .setCancelable(false)
+		       .setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+		           public void onClick(DialogInterface dialog, int id) {
+		        	   stopMiddleware();
+		       		   hydraConnection.getScheduler().cancel();
+		       		   finish();
+		           }
+		       })
+		       .setNegativeButton("Não", new DialogInterface.OnClickListener() {
+		           public void onClick(DialogInterface dialog, int id) {
+		                dialog.cancel();
+		           }
+		       });
+		AlertDialog alert = builder.create();
+		alert.show();
 	}
 
 	/************************************************************
