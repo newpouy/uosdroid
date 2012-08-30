@@ -12,6 +12,10 @@
           android:icon="@android:drawable/ic_dialog_email"
           android:title="@string/enviar_relatorio" />
     
+     <item android:id="@+id/configuracoes"
+          android:icon="@android:drawable/ic_menu_manage"
+          android:title="@string/configuracoes" />
+     
     <!-- 
     <item android:id="@+id/hydra_app"
           android:icon="@android:drawable/ic_menu_search"

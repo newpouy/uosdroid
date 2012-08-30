@@ -54,7 +54,7 @@ public class CalculoMedicao {
 	public void registrar(TipoMedicao tipoMedicao, Float tempo) {
 
 		//TODO FIXME Lentidao ==> ver se nao dá para cancelar o processo, que provavelmente está na decodificacao. 
-		if (tempo > 10) return;
+		if (tempo != null && tempo > 10) return;
 		
 		Medicao medicao = new Medicao();
 		medicao.setTipoMedicao(tipoMedicao);
