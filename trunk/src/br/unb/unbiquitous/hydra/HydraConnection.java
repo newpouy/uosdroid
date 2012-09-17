@@ -24,7 +24,7 @@ import br.unb.unbiquitous.ubiquitos.uos.messageEngine.messages.ServiceResponse;
 import br.unb.unbiquitous.util.DriverType;
 
 /**
- * Class responsible by connect connect the Android to the Hydra 
+ * Class responsible by connect the Android to the Hydra 
  * application and improve the redirection of the resources.
  * 
  * @author Ricardo Andrade
@@ -41,8 +41,6 @@ public class HydraConnection {
 	private static final String HYDRA_RELEASE_SERVICE = "releaseResource";
 	private static final String HYDRA_DRIVER_IN_USE_SERVICE = "isDriverInUse";
 	private static final String HYDRA_REGISTER_LIST_DRIVERS = "listDrivers";
-	private static final String HYDRA_NOT_FOUND = "Hydra not found!";
-	private static final String HYDRA_DRIVERS = "getListDrivers";
 	private static final String HYDRA_DEVICE_NAME = "HydraApp";
 	
 
