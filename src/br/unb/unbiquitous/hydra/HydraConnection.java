@@ -9,7 +9,9 @@ import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.Toast;
 import br.unb.unbiquitous.activity.MainUOSActivity;
 import br.unb.unbiquitous.application.UOSDroidApp;
 import br.unb.unbiquitous.json.JSONArray;
@@ -111,80 +113,31 @@ public class HydraConnection {
 			}
 	}
 	
-	public void redirectResource(DriverData driverData){
+	public void redirectResource(final DriverData driverData) throws Exception{
 		
-		if ( driverData != null){
-			try{
-					
-				Map<String, String> parameterMap = new HashMap<String, String>();
-
-				parameterMap.put(DRIVER_INSTANCE_ID_PARAMETER, driverData.getInstanceID());
-				
-				gateway.callService(this.getHydraDevice(), 
-						HYDRA_REDIRECT_SERVICE,
-						DriverType.HYDRA.getPath(),
-						null,
-						null, //security
-						parameterMap);
-				
-				Log.i(TAG, "Recurso redirecionado.");
-				
-			}catch (Exception e) {
-				Log.i(TAG, e.getMessage());
-			}
-		}
-	}
-	
-	public void releaseResource(DriverData driverData){
+		if(driverData == null) throw new RuntimeException("Driver data nulo no método redirectResource.");
 		
-		if(driverData != null){
-			try{
-					
-				Map<String, String> parameterMap = new HashMap<String, String>();
-
-				parameterMap.put(DRIVER_INSTANCE_ID_PARAMETER, driverData.getInstanceID());
-				
-				gateway.callService(this.getHydraDevice(), 
-						HYDRA_RELEASE_SERVICE,
-						DriverType.HYDRA.getPath(),
-						null,
-						null, //security
-						parameterMap);
-				
-				Log.i(TAG, "Recurso liberado.");
-				
-			}catch (Exception e) {
-				Log.i(TAG, e.getMessage());
-			}
-		}
-	}
-	
-	public boolean isDriverInUse(DriverData driverData){
-		
-		if(driverData != null){
-			try{
-					
-				Map<String, String> parameterMap = new HashMap<String, String>();
-
-				parameterMap.put(DRIVER_INSTANCE_ID_PARAMETER, driverData.getInstanceID());
-				
-				ServiceResponse response = gateway.callService(this.getHydraDevice(), 
-						HYDRA_DRIVER_IN_USE_SERVICE,
-						DriverType.HYDRA.getPath(),
-						null,
-						null, //security
-						parameterMap);
+		RedirectResourceTask redirectResourceTask = new RedirectResourceTask(driverData, getHydraDevice());
+		redirectResourceTask.execute();
+		redirectResourceTask.get();
 			
-				return Boolean.parseBoolean(response.getResponseData().get("valor"));
+	}
+	
+	public void releaseResource(final DriverData driverData) throws Exception{
+		if(driverData == null) throw new RuntimeException("Driver data nulo no método releaseResource.");
+		
+		ReleaseResourceTask releaseResourceTask = new ReleaseResourceTask(driverData, getHydraDevice());
+		releaseResourceTask.execute();
+		releaseResourceTask.get();
+	}
+	
+	public boolean isDriverInUse(DriverData driverData) throws Exception{
+		
+		if(driverData == null) throw new RuntimeException("Driver data nulo no método isDriverInUse.");
 
-			}catch (Exception e) {
-				Log.i(TAG, e.getMessage());
-			}
-		}
-		
-		
-		
-		return true;
+		DriverInUseTask driverInUseTask = new DriverInUseTask(driverData, getHydraDevice());
+		driverInUseTask.execute();
+		return driverInUseTask.get();
 	}
 	
 	public UpDevice getHydraDevice(){
@@ -272,6 +225,110 @@ public class HydraConnection {
 	/************************************************************
 	 * PRIVATE METHODS
 	 ************************************************************/
+	
+	
+	class DriverInUseTask extends AsyncTask<Void, Void, Boolean> {
+		
+		private DriverData driverData;
+		private UpDevice hydraDevice;
+		
+		public DriverInUseTask(DriverData driverData, UpDevice hydraDevice) {
+			this.driverData = driverData;
+			this.hydraDevice = hydraDevice;
+		}
+		
+		@Override
+		protected Boolean doInBackground(Void... arg0) {
+			try{
+				
+				Map<String, String> parameterMap = new HashMap<String, String>();
+
+				parameterMap.put(DRIVER_INSTANCE_ID_PARAMETER, driverData.getInstanceID());
+				
+				ServiceResponse response = gateway.callService(hydraDevice, 
+						HYDRA_DRIVER_IN_USE_SERVICE,
+						DriverType.HYDRA.getPath(),
+						null,
+						null, //security
+						parameterMap);
+			
+				return Boolean.parseBoolean(response.getResponseData().get("valor"));
+			}catch (Exception e) {
+				Log.i(TAG, "Erro no na requisição de uso do recurso." + e.getMessage());
+			}
+			return false;
+		}
+	}
+	
+	class ReleaseResourceTask extends AsyncTask<Void, Void, Void>{
+		
+		private DriverData driverData;
+		private UpDevice hydraDevice;
+		
+		public ReleaseResourceTask(DriverData driverData, UpDevice hydraDevice) {
+			this.driverData = driverData;
+			this.hydraDevice = hydraDevice;
+		}
+		
+		@Override
+		protected Void doInBackground(Void... params) {
+			try{
+				Map<String, String> parameterMap = new HashMap<String, String>();
+
+				parameterMap.put(DRIVER_INSTANCE_ID_PARAMETER, driverData.getInstanceID());
+				
+				gateway.callService(hydraDevice, 
+						HYDRA_RELEASE_SERVICE,
+						DriverType.HYDRA.getPath(),
+						null,
+						null, //security
+						parameterMap);
+				
+				Log.i(TAG, "Recurso " + driverData.getInstanceID() + " liberado.");
+
+			}catch (Exception e) {
+				Log.i(TAG, "Erro no na requisição de liberação do recurso." + e.getMessage());
+			}
+			
+			return null;
+		}
+	}
+	
+	private class RedirectResourceTask extends AsyncTask<Void, Void, Void>{
+
+		private DriverData driverData;
+		private UpDevice hydraDevice;
+		
+		public RedirectResourceTask(DriverData driverData, UpDevice hydraDevice) {
+			this.driverData = driverData;
+			this.hydraDevice = hydraDevice;
+		}
+		
+		@Override
+		protected Void doInBackground(Void... params) {
+			
+			try{
+				
+				Map<String, String> parameterMap = new HashMap<String, String>();
+
+				parameterMap.put(DRIVER_INSTANCE_ID_PARAMETER, driverData.getInstanceID());
+				
+				gateway.callService(hydraDevice, 
+						HYDRA_REDIRECT_SERVICE,
+						DriverType.HYDRA.getPath(),
+						null,
+						null, //security
+						parameterMap);
+				
+				Log.i(TAG, "Recurso" + driverData.getInstanceID() + " redirecionado.");
+				
+			}catch (Exception e) {
+				Log.i(TAG, "Erro no na requisição de redirecionamento do recurso." + e.getMessage());
+			}
+			return null;
+		}
+		
+	}
 	
 
 	/************************************************************

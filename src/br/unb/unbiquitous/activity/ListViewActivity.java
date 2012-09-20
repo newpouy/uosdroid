@@ -111,33 +111,34 @@ public class ListViewActivity extends ListActivity implements OnItemClickListene
 		
 		Log.i(TAG, "Recurso selecionado = " + item.getCaption());
 	
-		// Redirecionar ou liberar recurso
-		if(isItemMarcado){
-			
-			Log.i(TAG, "Pedido para redirecionamento do recurso = " + item.getCaption());
-			
-			hydraConnection.redirectResource(item.getDriverData());
-			item.setDriverInUse(true);
-			
-			Log.i(TAG, "Recurso " + item.getCaption() + " redirecionado com sucesso.");
-			
-		}else{
-			
-			Log.i(TAG, "Pedido para liberação do recurso = " + item.getCaption());
-			
-			hydraConnection.releaseResource(item.getDriverData());
-			item.setDriverInUse(false);
-			
-			Log.i(TAG, "Recurso " + item.getCaption() + " liberado com sucesso.");
+		try{
+		
+			// Redirecionar ou liberar recurso
+			if(isItemMarcado){
+				
+				Log.i(TAG, "Pedido para redirecionamento do recurso = " + item.getCaption());
+				
+				hydraConnection.redirectResource(item.getDriverData());
+				item.setDriverInUse(true);
+				
+				Toast.makeText(this, "Recurso " + item.getCaption() + " redirecionado com sucesso.",Toast.LENGTH_SHORT).show();
+				Log.i(TAG, "Recurso " + item.getCaption() + " redirecionado com sucesso.");
+				
+			}else{
+				
+				Log.i(TAG, "Pedido para liberação do recurso = " + item.getCaption());
+				
+				hydraConnection.releaseResource(item.getDriverData());
+				item.setDriverInUse(false);
+				
+				Toast.makeText(this, "Recurso " + item.getCaption() + " liberado com sucesso.",Toast.LENGTH_SHORT).show();
+				Log.i(TAG, "Recurso " + item.getCaption() + " liberado com sucesso.");
+			}
+		
+		}catch (Exception e) {
+			Toast.makeText(this, "Erro de requisição com a Hydra",Toast.LENGTH_SHORT).show();
+			Log.e(TAG, "Erro de requisição com a Hydra no onItemClick: " + e.getMessage());
 		}
-		
-		
-		if (isItemMarcado){
-			Toast.makeText(this, "Você marcou: " + item.getCaption(),Toast.LENGTH_SHORT).show();
-		}else{
-			Toast.makeText(this, "Você desmarcou: " + item.getCaption(),Toast.LENGTH_SHORT).show();
-		}
-		
 	}
 
 	/************************************************************
@@ -152,9 +153,14 @@ public class ListViewActivity extends ListActivity implements OnItemClickListene
 		super.onResume();
 		this.clearSelection();
 		
-		for (int i = 0; i < listView.getCount(); ++i) {
-			boolean isDriverInUse = hydraConnection.isDriverInUse(data.get(i).getDriverData());
-			listView.setItemChecked(i, isDriverInUse);
+		try{
+			for (int i = 0; i < listView.getCount(); ++i) {
+				boolean isDriverInUse = hydraConnection.isDriverInUse(data.get(i).getDriverData());
+				listView.setItemChecked(i, isDriverInUse);
+			}
+		}catch (Exception e) {
+			Toast.makeText(this, "Erro de requisição com a Hydra",Toast.LENGTH_SHORT).show();
+			Log.e(TAG, "Erro de requisição com a Hydra no onResume: " + e.getMessage());
 		}
 	}
 
