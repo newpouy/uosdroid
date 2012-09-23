@@ -172,7 +172,7 @@ public class MeuObjetoVirtual extends BasicMarker {
 		
 		List<String> nomes = buscarNomeDosDrivers(appName);
 		
-		return  ( validarTamanho(nomes) && nomes.size()  < LIMITE_NOMES ) ? 2.85f : 1.85f ;
+		return  ( validarTamanho(appName) && validarTamanho(nomes) && nomes.size()  < LIMITE_NOMES ) ? 2.75f : 1.65f ;
 	}
 	
 	/**
@@ -215,7 +215,12 @@ public class MeuObjetoVirtual extends BasicMarker {
 		
 		for (DriverData driverData : drivers) {
 			String[] split = driverData.getInstanceID().split("\\.");
-			nomeDrivers.add(split[split.length - 1]);
+			
+			if(split.length == 0){
+				nomeDrivers.add(driverData.getInstanceID());
+			}else{
+				nomeDrivers.add(split[split.length - 1]);
+			}
 		}
 		
 		return nomeDrivers;
