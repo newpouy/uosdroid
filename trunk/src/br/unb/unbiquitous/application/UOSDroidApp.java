@@ -35,6 +35,10 @@ public class UOSDroidApp implements UosApplication{
 	 * PUBLIC METHODS
 	 ************************************************************/
 	
+	/**
+	 * Método responsável por inicializar o middleware a partir do 
+	 * bundle informado.
+	 */
 	public void start(ResourceBundle bundle){
 		applicationContext = new UOSApplicationContext();
 		try {

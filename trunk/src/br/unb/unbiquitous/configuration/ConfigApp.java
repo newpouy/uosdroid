@@ -21,6 +21,9 @@ public class ConfigApp {
 	 * PUBLIC METHODS
 	 *********************************************/
 	
+	/**
+	 * Método responsável por retornar a instância da classe.
+	 */
 	public static ConfigApp getInstance(){
 	
 		if( configApp == null){

@@ -5,6 +5,12 @@ import java.util.List;
 
 import android.util.Log;
 
+/**
+ * Classe responsável por fazer a medições dos tempos de reconhecimento.
+ * 
+ * @author ricardoandrade
+ *
+ */
 public class CalculoMedicao {
 	
 	/*********************************************
@@ -42,6 +48,9 @@ public class CalculoMedicao {
 	 * PUBLIC METHODS
 	 *********************************************/
 	
+	/**
+	 * Pega a instância da classe.
+	 */
 	public static CalculoMedicao getInstance(){
 		
 		if(calculoMedicao == null){
@@ -51,9 +60,14 @@ public class CalculoMedicao {
 		return calculoMedicao;
 	}
 	
+	/**
+	 * Registro do tempo medido.
+	 * 
+	 * @param tipoMedicao
+	 * @param tempo
+	 */
 	public void registrar(TipoMedicao tipoMedicao, Float tempo) {
 
-		//TODO FIXME Lentidao ==> ver se nao dá para cancelar o processo, que provavelmente está na decodificacao. 
 		if (tempo != null && tempo > 10) return;
 		
 		Medicao medicao = new Medicao();
@@ -66,6 +80,10 @@ public class CalculoMedicao {
 		ultimaMedicao = medicao;
 	}
 
+	/**
+	 * Cálculo dos tempos médios de reconhecimento, taxa de erro e 
+	 * taxa de não decodificação.
+	 */
 	public void calcular() {
 
 		tempoMedioPrimeiraAparicao = calcularTempoMedio(TipoMedicao.PRIMEIRA_APARICAO);
@@ -87,6 +105,9 @@ public class CalculoMedicao {
 		
 	}
 	
+	/**
+	 * Zera todas as medições.
+	 */
 	public void resetarMedicoes(){
 		this.medicoes = new ArrayList<Medicao>();
 	}
@@ -95,6 +116,10 @@ public class CalculoMedicao {
 	 * PRIVATE METHODS
 	 *********************************************/
 	
+	/**
+	 * Método responsável por calcular o tempo médio a partir do tipo de medição
+	 * feita.
+	 */
 	private Float calcularTempoMedio(TipoMedicao tipoMedicao) {
 
 		float total = 0;
@@ -112,6 +137,13 @@ public class CalculoMedicao {
 		return total == 0 ? 0 : Float.valueOf(tempoTotal/total);
 	}
 
+	/**
+	 * Método responsável por calcular as taxas de acordo com o tipo
+	 * de taxa informada por parâmetro.
+	 * 
+	 * @param tipoMedicao
+	 * @return
+	 */
 	private Float calcularTaxa(TipoMedicao tipoMedicao){
 		
 		float count = 0;
@@ -126,6 +158,13 @@ public class CalculoMedicao {
 		return Float.valueOf(count / ((float) medicoes.size()));
 	}
 
+	/**
+	 * Método responsável por retornar a quantidade de medições
+	 * registradas para o tipo de medição informada.
+	 * 
+	 * @param tipoMedicao
+	 * @return
+	 */
 	private Integer getTotal(TipoMedicao tipoMedicao){
 		int count = 0;
 		

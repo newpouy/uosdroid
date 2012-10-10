@@ -39,7 +39,7 @@ public class DecodeManager {
 	 * PUBLIC METHODS
 	 ************************************************/
 	/**
-	 * M√©todo respons√°vel por retornar se um QRCode foi encontrado para o frame 
+	 * Método responsável por retornar se um QRCode foi encontrado para o frame 
 	 * informado.
 	 */
 	public boolean isQRCodeFound(byte [] frame, int frameWidth, int frameHeight, DecodeProgram decodeProgram){

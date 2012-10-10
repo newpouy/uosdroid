@@ -100,7 +100,7 @@ public class ARManager {
 	}
 	
 	/**
-	 * 
+	 * Método que remove o objeto virtual apresentado ao usuário.
 	 */
 	public void retirarObjetosVirtuais() {
 		if(ultimoObjetoVirtual != null){

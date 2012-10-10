@@ -169,6 +169,7 @@ public class DetectionThread extends Thread {
 	}
 	
 	/**
+	 * Método responsável por pegar a próxima imagem.
 	 * 
 	 * @param data
 	 */
@@ -215,23 +216,16 @@ public class DetectionThread extends Thread {
 	}
 
 	/**
-	 * 
+	 * Param todas as threads.
 	 */
 	public void stopThread() {
 		
 		repositionThread.setStopRequest(true);
 		decodeQRCodeThread.setStopRequest(true);
 
-//		synchronized (decodeQRCodeThread) {
-//			decodeQRCodeThread.interrupt();
-//			decodeQRCodeThread.notify();
-//		}
-		
-		
 		synchronized (this) {
 			stopRequest = true;
 			this.notify();
-//			this.interrupt();
 		}
 	}
 
@@ -241,7 +235,8 @@ public class DetectionThread extends Thread {
 	 ************************************************/
 	
 	/**
-	 * 
+	 * Método responsável por verificar se um marcador foi encontrado na
+	 * imagem analisada.
 	 */
 	private boolean isMarkerFound(){
 		
