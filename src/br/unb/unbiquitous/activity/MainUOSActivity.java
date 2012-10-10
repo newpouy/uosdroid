@@ -129,6 +129,9 @@ public class MainUOSActivity extends Activity {
 		 super.onDestroy();
 	}
 	
+	/**
+	 * Método responsável por exibir o painel de configurações.
+	 */
 	private void exibirPainelConfiguracoes(){
 		
 		String [] items = new String[DecodeProgram.values().length];   
@@ -158,6 +161,10 @@ public class MainUOSActivity extends Activity {
 		
 	}
 	
+	/**
+	 * Método responsável por apresentar uma caixa de diálogo com o usuário
+	 * para que ele confirme ou não a saída da aplicação.
+	 */
 	private void confirmarSaida(){
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		
@@ -227,6 +234,9 @@ public class MainUOSActivity extends Activity {
 		}
 	}	
 	
+	/**
+	 * Método responsável por finalizar a execução do middlewware.
+	 */
 	private void stopMiddleware(){
 		try {
 			droidobiquitousApp.tearDown(null);
@@ -236,13 +246,17 @@ public class MainUOSActivity extends Activity {
 	}
 	
 	/**
-	 * 
+	 * Método responsável por aguardar o handshake com a Hydra.
 	 */
 	private void waitHydraHandshake(){
 		while(hydraConnection.getHydraDevice() == null){}
 	}
 	
-	//TODO arrumar isso aqui
+	/**
+	 * Método responsável por verificar se foi feito o estabelecimento
+	 * da conexão Wifi para que a ARHydra possa buscar as informações
+	 * necessárias na Hydra dentro da mesma rede. 
+	 */
 	private void verificarWifi(){
 		boolean firstTime = true;
 		
@@ -263,7 +277,10 @@ public class MainUOSActivity extends Activity {
 	 ************************************************************/
 	
 	/**
-	 * 
+	 * Tarefa assíncrona que inicia o middleware uOS e fica esperando
+	 * que o handshake com a Hydra seja efetuada para que o usuário 
+	 * possa inicializar a aplicação ARHydra.
+	 *  
 	 */
 	private class StartMiddlewareTask extends AsyncTask<Void, Void, Void> {
 

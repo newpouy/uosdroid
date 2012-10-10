@@ -11,7 +11,6 @@ import java.util.TimerTask;
 
 import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.Toast;
 import br.unb.unbiquitous.activity.MainUOSActivity;
 import br.unb.unbiquitous.application.UOSDroidApp;
 import br.unb.unbiquitous.json.JSONArray;
@@ -75,6 +74,10 @@ public class HydraConnection {
 	 * PUBLIC METHODS
 	 ************************************************************/
 	
+	/**
+	 * Método responsável por obter a lista de drivers que foram
+	 * reconhecidos na Hydra.
+	 */
 	public void getListDriversInHydra(){
 		
 			try{
@@ -113,6 +116,12 @@ public class HydraConnection {
 			}
 	}
 	
+	/**
+	 * Método responsável por enviar a requisição para redirecionar o recurso informado.
+	 * 
+	 * @param driverData
+	 * @throws Exception
+	 */
 	public void redirectResource(final DriverData driverData) throws Exception{
 		
 		if(driverData == null) throw new RuntimeException("Driver data nulo no método redirectResource.");
@@ -123,6 +132,11 @@ public class HydraConnection {
 			
 	}
 	
+	/**
+	 * Método responsável por enviar a requisição para liberação do recurso informado.
+	 * @param driverData
+	 * @throws Exception
+	 */
 	public void releaseResource(final DriverData driverData) throws Exception{
 		if(driverData == null) throw new RuntimeException("Driver data nulo no método releaseResource.");
 		
@@ -130,7 +144,14 @@ public class HydraConnection {
 		releaseResourceTask.execute();
 		releaseResourceTask.get();
 	}
-	
+	/**
+	 * Método responsável por enviar a requisição para saber se o recurso informado
+	 * está sendo utilizado no momento.
+	 * 
+	 * @param driverData
+	 * @return
+	 * @throws Exception
+	 */
 	public boolean isDriverInUse(DriverData driverData) throws Exception{
 		
 		if(driverData == null) throw new RuntimeException("Driver data nulo no método isDriverInUse.");
@@ -140,6 +161,10 @@ public class HydraConnection {
 		return driverInUseTask.get();
 	}
 	
+	/**
+	 * Método responsável por retornar o dispositivo que esteja executando a Hydra.
+	 * @return
+	 */
 	public UpDevice getHydraDevice(){
 		return ((SmartSpaceGateway) gateway).getDeviceManager().retrieveDevice(HYDRA_DEVICE_NAME);
 	}
@@ -200,6 +225,11 @@ public class HydraConnection {
 		return drivers;
 	}
 	
+	/**
+	 * Método responsável por verificar se a aplicação que ativa no momento.
+	 * @param deviceName
+	 * @return
+	 */
 	public boolean isDeviceValid(String deviceName){
 		for (DriverData driverData : this.getDriversList()) {
 			if(driverData.getDevice().getName().equals(deviceName)){
@@ -209,6 +239,10 @@ public class HydraConnection {
 		return false;
 	}
 	
+	/**
+	 * Método responsável por obter a lista de dispositivos que estão
+	 * inseridos dentro do ambiente inteligente a cada minuto.
+	 */
 	public void agendarBuscaDriverHydra(){
 		
 		scheduler.schedule(new TimerTask() {
@@ -223,7 +257,7 @@ public class HydraConnection {
 	}
 	
 	/************************************************************
-	 * PRIVATE METHODS
+	 * INNER CLASS
 	 ************************************************************/
 	
 	

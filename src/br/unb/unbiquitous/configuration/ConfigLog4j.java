@@ -11,6 +11,10 @@ import de.mindpipe.android.logging.log4j.LogConfigurator;
  */
 public class ConfigLog4j {
 
+	/**
+	 * Método responsável por configurar o monitor do LogCat
+	 * para apresentar as mensagens da classe Logger. 
+	 */
 	public static void configure() {	
 			
 			final LogConfigurator logConfigurator = new LogConfigurator();
